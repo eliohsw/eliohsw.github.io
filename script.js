@@ -1,63 +1,71 @@
 document.addEventListener('DOMContentLoaded', () => {
   const themeToggle = document.getElementById('theme-toggle');
+  const systemToggle = document.getElementById('system-toggle');
   
-  // Get preferred theme
-  const getPreferredTheme = () => {
-    const storedTheme = localStorage.getItem('theme');
-    return storedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  };
-
-  // Set theme without persistence
-  const applyTheme = (theme) => {
-    document.documentElement.setAttribute('data-theme', theme);
-  };
-
-  // Persist theme choice
-  const persistTheme = (theme) => {
-    localStorage.setItem('theme', theme);
-    applyTheme(theme);
-  };
-
-  // Initial setup
-  const initialTheme = getPreferredTheme();
-  applyTheme(initialTheme);
-
-  // Toggle handler
-  themeToggle.addEventListener('click', () => {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    persistTheme(newTheme);
+  // Get current theme state
+  const getThemeState = () => ({
+    isSystem: !localStorage.getItem('theme'),
+    currentTheme: document.documentElement.getAttribute('data-theme') || 
+                 (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
   });
+
+  // Update UI state
+  const updateUIState = (isSystem) => {
+    systemToggle.classList.toggle('active', isSystem);
+    themeToggle.classList.toggle('disabled', isSystem);
+    themeToggle.style.pointerEvents = isSystem ? 'none' : 'auto';
+  };
+
+  // System toggle handler
+  systemToggle.addEventListener('click', () => {
+    const currentState = getThemeState();
+    
+    if (currentState.isSystem) {
+      // If already in system mode, switch to manual with current system theme
+      localStorage.setItem('theme', currentState.currentTheme);
+      updateUIState(false);
+    } else {
+      // Switch to system mode
+      localStorage.removeItem('theme');
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', systemTheme);
+      updateUIState(true);
+    }
+  });
+
+  // Theme toggle handler
+  themeToggle.addEventListener('click', () => {
+    if (!themeToggle.classList.contains('disabled')) {
+      const { currentTheme } = getThemeState();
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('theme', newTheme);
+      document.documentElement.setAttribute('data-theme', newTheme);
+      updateUIState(false);
+    }
+  });
+
+  // Initialize
+  const initialTheme = getThemeState();
+  document.documentElement.setAttribute('data-theme', initialTheme.currentTheme);
+  updateUIState(initialTheme.isSystem);
 
   // System theme change listener
-  const colorSchemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
-  const systemThemeHandler = (e) => {
-    if (!localStorage.getItem('theme')) {
-      applyTheme(e.matches ? 'dark' : 'light');
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    if (getThemeState().isSystem) {
+      document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
     }
-  };
-  colorSchemeQuery.addEventListener('change', systemThemeHandler);
-
-  // Cleanup
-  window.addEventListener('beforeunload', () => {
-    colorSchemeQuery.removeEventListener('change', systemThemeHandler);
   });
 
+  // Ripple effects
   document.addEventListener('click', function(e) {
     const ripple = document.createElement('div');
     ripple.className = 'ripple';
 
     if ('vibrate' in navigator) navigator.vibrate(10);
-    
-    // Use fixed positioning coordinates
     ripple.style.left = `${e.clientX}px`;
     ripple.style.top = `${e.clientY}px`;
     
     document.body.appendChild(ripple);
-  
-    // Remove element after animation
-    ripple.addEventListener('animationend', () => {
-      ripple.remove();
-    });
+    ripple.addEventListener('animationend', () => ripple.remove());
   });
 });
