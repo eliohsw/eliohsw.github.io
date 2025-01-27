@@ -1,76 +1,122 @@
 :root {
+  /* Color Variables */
   --background-color: #F2F2F7;
   --text-color: #000000;
-  --toggle-bg-light: transparent;
-  --toggle-bg-dark: transparent;
-  --toggle-circle-light: transparent;
-  --toggle-circle-dark: transparent;
-  --toggle-circle-width: 20px;
-  --toggle-circle-height: 20px;
-  --toggle-border-light: #000000;
-  --toggle-border-dark: #F5F5F7;
-  --toggle-border-width: 1px;
-  --ripple-color: rgba(0, 0, 0, 0.3);
+  --ripple-color: rgba(0, 0, 0, 1);
+  
+  /* Toggle Variables */
+  --toggle-size: 60px 30px;
+  --toggle-circle-size: 20px;
+  --toggle-border: 1px solid var(--toggle-border-color);
+  --toggle-border-color: #000000;
+  --toggle-bg: transparent;
+  --toggle-circle-bg: transparent;
+}
+
+/* System Theme Detection */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --background-color: #000000;
+    --text-color: #F5F5F7;
+    --ripple-color: rgba(255, 255, 255, 1);
+    --toggle-border-color: #F5F5F7;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ripple, .toggle-circle {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Theme Overrides */
+[data-theme="light"] {
+  --background-color: #F2F2F7;
+  --text-color: #000000;
+  --ripple-color: rgba(0, 0, 0, 1);
+  --toggle-border-color: #000000;
 }
 
 [data-theme="dark"] {
   --background-color: #000000;
   --text-color: #F5F5F7;
-  --toggle-bg-light: transparent;
-  --toggle-bg-dark: transparent;
-  --toggle-border-light: #000000;
-  --toggle-border-dark: #F5F5F7;
-  --toggle-circle-light: transparent;
-  --toggle-circle-dark: transparent;
-  --ripple-color: rgba(255, 255, 255, 0.3);
+  --ripple-color: rgba(255, 255, 255, 1);
+  --toggle-border-color: #F5F5F7;
 }
 
+/* Base Styles */
 body {
   background-color: var(--background-color);
   color: var(--text-color);
   transition: background-color 0.3s, color 0.3s;
-  font-family: 'SF Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+               'Helvetica Neue', Arial, sans-serif;
 }
 
+/* Toggle Styles */
 .theme-toggle {
   position: fixed;
   top: 10px;
   right: 10px;
   width: 60px;
   height: 30px;
-  background-color: var(--toggle-bg-light);
-  border: var(--toggle-border-width) solid var(--toggle-border-light);
+  background: var(--toggle-bg);
+  border: var(--toggle-border);
   border-radius: 30px;
   display: flex;
   align-items: center;
   cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.theme-toggle:hover,
-.theme-toggle:focus {
-  filter: brightness(1.1);
   transition: filter 0.3s;
+
+  &:hover, &:focus {
+    filter: brightness(1.1);
+  }
 }
 
-[data-theme="dark"] .theme-toggle {
-  background-color: var(--toggle-bg-dark);
-  border: var(--toggle-border-width) solid var(--toggle-border-dark);
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--text-color);
+  outline-offset: 2px;
 }
 
 .toggle-circle {
   position: relative;
   left: 5px;
-  width: var(--toggle-circle-width);
-  height: var(--toggle-circle-height);
-  background-color: var(--toggle-circle-light);
-  border: var(--toggle-border-width) solid var(--toggle-border-light);
+  width: var(--toggle-circle-size);
+  height: var(--toggle-circle-size);
+  background: var(--toggle-circle-bg);
+  border: var(--toggle-border);
   border-radius: 50%;
-  transition: transform 0.3s, background-color 0.3s;
+  transition: transform 0.3s;
+
+  [data-theme="dark"] & {
+    transform: translateX(28px);
+  }
 }
 
-[data-theme="dark"] .toggle-circle {
-  background-color: var(--toggle-circle-dark);
-  border: var(--toggle-border-width) solid var(--toggle-border-dark);
-  transform: translateX(28px);
+/* Ripple Effect */
+.ripple {
+  position: fixed;
+  pointer-events: none;
+  border: 2px solid var(--ripple-color);
+  border-radius: 50%;
+  animation: ripple-expand 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes ripple-expand {
+  0% { 
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    width: 100vmax;
+    height: 100vmax;
+    opacity: 0;
+  }
 }
