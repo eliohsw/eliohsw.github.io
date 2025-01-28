@@ -2,6 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const themeToggle = document.getElementById('theme-toggle');
   const systemToggle = document.getElementById('system-toggle');
   const navBar = document.querySelector('.nav-bar');
+
+  const menuBtn = document.querySelector('.menu-btn');
+  const mobileSidebar = document.querySelector('.mobile-sidebar');
+  const overlay = document.createElement('div');
+  overlay.className = 'overlay';
+  document.body.appendChild(overlay);
   
   // Get current theme state
   const getThemeState = () => ({
@@ -70,11 +76,35 @@ document.addEventListener('DOMContentLoaded', () => {
     ripple.addEventListener('animationend', () => ripple.remove());
   });
   
+  // Scroll effects
   window.addEventListener('scroll', () => {
     if (window.scrollY > 0) {
       navBar.classList.add('scrolled');
     } else {
       navBar.classList.remove('scrolled');
     }
+  });
+
+  menuBtn.addEventListener('click', () => {
+    mobileSidebar.classList.toggle('active');
+    overlay.classList.toggle('active');
+    document.body.classList.toggle('no-scroll');
+  });
+
+  // Close sidebar when clicking outside or on a link
+  overlay.addEventListener('click', closeSidebar);
+  mobileSidebar.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeSidebar);
+  });
+
+  function closeSidebar() {
+    mobileSidebar.classList.remove('active');
+    overlay.classList.remove('active');
+    document.body.classList.remove('no-scroll');
+  }
+
+  // Optional: Close sidebar on window resize
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) closeSidebar();
   });
 });

@@ -12,17 +12,28 @@
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/contrib/auto-render.min.js" 
     onload="renderMathInElement(document.body);"></script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
   <script defer src="script.js"></script>
 
   <title>My Website</title>
 </head>
 <body>
   <nav class="nav-bar">
-    <a ref="#" class="logo">@eliohsw</a>
+  <!-- Mobile Menu Button -->
+  <div class="menu-btn">
+    <ion-icon name="menu-sharp"></ion-icon>
+  </div>
+
+    <a href="#" class="logo">@eliohsw</a>
     <div class="nav-links">
-      <a ref="#">ABOUT</a>
-      <a ref="#">CONTACT</a>
+      <a href="#">ABOUT</a>
+      <a href="#">CONTACT</a>
+      <a href="#">PROJECTS</a>
+      <a href="#">RANDOM</a>
     </div>
+
     <div class="toggle-group">
       <div id="system-toggle" class="system-toggle">
         <div class="system-indicator"></div>
@@ -33,7 +44,18 @@
     </div>
   </nav>
 
-  <h1>Welcome to My Website</h1>
-  <p>This is a basic HTML structure.</p>
+  <div class="mobile-sidebar">
+    <div class="sidebar-links">
+      <a href="#">ABOUT</a>
+      <a href="#">CONTACT</a>
+      <a href="#">PROJECTS</a>
+      <a href="#">RANDOM</a>
+    </div>
+  </div>
+
+  <div style="padding: 10px;">
+    <h1>Welcome to My Website</h1>
+    <p>This is a basic HTML structure.</p>
+  </div>
 </body>
 </html>
