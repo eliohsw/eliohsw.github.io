@@ -21,6 +21,8 @@
   max-width: 300px;
   height: 100%;
   background: rgba(var(--sidebar-bg-rgb), var(--sidebar-bg-alpha));
+  mask-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><linearGradient id="quartic-grad" x1="0%" y2="0%"><stop offset="0%" stop-color="rgba(0,0,0,1)"/><stop offset="60%" stop-color="rgba(0,0,0,1)"/><stop offset="65%" stop-color="rgba(0,0,0,0.999)"/><stop offset="70%" stop-color="rgba(0,0,0,0.996)"/><stop offset="75%" stop-color="rgba(0,0,0,0.980)"/><stop offset="80%" stop-color="rgba(0,0,0,0.937)"/><stop offset="85%" stop-color="rgba(0,0,0,0.847)"/><stop offset="90%" stop-color="rgba(0,0,0,0.684)"/><stop offset="95%" stop-color="rgba(0,0,0,0.414)"/><stop offset="100%" stop-color="rgba(0,0,0,0)"/></linearGradient><rect width="100" height="100" fill="url(%23quartic-grad)"/></svg>');
+  mask-mode: alpha;
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   z-index: 999;
