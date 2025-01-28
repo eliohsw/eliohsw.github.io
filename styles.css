@@ -54,9 +54,67 @@ body {
                'Helvetica Neue', Arial, sans-serif;
 }
 
+/* Navigation Bar */
+.nav-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  padding: 10px 10px;
+  backdrop-filter: blur(10px);
+  background: var(--background-color);
+  border-bottom: 1.5px solid var(--toggle-border-color);
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.logo {
+  align-self: center;
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 140%;
+  font-weight: 650;
+  margin-right: auto;
+  transition: color 0.3s;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  margin: 0 2rem;
+}
+
+.nav-links a {
+  position: relative;
+  padding: 8px 0;
+  text-decoration: none;
+  color: var(--text-color);
+  font-family: system-ui, sans-serif;
+  transition: color 0.3s;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: currentColor;
+  transition: width 0.3s;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.toggle-group {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
 /* Toggle Styles */
 .theme-toggle {
-  position: fixed;
   top: 10px;
   right: 10px;
   width: 60px;
@@ -97,7 +155,6 @@ body {
 
 /* System Toggle Styles */
 .system-toggle {
-  position: fixed;
   top: 10px;
   right: 80px; /* Position left of theme toggle */
   width: 30px;
@@ -136,6 +193,7 @@ body {
 /* Ripple Effect */
 .ripple {
   position: fixed;
+  z-index: 2000;
   pointer-events: none;
   border: 2px solid var(--ripple-color);
   border-radius: 50%;
