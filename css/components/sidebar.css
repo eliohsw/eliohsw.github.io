@@ -1,0 +1,102 @@
+/* Mobile First Styles */
+.menu-btn {
+  display: none;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.menu-btn ion-icon {
+  color: var(--text-color);
+  font-size: 24px;
+  align-self: center;
+  transition: transform 0.3s ease;
+}
+
+/* Mobile Sidebar */
+.mobile-sidebar {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 70%;
+  max-width: 300px;
+  height: 100%;
+  background: var(--background-color);
+  z-index: 999;
+  transition: left 0.3s ease;
+  padding: 20px;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-sidebar.active {
+  left: 0;
+}
+
+.sidebar-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 60px;
+}
+
+.sidebar-links a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 1.1rem;
+  padding: 8px 0;
+  position: relative;
+}
+
+.sidebar-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: currentColor;
+  transition: width 0.3s;
+}
+
+.sidebar-links a:hover::after {
+  width: 100%;
+}
+
+/* Overlay for when sidebar is open */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  display: none;
+}
+
+.overlay.active {
+  display: block;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .menu-btn {
+    display: flex;
+    order: 1;
+    align-self: center;
+    margin-right: 10px;
+  }
+
+  .logo {
+    order: 2;
+    margin-right: 0;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .toggle-group {
+    order: 3;
+    margin-left: auto;
+  }
+}

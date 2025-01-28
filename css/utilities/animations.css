@@ -1,0 +1,27 @@
+/* Ripple Effect */
+.ripple {
+  position: fixed;
+  z-index: 2000;
+  pointer-events: none;
+  border: 2px solid var(--ripple-color);
+  border-radius: 50%;
+  animation: ripple-expand 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes ripple-expand {
+  0% { 
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    width: 100vmax;
+    height: 100vmax;
+    opacity: 0;
+  }
+}

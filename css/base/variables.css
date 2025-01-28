@@ -1,0 +1,39 @@
+:root {
+  /* Color Variables */
+  --background-color: #F2F2F7;
+  --text-color: #000000;
+  --ripple-color: rgba(0, 0, 0, 1);
+  
+  /* Toggle Variables */
+  --toggle-size: 60px 30px;
+  --toggle-circle-size: 20px;
+  --toggle-border: 1px solid var(--toggle-border-color);
+  --toggle-border-color: #000000;
+  --toggle-bg: transparent;
+  --toggle-circle-bg: transparent;
+}
+
+/* System Theme Detection */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --background-color: #000000;
+    --text-color: #F5F5F7;
+    --ripple-color: rgba(255, 255, 255, 1);
+    --toggle-border-color: #F5F5F7;
+  }
+}
+
+/* Theme Overrides */
+[data-theme="light"] {
+  --background-color: #F2F2F7;
+  --text-color: #000000;
+  --ripple-color: rgba(0, 0, 0, 1);
+  --toggle-border-color: #000000;
+}
+
+[data-theme="dark"] {
+  --background-color: #000000;
+  --text-color: #F5F5F7;
+  --ripple-color: rgba(255, 255, 255, 1);
+  --toggle-border-color: #F5F5F7;
+}

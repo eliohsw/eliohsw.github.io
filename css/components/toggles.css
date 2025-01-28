@@ -1,0 +1,82 @@
+/* Toggle Styles */
+.toggle-group {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.theme-toggle {
+  top: 10px;
+  right: 10px;
+  width: 60px;
+  height: 30px;
+  background: var(--toggle-bg);
+  border: var(--toggle-border);
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: filter 0.3s;
+
+  &:hover, &:focus {
+    filter: brightness(1.1);
+  }
+}
+
+.toggle-circle {
+  position: relative;
+  left: 5px;
+  width: var(--toggle-circle-size);
+  height: var(--toggle-circle-size);
+  background: var(--toggle-circle-bg);
+  border: var(--toggle-border);
+  border-radius: 50%;
+  transition: transform 0.3s;
+
+  [data-theme="dark"] & {
+    transform: translateX(28px);
+  }
+}
+
+/* Disabled state for theme toggle */
+.theme-toggle.disabled {
+  opacity: 0.4375;
+  cursor: not-allowed;
+}
+
+/* System Toggle Styles */
+.system-toggle {
+  top: 10px;
+  right: 80px; /* Position left of theme toggle */
+  width: 30px;
+  height: 30px;
+  background: var(--toggle-bg);
+  border: var(--toggle-border);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s;
+}
+
+.system-indicator {
+  width: 20px;
+  height: 20px;
+  background: var(--toggle-circle-bg);
+  border-radius: 50%;
+  border: var(--toggle-border);
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+/* Active state for system mode */
+.system-toggle.active {
+  background: var(--toggle-bg);
+  transition: opacity 0.3s;
+}
+
+.system-toggle.active .system-indicator {
+  background: var(--toggle-border-color);
+}

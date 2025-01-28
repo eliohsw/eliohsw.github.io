@@ -1,0 +1,6 @@
+@media (prefers-reduced-motion: reduce) {
+  .ripple, .toggle-circle {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,69 @@
+/* Navigation Bar */
+.nav-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  padding: 10px 10px;
+  backdrop-filter: blur(10px);
+  background: var(--background-color);
+  overflow: hidden;
+  border-bottom: none;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.nav-bar::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--toggle-border-color);
+  transition: width 0.3s ease-out;
+  transform-origin: left center;
+}
+
+.nav-bar.scrolled::after {
+  width: 100%;
+}
+
+.logo {
+  align-self: center;
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 140%;
+  font-weight: 650;
+  margin-right: auto;
+  transition: color 0.3s;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  margin: 0 2rem;
+}
+
+.nav-links a {
+  position: relative;
+  padding: 8px 0;
+  text-decoration: none;
+  color: var(--text-color);
+  font-family: system-ui, sans-serif;
+  transition: color 0.3s;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: currentColor;
+  transition: width 0.3s;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
