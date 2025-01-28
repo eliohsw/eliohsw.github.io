@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const themeToggle = document.getElementById('theme-toggle');
   const systemToggle = document.getElementById('system-toggle');
+  const navBar = document.querySelector('.nav-bar');
   
   // Get current theme state
   const getThemeState = () => ({
@@ -67,5 +68,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     document.body.appendChild(ripple);
     ripple.addEventListener('animationend', () => ripple.remove());
+  });
+  
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 0) {
+      navBar.classList.add('scrolled');
+    } else {
+      navBar.classList.remove('scrolled');
+    }
   });
 });
