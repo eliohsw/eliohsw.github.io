@@ -37,6 +37,7 @@
 .sidebar-links {
   display: flex;
   flex-direction: column;
+  width: 60%;
   gap: 1.5rem;
   margin-top: 60px;
 }
@@ -61,7 +62,7 @@
 }
 
 .sidebar-links a:hover::after {
-  width: 60%;
+  width: 100%;
 }
 
 /* Overlay for when sidebar is open */
