@@ -11,6 +11,11 @@
   --toggle-border-color: #000000;
   --toggle-bg: transparent;
   --toggle-circle-bg: transparent;
+
+  /* Sidebar Variables */
+  --sidebar-bg-rgb: 242, 242, 247;
+  --sidebar-bg-alpha: 0.5;
+  --sidebar-border-color: rgba(0, 0, 0, 0.1);
 }
 
 /* System Theme Detection */
@@ -20,6 +25,10 @@
     --text-color: #F5F5F7;
     --ripple-color: rgba(255, 255, 255, 1);
     --toggle-border-color: #F5F5F7;
+
+    --sidebar-bg-rgb: 0, 0, 0;
+    --sidebar-bg-alpha: 0.5;
+    --sidebar-border-color: rgba(255, 255, 255, 0.1);
   }
 }
 
@@ -36,4 +45,8 @@
   --text-color: #F5F5F7;
   --ripple-color: rgba(255, 255, 255, 1);
   --toggle-border-color: #F5F5F7;
+
+  --sidebar-bg-rgb: 0, 0, 0;
+  --sidebar-bg-alpha: 0.75;
+  --sidebar-border-color: rgba(255, 255, 255, 0.1);
 }

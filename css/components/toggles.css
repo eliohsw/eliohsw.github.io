@@ -1,5 +1,6 @@
 /* Toggle Styles */
 .toggle-group {
+  z-index: 1102;
   display: flex;
   gap: 1rem;
   align-items: center;

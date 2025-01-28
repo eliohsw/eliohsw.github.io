@@ -5,8 +5,7 @@
   z-index: 1000;
   display: flex;
   padding: 10px 10px;
-  backdrop-filter: blur(10px);
-  background: var(--background-color);
+  background: transparent; /* Transparent base */
   overflow: hidden;
   border-bottom: none;
   transition: background-color 0.3s, border-color 0.3s;
@@ -24,11 +23,16 @@
   transform-origin: left center;
 }
 
+.nav-bar.scrolled {
+  background: rgba(var(--sidebar-bg-rgb), 0.6);
+}
+
 .nav-bar.scrolled::after {
   width: 100%;
 }
 
 .logo {
+  /* z-index: 1100; */
   align-self: center;
   color: var(--text-color);
   text-decoration: none;
@@ -39,6 +43,7 @@
 }
 
 .nav-links {
+  /* z-index: 1101; */
   display: flex;
   gap: 2rem;
   margin: 0 2rem;
