@@ -1,0 +1,54 @@
+.social-bar {
+  display: grid;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 0;
+}
+
+.social-bar h1,
+.social-bar h2,
+.social-bar h3 {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.social-links {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color);
+  transition: all 0.3s ease;
+  padding: 0.25rem;
+  border-radius: 50%;
+}
+
+.social-icon svg {
+  width: 30px;
+  height: 30px;
+}
+
+.social-icon svg path,
+.social-icon svg circle {
+  fill: var(--text-color);
+}
+
+.social-icon:hover {
+  color: var(--accent-color); /* Change to your preferred hover color */
+  transform: translateY(-2px);
+}
+
+.social-icon:active {
+  transform: translateY(0);
+}
+
+/* Optional: Add background hover effect */
+.social-icon:hover {
+  background: rgba(var(--text-color-rgb), 0.15);
+}
