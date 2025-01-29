@@ -30,13 +30,16 @@
 }
 
 .social-icon svg {
+  display: block;
   width: 30px;
   height: 30px;
+  fill: currentColor;
 }
 
-.social-icon svg path,
-.social-icon svg circle {
-  fill: var(--text-color);
+.social-icon ion-icon {
+  width: 30px;
+  height: 30px;
+  fill: currentColor
 }
 
 .social-icon:hover {
