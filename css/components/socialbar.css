@@ -22,11 +22,11 @@
   margin-right: 10px;
 }
 
-.social-icon-gap-x {
+.social-links > .social-icon-gap-x:not(:last-child) {
   margin-right: 7px !important;
 }
 
-.social-icon-gap-threads {
+.social-links > .social-icon-gap-threads:not(:last-child) {
   margin-right: 8.5px !important;
 }
 
