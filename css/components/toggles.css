@@ -2,7 +2,7 @@
 .toggle-group {
   z-index: 1102;
   display: flex;
-  gap: 1rem;
+  gap: 10px;
   align-items: center;
 }
 

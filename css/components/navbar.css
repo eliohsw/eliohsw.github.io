@@ -4,7 +4,7 @@
   top: 0;
   z-index: 1000;
   display: flex;
-  padding: 10px 10px;
+  padding: 10px 16px 10px 18px;
   background: transparent;
   overflow: hidden;
   border-bottom: none;
@@ -24,7 +24,7 @@
 }
 
 .nav-bar.scrolled {
-  background: rgba(var(--sidebar-bg-rgb), 0.6);
+  background: rgba(var(--sidebar-bg-rgb), 0.88);
 }
 
 .nav-bar.scrolled::after {
@@ -49,10 +49,12 @@
 
 .nav-links a {
   position: relative;
-  padding: 8px 0;
+  padding: 6px 0;
   text-decoration: none;
   color: var(--text-color);
   font-family: system-ui, sans-serif;
+  font-weight: 200;
+  font-stretch: semi-expanded;
   transition: color 0.3s;
 }
 
@@ -62,7 +64,7 @@
   bottom: 0;
   left: 0;
   width: 0;
-  height: 1.5px;
+  height: 1px;
   background: currentColor;
   transition: width 0.3s;
 }
