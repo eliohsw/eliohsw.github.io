@@ -15,8 +15,11 @@
 
 .social-links {
   display: flex;
-  gap: 10px;
   align-items: center;
+}
+
+.social-links > *:not(:last-child) {
+  margin-right: 10px;
 }
 
 .social-icon {
@@ -49,9 +52,4 @@
 
 .social-icon:active {
   transform: translateY(0);
-}
-
-/* Optional: Add background hover effect */
-.social-icon:hover {
-  background: rgba(var(--text-color-rgb), 0.15);
 }
