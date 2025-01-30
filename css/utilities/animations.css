@@ -25,3 +25,19 @@
     opacity: 0;
   }
 }
+
+/* Greetings */
+.greeting-container {
+  height: 40px; /* Prevents layout shift during transitions */
+  position: static;
+}
+
+#greeting {
+  position: relative;
+  opacity: 1;
+  transition: opacity 1s ease-in-out;
+}
+
+#greeting.fade {
+  opacity: 0;
+}

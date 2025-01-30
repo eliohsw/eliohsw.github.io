@@ -1,3 +1,9 @@
+:root {
+  --social-icon-gap: 10px;
+  --social-icon-width: 30px;
+  --social-icon-height: 30px;
+}
+
 .social-bar {
   display: grid;
   justify-content: space-between;
@@ -16,18 +22,19 @@
 .social-links {
   display: flex;
   align-items: center;
+  transform: translateX(-7px);
 }
 
 .social-links > *:not(:last-child) {
-  margin-right: 10px;
+  margin-right: var(--social-icon-gap);
 }
 
 .social-links > .social-icon-gap-x:not(:last-child) {
-  margin-right: 7px !important;
+  margin-right: calc(var(--social-icon-gap) - 6px) !important;
 }
 
 .social-links > .social-icon-gap-threads:not(:last-child) {
-  margin-right: 8.5px !important;
+  margin-right: calc(var(--social-icon-gap) - 3px) !important;
 }
 
 .social-icon {
@@ -36,20 +43,20 @@
   justify-content: center;
   color: var(--text-color);
   transition: all 0.3s ease;
-  padding: 0.25rem;
+  padding: 4px;
   border-radius: 50%;
 }
 
 .social-icon svg {
   display: block;
-  width: 30px;
-  height: 30px;
+  width: var(--social-icon-width);
+  height: var(--social-icon-height);
   fill: currentColor;
 }
 
 .social-icon ion-icon {
-  width: 30px;
-  height: 30px;
+  width: var(--social-icon-width);
+  height: var(--social-icon-height);
   fill: currentColor
 }
 
