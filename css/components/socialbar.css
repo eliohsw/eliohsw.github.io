@@ -1,15 +1,15 @@
 :root {
-  --social-icon-gap: 10px;
+  --social-icon-gap: 7px;
   --social-icon-width: 30px;
   --social-icon-height: 30px;
 }
 
 .social-bar {
-  display: grid;
+  display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 0.75rem;
-  padding: 1rem 0;
+  padding: 0;
 }
 
 .social-bar h1,
@@ -22,7 +22,6 @@
 .social-links {
   display: flex;
   align-items: center;
-  transform: translateX(-7px);
 }
 
 .social-links > *:not(:last-child) {
@@ -30,10 +29,14 @@
 }
 
 .social-links > .social-icon-gap-x:not(:last-child) {
-  margin-right: calc(var(--social-icon-gap) - 6px) !important;
+  margin-right: calc(var(--social-icon-gap) - 4.5px) !important;
 }
 
 .social-links > .social-icon-gap-threads:not(:last-child) {
+  margin-right: calc(var(--social-icon-gap) - 2px) !important;
+}
+
+.social-links > .social-icon-gap-github:not(:last-child) {
   margin-right: calc(var(--social-icon-gap) - 3px) !important;
 }
 

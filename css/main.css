@@ -1,8 +1,10 @@
 @import url('./base/variables.css');
+@import url('./base/fontshape.css');
 @import url('./base/global.css');
 @import url('./components/navbar.css');
 @import url('./components/sidebar.css');
 @import url('./components/toggles.css');
 @import url('./components/socialbar.css');
+@import url('./components/footer.css');
 @import url('./utilities/animations.css');
 @import url('./utilities/accessibility.css');
