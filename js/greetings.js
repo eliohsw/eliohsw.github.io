@@ -1,39 +1,40 @@
 export function initGreeting() {
-  const greetings = [
-    "Hello, I’m Elio.",
-    "Hallo, ich bin Elio.",
-    "Hola, soy Elio.",
-    "Bonjour, je suis Elio.",
-    "Ciao, sono Elio.",
-    "Olá, eu sou Elio.",
-    "Cześć, jestem Elio.",
-    "Hallo, ik ben Elio.",
-    "Zdravo, ja sam Elio.",
-    "Привет, я Elio.",
-    "Hei, olen Elio.",
-    "Hei, jeg er Elio."
-  ];
-
-  let currentIndex = 0;
   const greetingElement = document.getElementById('greeting');
+  
+  // Show loading state initially
+  greetingElement.textContent = "Loading...";
 
-  function changeText() {
-    // Fade out current text
-    greetingElement.classList.add('fade');
-    
-    setTimeout(() => {
-      // Update text after fade out
-      currentIndex = (currentIndex + 1) % greetings.length;
-      greetingElement.textContent = greetings[currentIndex];
+  // Fetch translations from JSON file
+  fetch('../data/greeting.json')
+    .then(response => {
+      if (!response.ok) throw new Error('Network response was not ok');
+      return response.json();
+    })
+    .then(greetings => {
+      // Set initial text
+      greetingElement.textContent = greetings[0];
       
-      // Fade in new text
-      greetingElement.classList.remove('fade');
-    }, 1000); // Matches your fade transition
-  }
+      let currentIndex = 0;
 
-  // Start cycling after initial 2 seconds and repeat every 4 seconds
-  setTimeout(() => {
-    changeText();
-    setInterval(changeText, 4000);
-  }, 2000);
+      function changeText() {
+        greetingElement.classList.add('fade');
+        
+        setTimeout(() => {
+          currentIndex = (currentIndex + 1) % greetings.length;
+          greetingElement.textContent = greetings[currentIndex];
+          greetingElement.classList.remove('fade');
+        }, 1000);
+      }
+
+      // Start animation after initial load
+      setTimeout(() => {
+        changeText();
+        setInterval(changeText, 4000);
+      }, 2000);
+    })
+    .catch(error => {
+      console.error('Error loading greetings:', error);
+      // Fallback to default text
+      greetingElement.textContent = "Hi, I'm Elio";
+    });
 }
