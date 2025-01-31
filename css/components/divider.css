@@ -1,0 +1,6 @@
+.divider {
+  display: flex;
+  border-top: 1px solid var(--text-color);
+  width: 75%;
+  margin: 10px auto;
+}

@@ -1,0 +1,12 @@
+.intro-content {
+  display: flex;
+  gap: .5rem;
+  margin: 4px 0;
+  height: max-content;
+}
+
+.intro-content h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: normal;
+}
