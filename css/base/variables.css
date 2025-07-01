@@ -2,7 +2,7 @@
   /* Color Palette */
   --color-bg: #F2F2F7;
   --color-text: #000000;
-  --color-accent: #007AFF; /* Example accent color, adjust as needed */
+  --color-accent: #196cc4; /* Example accent color, adjust as needed */
   --color-ripple: rgba(0, 0, 0, 1);
 
   /* Toggle Variables */
@@ -24,7 +24,7 @@
   :root:not([data-theme]) {
     --color-bg: #000000;
     --color-text: #F5F5F7;
-    --color-accent: #0A84FF;
+    --color-accent: #196cc4;
     --color-ripple: rgba(255, 255, 255, 1);
     --color-toggle-border: #F5F5F7;
     --color-sidebar-bg-rgb: 0, 0, 0;
@@ -36,7 +36,7 @@
 [data-theme="light"] {
   --color-bg: #F2F2F7;
   --color-text: #000000;
-  --color-accent: #007AFF;
+  --color-accent: #196cc4;
   --color-ripple: rgba(0, 0, 0, 1);
   --color-toggle-border: #000000;
 }

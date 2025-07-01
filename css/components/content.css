@@ -26,84 +26,49 @@
   transition: color 0.3s;
 }
 
-.email-row {
+
+.contact-row {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 12px;
 }
 
-.email-row .mail-link {
+.contact-link {
   color: var(--color-accent);
   text-decoration: none;
   display: flex;
   align-items: center;
 }
 
-.email-row .mail-link:hover {
+.contact-link:hover {
   opacity: 0.8;
 }
 
-.email-row .mail-icon {
+.contact-icon {
   font-size: 1.1em;
 }
 
-.mail-icon-filled { display: none; }
+/* Icon variants (outline/filled) */
+.icon-filled { display: none; }
 
 @media (prefers-color-scheme: dark) {
-  .mail-icon-outline, .phone-icon-outline { display: none; }
-  .mail-icon-filled, .phone-icon-filled { display: inline-flex; }
+  .icon-outline { display: none; }
+  .icon-filled { display: inline-flex; }
 }
 @media (prefers-color-scheme: light), (prefers-color-scheme: no-preference) {
-  .mail-icon-outline, .phone-icon-outline { display: inline-flex; }
-  .mail-icon-filled, .phone-icon-filled { display: none; }
+  .icon-outline { display: inline-flex; }
+  .icon-filled { display: none; }
 }
 /* Manual theme override */
-[data-theme="dark"] .mail-icon-outline,
-[data-theme="dark"] .phone-icon-outline {
+[data-theme="dark"] .icon-outline {
   display: none !important;
 }
-[data-theme="dark"] .mail-icon-filled,
-[data-theme="dark"] .phone-icon-filled {
+[data-theme="dark"] .icon-filled {
   display: inline-flex !important;
 }
-[data-theme="light"] .mail-icon-outline,
-[data-theme="light"] .phone-icon-outline {
+[data-theme="light"] .icon-outline {
   display: inline-flex !important;
 }
-[data-theme="light"] .mail-icon-filled,
-[data-theme="light"] .phone-icon-filled {
+[data-theme="light"] .icon-filled {
   display: none !important;
-}
-
-.phone-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.phone-row .phone-link {
-  color: var(--color-accent);
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-}
-
-.phone-row .phone-link:hover {
-  opacity: 0.8;
-}
-
-.phone-row .phone-icon {
-  font-size: 1.1em;
-}
-
-.phone-icon-filled { display: none; }
-
-@media (prefers-color-scheme: dark) {
-  .phone-icon-outline { display: none; }
-  .phone-icon-filled { display: inline-flex; }
-}
-
-@media (prefers-color-scheme: light), (prefers-color-scheme: no-preference) {
-  .phone-icon-outline { display: inline-flex; }
-  .phone-icon-filled { display: none; }
 }
