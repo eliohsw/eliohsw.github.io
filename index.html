@@ -28,6 +28,9 @@
   <title>My Website</title>
 </head>
 <body>
+  <div id="loader" class="loader-overlay">
+    <div class="loader-spinner"></div>
+  </div>
   <nav class="nav-bar">
   <!-- Mobile Menu Button -->
   <div class="menu-btn">
@@ -59,7 +62,7 @@
 
   <div class="main-content">
     <div class="greeting-container">
-      <h1 id="greeting">Hello, I’m Elio.</h1>
+      <h1 id="greeting">Hello, I'm Elio.</h1>
     </div>
     <div class="social-bar">
       <h4 class="social-links-text">SOCIALS</h4>
@@ -108,13 +111,39 @@
       <div class="intro-content-name">
         <h2>黃師緯  (HUANG, SHIH-WEI)</h2>
       </div>
-      <p><a href="mailto:b13901010@ntu.edu.tw">b13901010@ntu.edu.tw</a></p>
+      <p class="email-row">
+        <a href="mailto:b13901010@ntu.edu.tw" class="mail-link">
+          <ion-icon name="mail-outline" class="mail-icon mail-icon-outline"></ion-icon>
+          <ion-icon name="mail" class="mail-icon mail-icon-filled"></ion-icon>
+        </a>
+        <a href="mailto:b13901010@ntu.edu.tw">b13901010@ntu.edu.tw</a>
+      </p>
+      <p class="phone-row">
+        <a href="tel:+886933683611" class="phone-link">
+          <ion-icon name="call-outline" class="phone-icon phone-icon-outline"></ion-icon>
+          <ion-icon name="call" class="phone-icon phone-icon-filled"></ion-icon>
+        </a>
+        <a href="tel:+886933683611">(+886) 933 683 611</a>
+      </p>
       <p>Taipei, Taiwan</p>
+      <p>I'm an undergraduate student in Electrical Engineering at National Taiwan University, interested in coding theory, AI/ML, and software development. I enjoy solving complex problems and building systems that blend mathematical rigor with practical impact.</p>
     </div>
 
   </div>
   <footer>
     <p>&copy; 2025 Elio Huang</p>
   </footer>
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        const loader = document.getElementById('loader');
+        if (loader) {
+          loader.style.opacity = '0';
+          loader.style.pointerEvents = 'none';
+          setTimeout(() => loader.remove(), 400);
+        }
+      }, 750);
+    });
+  </script>
 </body>
 </html>

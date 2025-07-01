@@ -8,5 +8,6 @@
 @import url('./components/divider.css');
 @import url('./components/content.css');
 @import url('./components/footer.css');
+@import url('./components/loader.css');
 @import url('./utilities/animations.css');
 @import url('./utilities/accessibility.css');
