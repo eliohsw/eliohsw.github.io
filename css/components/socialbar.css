@@ -30,6 +30,10 @@
   margin-right: var(--social-icon-gap);
 }
 
+.social-links > .social-icon-gap-linkedin:not(:last-child) {
+  margin-right: calc(var(--social-icon-gap) - 3px) !important;
+}
+
 .social-links > .social-icon-gap-x:not(:last-child) {
   margin-right: calc(var(--social-icon-gap) - 4.5px) !important;
 }
