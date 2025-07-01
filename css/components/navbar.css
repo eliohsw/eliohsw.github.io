@@ -18,13 +18,13 @@
   left: 0;
   width: 0;
   height: 1.5px;
-  background: var(--toggle-border-color);
+  background: var(--color-toggle-border);
   transition: width 0.3s ease-out;
   transform-origin: left center;
 }
 
 .nav-bar.scrolled {
-  background: rgba(var(--sidebar-bg-rgb), 0.88);
+  background: rgba(var(--color-sidebar-bg-rgb), 0.88);
 }
 
 .nav-bar.scrolled::after {
@@ -33,7 +33,7 @@
 
 .logo {
   align-self: center;
-  color: var(--text-color);
+  color: var(--color-text);
   text-decoration: none;
   font-size: 140%;
   font-weight: 650;
@@ -51,7 +51,7 @@
   position: relative;
   padding: 6px 0;
   text-decoration: none;
-  color: var(--text-color);
+  color: var(--color-text);
   font-family: system-ui, sans-serif;
   font-weight: 200;
   font-stretch: semi-expanded;

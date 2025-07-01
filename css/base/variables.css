@@ -1,55 +1,52 @@
 :root {
-  /* Color Variables */
-  --background-color: #F2F2F7;
-  --text-color: #000000;
-  --text-color-rgb: 0, 0, 0;
-  --ripple-color: rgba(0, 0, 0, 1);
-  
+  /* Color Palette */
+  --color-bg: #F2F2F7;
+  --color-text: #000000;
+  --color-accent: #007AFF; /* Example accent color, adjust as needed */
+  --color-ripple: rgba(0, 0, 0, 1);
+
   /* Toggle Variables */
-  --toggle-size: 60px 30px;
-  --toggle-circle-size: 20px;
-  --toggle-border: 1px solid var(--toggle-border-color);
-  --toggle-border-color: #000000;
+  --toggle-width: 60px;
+  --toggle-height: 30px;
+  --toggle-circle-diameter: 20px;
+  --toggle-border: 1px solid var(--color-toggle-border);
+  --color-toggle-border: #000000;
   --toggle-bg: transparent;
   --toggle-circle-bg: transparent;
 
   /* Sidebar Variables */
-  --sidebar-bg-rgb: 242, 242, 247;
+  --color-sidebar-bg-rgb: 242, 242, 247;
   --sidebar-bg-alpha: 0.5;
-  --sidebar-border-color: rgba(0, 0, 0, 0.1);
 }
 
 /* System Theme Detection */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --background-color: #000000;
-    --text-color: #F5F5F7;
-    --text-color-rgb: 245, 245, 247;
-    --ripple-color: rgba(255, 255, 255, 1);
-    --toggle-border-color: #F5F5F7;
-
-    --sidebar-bg-rgb: 0, 0, 0;
+    --color-bg: #000000;
+    --color-text: #F5F5F7;
+    --color-accent: #0A84FF;
+    --color-ripple: rgba(255, 255, 255, 1);
+    --color-toggle-border: #F5F5F7;
+    --color-sidebar-bg-rgb: 0, 0, 0;
     --sidebar-bg-alpha: 0.5;
-    --sidebar-border-color: rgba(255, 255, 255, 0.1);
   }
 }
 
 /* Theme Overrides */
 [data-theme="light"] {
-  --background-color: #F2F2F7;
-  --text-color: #000000;
-  --ripple-color: rgba(0, 0, 0, 1);
-  --toggle-border-color: #000000;
+  --color-bg: #F2F2F7;
+  --color-text: #000000;
+  --color-accent: #007AFF;
+  --color-ripple: rgba(0, 0, 0, 1);
+  --color-toggle-border: #000000;
 }
 
 [data-theme="dark"] {
-  --background-color: #000000;
-  --text-color: #F5F5F7;
-  --text-color-rgb: 245, 245, 247;
-  --ripple-color: rgba(255, 255, 255, 1);
-  --toggle-border-color: #F5F5F7;
-
-  --sidebar-bg-rgb: 0, 0, 0;
+  --color-bg: #000000;
+  --color-text: #F5F5F7;
+  --color-accent: #93bbe3;
+  --color-ripple: rgba(255, 255, 255, 1);
+  --color-toggle-border: #F5F5F7;
+  --color-sidebar-bg-rgb: 0, 0, 0;
   --sidebar-bg-alpha: 0.75;
-  --sidebar-border-color: rgba(255, 255, 255, 0.1);
 }

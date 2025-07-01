@@ -9,8 +9,8 @@
 .theme-toggle {
   top: 10px;
   right: 10px;
-  width: 60px;
-  height: 30px;
+  width: var(--toggle-width);
+  height: var(--toggle-height);
   background: var(--toggle-bg);
   border: var(--toggle-border);
   border-radius: 30px;
@@ -27,8 +27,8 @@
 .toggle-circle {
   position: relative;
   left: 5px;
-  width: var(--toggle-circle-size);
-  height: var(--toggle-circle-size);
+  width: var(--toggle-circle-diameter);
+  height: var(--toggle-circle-diameter);
   background: var(--toggle-circle-bg);
   border: var(--toggle-border);
   border-radius: 50%;
@@ -49,8 +49,8 @@
 .system-toggle {
   top: 10px;
   right: 80px; /* Position left of theme toggle */
-  width: 30px;
-  height: 30px;
+  width: var(--toggle-height);
+  height: var(--toggle-height);
   background: var(--toggle-bg);
   border: var(--toggle-border);
   border-radius: 50%;
@@ -63,8 +63,8 @@
 }
 
 .system-indicator {
-  width: 20px;
-  height: 20px;
+  width: calc(var(--toggle-circle-diameter) * 1.0);
+  height: calc(var(--toggle-circle-diameter) * 1.0);
   background: var(--toggle-circle-bg);
   border-radius: 50%;
   border: var(--toggle-border);
@@ -79,5 +79,5 @@
 }
 
 .system-toggle.active .system-indicator {
-  background: var(--toggle-border-color);
+  background: var(--color-toggle-border);
 }
