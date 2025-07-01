@@ -23,7 +23,6 @@
 .intro-content a {
   color: var(--color-accent);
   text-decoration: none;
-  transition: color 0.3s;
 }
 
 
@@ -71,4 +70,15 @@
 }
 [data-theme="light"] .icon-filled {
   display: none !important;
+}
+
+@keyframes color-fade {
+  0% { opacity: 1; }
+  49% { opacity: 0; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.color-fade-transition {
+  animation: color-fade 0.64s;
 }

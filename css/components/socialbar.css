@@ -68,6 +68,7 @@
   width: var(--social-icon-width);
   height: var(--social-icon-height);
   fill: currentColor;
+  transition: fill 0.08s, color 0.08s;
 }
 
 .social-icon ion-icon {

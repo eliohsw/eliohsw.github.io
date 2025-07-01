@@ -3,11 +3,14 @@
 }
 
 /* Base Styles */
+body, body * {
+  transition: var(--transition-theme);
+}
+
 body {
   margin: 0;
   background-color: var(--color-bg);
   color: var(--color-text);
-  transition: background-color 0.3s, color 0.3s;
   font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
 }
 

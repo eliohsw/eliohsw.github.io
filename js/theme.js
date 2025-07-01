@@ -19,6 +19,14 @@ export function initTheme() {
     themeToggle.style.pointerEvents = isSystem ? 'none' : 'auto';
   }
 
+  // Helper to animate link transitions
+  function animateLinkTransition() {
+    document.querySelectorAll('.intro-content a, .contact-link').forEach(link => {
+      link.classList.add('color-fade-transition');
+      setTimeout(() => link.classList.remove('color-fade-transition'), 640);
+    });
+  }
+
   // System toggle handler
   systemToggle.addEventListener('click', () => {
     const currentState = getThemeState();
@@ -32,6 +40,7 @@ export function initTheme() {
       localStorage.removeItem('theme');
       const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       document.documentElement.setAttribute('data-theme', systemTheme);
+      animateLinkTransition();
       updateUIState(true);
     }
   });
@@ -43,6 +52,7 @@ export function initTheme() {
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
       localStorage.setItem('theme', newTheme);
       document.documentElement.setAttribute('data-theme', newTheme);
+      animateLinkTransition();
       updateUIState(false);
     }
   });
@@ -56,6 +66,7 @@ export function initTheme() {
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
     if (getThemeState().isSystem) {
       document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+      animateLinkTransition();
     }
   });
 }
