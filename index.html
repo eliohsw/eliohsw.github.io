@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="technical/css/main.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css">
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap">
@@ -23,7 +23,6 @@
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
-  <script type="module" src="./js/main.js"></script>
 
   <script>
     (function() {
@@ -40,7 +39,7 @@
     })();
   </script>
 
-  <title>My Website</title>
+  <title>Elio Huang</title>
 </head>
 <body>
   <div id="loader" class="loader-overlay">
@@ -123,11 +122,12 @@
         </ul>
         <p>I'm an undergraduate student in Electrical Engineering at National Taiwan University, interested in coding theory, AI/ML, and software development. I enjoy solving complex problems and building systems that blend mathematical rigor with practical impact.</p>
         <p>I also enjoy ...</p>
+        <p style="font-style: italic;">This website is still under construction.</p>
       </div>
 
     </div>
   </div>
-
+  
   <div id="footer-placeholder"></div>
   <script>
     window.addEventListener('DOMContentLoaded', function() {
@@ -142,8 +142,11 @@
     });
   </script>
   <script type="module">
-    import { initTheme } from './js/theme.js';
-    import { initSidebar } from './js/sidebar.js';
+    import { initTheme } from './technical/js/theme.js';
+    import { initSidebar } from './technical/js/sidebar.js';
+    import { initScrollEffects } from './technical/js/scroll.js';
+    import { initGreeting } from './technical/js/greetings.js';
+    import { initRipple } from './technical/js/ripple.js';
 
     function loadComponent(id, url, callback) {
       fetch(url)
@@ -154,16 +157,19 @@
         });
     }
 
-    // Load navbar, then sidebar, then initialize theme and sidebar
-    loadComponent('navbar-placeholder', '/components/navbar.html', () => {
-      loadComponent('mobile-sidebar-placeholder', '/components/mobile-sidebar.html', () => {
+    // Load navbar, then sidebar, then initialize theme, sidebar, scroll effects, and greeting
+    loadComponent('navbar-placeholder', '/technical/components/navbar.html', () => {
+      loadComponent('mobile-sidebar-placeholder', '/technical/components/mobile-sidebar.html', () => {
         initTheme();
         initSidebar();
+        initScrollEffects();
+        initGreeting();
+        initRipple();
       });
     });
 
     // Load footer as before
-    loadComponent('footer-placeholder', '/components/footer.html');
+    loadComponent('footer-placeholder', '/technical/components/footer.html');
   </script>
 </body>
 </html>

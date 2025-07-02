@@ -2,6 +2,8 @@
 .nav-bar {
   position: sticky;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
   display: flex;
   padding: 10px 16px 10px 18px;
@@ -11,6 +13,8 @@
 }
 
 .nav-bar::after {
+  z-index: 1100;
+  pointer-events: none;
   content: '';
   position: absolute;
   bottom: 0;

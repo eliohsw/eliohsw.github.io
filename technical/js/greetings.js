@@ -5,7 +5,7 @@ export function initGreeting() {
   greetingElement.textContent = "Loading...";
 
   // Fetch translations from JSON file
-  fetch('../data/greeting.json')
+  fetch('../technical/data/greeting.json')
     .then(response => {
       if (!response.ok) throw new Error('Network response was not ok');
       return response.json();
