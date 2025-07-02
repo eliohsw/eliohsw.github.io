@@ -1,7 +1,7 @@
 :root {
   /* Color Palette */
-  --color-bg: #F2F2F7;
-  --color-text: #000000;
+  --color-bg: #fff;
+  --color-text: #32302c;
   --color-accent: #196cc4; /* Example accent color, adjust as needed */
   --color-ripple: rgba(0, 0, 0, 1);
 
@@ -10,7 +10,7 @@
   --toggle-height: 30px;
   --toggle-circle-diameter: 20px;
   --toggle-border: 1px solid var(--color-toggle-border);
-  --color-toggle-border: #000000;
+  --color-toggle-border: #32302c;
   --toggle-bg: transparent;
   --toggle-circle-bg: transparent;
 
@@ -25,11 +25,11 @@
 /* System Theme Detection */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --color-bg: #000000;
-    --color-text: #F5F5F7;
+    --color-bg: #191919;
+    --color-text: #d4d4d4;
     --color-accent: #196cc4;
-    --color-ripple: rgba(255, 255, 255, 1);
-    --color-toggle-border: #F5F5F7;
+    --color-ripple: #d4d4d4;
+    --color-toggle-border: #d4d4d4;
     --color-sidebar-bg-rgb: 0, 0, 0;
     --sidebar-bg-alpha: 0.5;
   }
@@ -37,19 +37,19 @@
 
 /* Theme Overrides */
 [data-theme="light"] {
-  --color-bg: #F2F2F7;
-  --color-text: #000000;
+  --color-bg: #fff;
+  --color-text: #32302c;
   --color-accent: #196cc4;
-  --color-ripple: rgba(0, 0, 0, 1);
-  --color-toggle-border: #000000;
+  --color-ripple: #32302c;
+  --color-toggle-border: #32302c;
 }
 
 [data-theme="dark"] {
-  --color-bg: #000000;
-  --color-text: #F5F5F7;
+  --color-bg: #191919;
+  --color-text: #d4d4d4;
   --color-accent: #93bbe3;
-  --color-ripple: rgba(255, 255, 255, 1);
-  --color-toggle-border: #F5F5F7;
+  --color-ripple: #d4d4d4;
+  --color-toggle-border: #d4d4d4;
   --color-sidebar-bg-rgb: 0, 0, 0;
   --sidebar-bg-alpha: 0.75;
 }

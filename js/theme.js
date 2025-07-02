@@ -27,23 +27,23 @@ export function initTheme() {
     });
   }
 
-  // System toggle handler
-  systemToggle.addEventListener('click', () => {
-    const currentState = getThemeState();
+  // System toggle handler (temporarily disabled)
+  // systemToggle.addEventListener('click', () => {
+  //   const currentState = getThemeState();
 
-    if (currentState.isSystem) {
-      // If already in system mode, switch to manual with current system theme
-      localStorage.setItem('theme', currentState.currentTheme);
-      updateUIState(false);
-    } else {
-      // Switch to system mode
-      localStorage.removeItem('theme');
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', systemTheme);
-      animateLinkTransition();
-      updateUIState(true);
-    }
-  });
+  //   if (currentState.isSystem) {
+  //     // If already in system mode, switch to manual with current system theme
+  //     localStorage.setItem('theme', currentState.currentTheme);
+  //     updateUIState(false);
+  //   } else {
+  //     // Switch to system mode
+  //     localStorage.removeItem('theme');
+  //     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  //     document.documentElement.setAttribute('data-theme', systemTheme);
+  //     animateLinkTransition();
+  //     updateUIState(true);
+  //   }
+  // });
 
   // Theme toggle handler
   themeToggle.addEventListener('click', () => {
