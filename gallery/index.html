@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../technical/css/main.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap">
+
+  <!-- Scripts -->
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/contrib/auto-render.min.js" 
+    onload="renderMathInElement(document.body);"></script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <script type="module" src="../technical/js/main.js"></script>
+
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem('theme');
+        if (theme) {
+          document.documentElement.setAttribute('data-theme', theme);
+        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <title>Gallery | Elio Huang</title>
+</head>
+<body>
+  <div id="loader" class="loader-overlay">
+    <div class="loader-spinner"></div>
+  </div>
+  <div id="navbar-placeholder"></div>
+  <div id="mobile-sidebar-placeholder"></div>
+  <div class="main-container">
+    <div class="main-content">
+      <h1>Gallery</h1>
+      <div class="divider"></div>
+      <div class="gallery-content">
+        <p>Gallery page content coming soon...</p>
+      </div>
+    </div>
+  </div>
+  <div id="footer-placeholder"></div>
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        const loader = document.getElementById('loader');
+        if (loader) {
+          loader.style.opacity = '0';
+          loader.style.pointerEvents = 'none';
+          setTimeout(() => loader.remove(), 400);
+        }
+      }, 750);
+    });
+  </script>
+  <script type="module">
+    import { initTheme } from '../technical/js/theme.js';
+    import { initSidebar } from '../technical/js/sidebar.js';
+    import { initScrollEffects } from '../technical/js/scroll.js';
+
+    function loadComponent(id, url, callback) {
+      fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById(id).innerHTML = html;
+          if (callback) callback();
+        });
+    }
+
+    // Load navbar, then sidebar, then initialize theme, sidebar, and scroll effects
+    loadComponent('navbar-placeholder', '/technical/components/navbar.html', () => {
+      loadComponent('mobile-sidebar-placeholder', '/technical/components/mobile-sidebar.html', () => {
+        initTheme();
+        initSidebar();
+        initScrollEffects();
+      });
+    });
+
+    // Load footer as before
+    loadComponent('footer-placeholder', '/technical/components/footer.html');
+  </script>
+</body>
+</html>
