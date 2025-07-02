@@ -46,7 +46,7 @@
   margin-right: calc(var(--social-icon-gap) - 3px) !important;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 575px) {
   .social-links-text,
   .social-bar .social-links-arrow {
     display: none !important;
