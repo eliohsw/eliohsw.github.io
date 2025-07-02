@@ -19,7 +19,7 @@
   --sidebar-bg-alpha: 0.5;
 
   /* Theme Transition Variables */
-  --transition-theme: background-color 0.32s, border-color 0.32s, color 0.16s;
+  --transition-theme: background-color 0.16s, border-color 0.16s, color 0.08s;
 }
 
 /* System Theme Detection */

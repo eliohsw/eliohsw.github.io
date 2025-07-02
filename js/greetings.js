@@ -1,6 +1,6 @@
 export function initGreeting() {
   const greetingElement = document.getElementById('greeting');
-  
+  if (!greetingElement) return; // Exit if greeting element does not exist
   // Show loading state initially
   greetingElement.textContent = "Loading...";
 
