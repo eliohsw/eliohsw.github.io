@@ -46,35 +46,8 @@
   <div id="loader" class="loader-overlay">
     <div class="loader-spinner"></div>
   </div>
-  <nav class="nav-bar">
-  <!-- Mobile Menu Button -->
-  <div class="menu-btn">
-    <ion-icon name="menu-sharp"></ion-icon>
-  </div>
-
-    <a href="#" class="logo">@eliohsw</a>
-    <div class="nav-links">
-      <a href="#">ABOUT</a>
-      <a href="/projects">PROJECTS</a>
-    </div>
-
-    <div class="toggle-group">
-      <div id="system-toggle" class="system-toggle">
-        <div class="system-indicator"></div>
-      </div>
-      <div id="theme-toggle" class="theme-toggle">
-        <div class="toggle-circle"></div>
-      </div>
-    </div>
-  </nav>
-
-  <div class="mobile-sidebar">
-    <div class="sidebar-links">
-      <a href="#">ABOUT</a>
-      <a href="/projects">PROJECTS</a>
-    </div>
-  </div>
-
+  <div id="navbar-placeholder"></div>
+  <div id="mobile-sidebar-placeholder"></div>
   <div class="main-container">
     <div class="main-content">
       <div class="greeting-container">
@@ -155,9 +128,7 @@
     </div>
   </div>
 
-  <footer>
-    <p>&copy; 2025 Elio Huang</p>
-  </footer>
+  <div id="footer-placeholder"></div>
   <script>
     window.addEventListener('DOMContentLoaded', function() {
       setTimeout(function() {
@@ -169,6 +140,30 @@
         }
       }, 750);
     });
+  </script>
+  <script type="module">
+    import { initTheme } from './js/theme.js';
+    import { initSidebar } from './js/sidebar.js';
+
+    function loadComponent(id, url, callback) {
+      fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById(id).innerHTML = html;
+          if (callback) callback();
+        });
+    }
+
+    // Load navbar, then sidebar, then initialize theme and sidebar
+    loadComponent('navbar-placeholder', '/components/navbar.html', () => {
+      loadComponent('mobile-sidebar-placeholder', '/components/mobile-sidebar.html', () => {
+        initTheme();
+        initSidebar();
+      });
+    });
+
+    // Load footer as before
+    loadComponent('footer-placeholder', '/components/footer.html');
   </script>
 </body>
 </html>
