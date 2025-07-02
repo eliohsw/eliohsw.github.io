@@ -29,6 +29,10 @@
   transition: left 0.3s ease;
   padding: 20px;
 }
+[data-theme="dark"] .mobile-sidebar {
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
 
 .mobile-sidebar.active {
   left: 0;

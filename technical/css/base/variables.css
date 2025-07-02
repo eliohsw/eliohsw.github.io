@@ -2,7 +2,7 @@
   /* Color Palette */
   --color-bg: #fff;
   --color-text: #32302c;
-  --color-accent: #196cc4; /* Example accent color, adjust as needed */
+  --color-accent: #196cc4;
   --color-ripple: rgba(0, 0, 0, 1);
 
   /* Toggle Variables */
@@ -15,7 +15,7 @@
   --toggle-circle-bg: transparent;
 
   /* Sidebar Variables */
-  --color-sidebar-bg-rgb: 242, 242, 247;
+  --color-sidebar-bg-rgb: 255, 255, 255;
   --sidebar-bg-alpha: 0.5;
 
   /* Theme Transition Variables */
@@ -27,21 +27,15 @@
   :root:not([data-theme]) {
     --color-bg: #191919;
     --color-text: #d4d4d4;
-    --color-accent: #196cc4;
-    --color-ripple: #d4d4d4;
     --color-toggle-border: #d4d4d4;
-    --color-sidebar-bg-rgb: 0, 0, 0;
-    --sidebar-bg-alpha: 0.5;
+    --color-sidebar-bg-rgb: 25, 25, 25;
+    --color-ripple: #d4d4d4;
   }
 }
 
 /* Theme Overrides */
 [data-theme="light"] {
-  --color-bg: #fff;
-  --color-text: #32302c;
-  --color-accent: #196cc4;
-  --color-ripple: #32302c;
-  --color-toggle-border: #32302c;
+  /* No overrides needed, uses :root values */
 }
 
 [data-theme="dark"] {
@@ -50,6 +44,6 @@
   --color-accent: #93bbe3;
   --color-ripple: #d4d4d4;
   --color-toggle-border: #d4d4d4;
-  --color-sidebar-bg-rgb: 0, 0, 0;
+  --color-sidebar-bg-rgb: 25, 25, 25;
   --sidebar-bg-alpha: 0.75;
 }
