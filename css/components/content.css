@@ -25,11 +25,26 @@
   text-decoration: none;
 }
 
+/* Contact List Styles */
+.contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
-.contact-row {
+.contact-list li {
+  margin-bottom: 0.75rem;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 1rem;
+}
+
+.contact-list li:first-child {
+  margin-top: 1rem;
+}
+
+.contact-list li:last-child {
+  margin-bottom: 0;
 }
 
 .contact-link {
@@ -80,5 +95,5 @@
 }
 
 .color-fade-transition {
-  animation: color-fade 0.64s;
+  animation: color-fade 0.24s;
 }

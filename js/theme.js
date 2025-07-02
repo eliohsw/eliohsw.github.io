@@ -23,7 +23,7 @@ export function initTheme() {
   function animateLinkTransition() {
     document.querySelectorAll('.intro-content a, .contact-link').forEach(link => {
       link.classList.add('color-fade-transition');
-      setTimeout(() => link.classList.remove('color-fade-transition'), 640);
+      setTimeout(() => link.classList.remove('color-fade-transition'), 240);
     });
   }
 
