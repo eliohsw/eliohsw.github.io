@@ -4,6 +4,10 @@ let activeTag = null;
 function renderProjects(projects) {
   const list = document.querySelector('.projects-list');
   if (!list) return;
+  if (allProjects.length === 0) {
+    list.innerHTML = '<div class="no-projects">Projects coming soon...</div>';
+    return;
+  }
   list.innerHTML = projects.length > 0 ? projects.map(project => `
     <div class="card-box">
       <div class="card-box-header">

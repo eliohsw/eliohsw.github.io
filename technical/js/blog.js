@@ -19,7 +19,7 @@ async function loadBlogs() {
       </div>
       <div class="card-subtitle">${blog.subtitle}</div>
     </div>
-  `).join('') : '<div class="no-projects">No blog posts found.</div>';
+  `).join('') : '<div class="no-projects">Blog posts coming soon.</div>';
 }
 
 window.addEventListener('DOMContentLoaded', loadBlogs); 
