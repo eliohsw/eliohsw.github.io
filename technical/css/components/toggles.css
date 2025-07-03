@@ -9,10 +9,10 @@
 .theme-toggle {
   top: 10px;
   right: 10px;
-  width: var(--toggle-width);
-  height: var(--toggle-height);
-  background: var(--toggle-bg);
-  border: var(--toggle-border);
+  width: 60px;
+  height: 30px;
+  background: transparent;
+  border: 1px solid var(--color-border);
   border-radius: 30px;
   display: flex;
   align-items: center;
@@ -27,10 +27,10 @@
 .toggle-circle {
   position: relative;
   left: 5px;
-  width: var(--toggle-circle-diameter);
-  height: var(--toggle-circle-diameter);
-  background: var(--toggle-circle-bg);
-  border: var(--toggle-border);
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border: 1px solid var(--color-border);
   border-radius: 50%;
   transition: transform 0.3s;
 
@@ -49,10 +49,10 @@
 .system-toggle {
   top: 10px;
   right: 80px; /* Position left of theme toggle */
-  width: var(--toggle-height);
-  height: var(--toggle-height);
-  background: var(--toggle-bg);
-  border: var(--toggle-border);
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: 1px solid var(--color-border);
   border-radius: 50%;
   cursor: pointer;
   transition: all 0.3s;
@@ -63,18 +63,18 @@
 }
 
 .system-indicator {
-  width: calc(var(--toggle-circle-diameter) * 1.0);
-  height: calc(var(--toggle-circle-diameter) * 1.0);
-  background: var(--toggle-circle-bg);
+  width: 20px;
+  height: 20px;
+  background: transparent;
   border-radius: 50%;
-  border: var(--toggle-border);
+  border: 1px solid var(--color-border);
   opacity: 1;
   transition: opacity 0.3s;
 }
 
 /* Active state for system mode */
 .system-toggle.active {
-  background: var(--toggle-bg);
+  background: transparent;
   transition: opacity 0.3s;
 }
 

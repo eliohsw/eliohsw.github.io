@@ -5,18 +5,18 @@ function renderProjects(projects) {
   const list = document.querySelector('.projects-list');
   if (!list) return;
   list.innerHTML = projects.length > 0 ? projects.map(project => `
-    <div class="project-box">
-      <div class="project-box-header">
-        <div class="project-header-row">
-          <span class="project-date">${project.date}</span>
-          <a class="project-link" href="${project.url}" target="_blank" aria-label="View Project">
+    <div class="card-box">
+      <div class="card-box-header">
+        <div class="card-header-row">
+          <span class="card-date">${project.date}</span>
+          <a class="card-link" href="${project.url}" target="_blank" aria-label="View Project">
             <span>View</span>
             <ion-icon name="arrow-forward-outline"></ion-icon>
           </a>
         </div>
-        <h2 class="project-title"><a href="${project.url}" target="_blank">${project.title}</a></h2>
+        <h2 class="card-title"><a href="${project.url}" target="_blank">${project.title}</a></h2>
       </div>
-      <div class="project-subtitle">${project.subtitle}</div>
+      <div class="card-subtitle">${project.subtitle}</div>
       <div class="project-tags">
         ${project.tags.map(tag => `<span class="project-tag" data-tag="${tag}">${tag}</span>`).join('')}
       </div>
@@ -47,9 +47,11 @@ function renderFilter() {
     container.insertBefore(filterBar, document.querySelector('.projects-list'));
   }
   filterBar.innerHTML = `
+    <div class="filter-input-wrapper">
+      <input type="text" class="filter-input" placeholder="Enter keyword" value="${activeTag && activeTag !== null ? activeTag : ''}" />
+      <ion-icon class="filter-input-icon" name="search"></ion-icon>
+    </div>
     <button class="filter-btn${activeTag === null ? ' active' : ''}" data-tag="__all">Show All</button>
-    <input type="text" class="filter-input" placeholder="Enter keyword/tag..." value="${activeTag && activeTag !== null ? activeTag : ''}" />
-    <button class="filter-search-btn">Search</button>
   `;
   filterBar.querySelector('.filter-btn').onclick = () => {
     activeTag = null;
@@ -57,7 +59,7 @@ function renderFilter() {
     renderFilter();
   };
   const input = filterBar.querySelector('.filter-input');
-  const searchBtn = filterBar.querySelector('.filter-search-btn');
+  const icon = filterBar.querySelector('.filter-input-icon');
   function doSearch() {
     const tag = input.value.trim();
     if (tag === '') {
@@ -72,7 +74,7 @@ function renderFilter() {
   input.addEventListener('keydown', e => {
     if (e.key === 'Enter') doSearch();
   });
-  searchBtn.onclick = doSearch;
+  icon.onclick = doSearch;
 }
 
 async function loadProjects() {

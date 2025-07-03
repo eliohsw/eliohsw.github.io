@@ -1,30 +1,21 @@
 :root {
-  /* Color Palette */
   --color-bg: #fff;
+
   --color-text: #32302c;
-  --color-accent: #196cc4;
-  --color-ripple: rgba(0, 0, 0, 1);
+  --color-text-secondary: #909090;
+  --color-text-tertiary: #aaa;
+  --color-border: #32302c;
+  --color-border-rgb: 50, 48, 44;
+  --color-accent: #4281db;
+  --color-ripple: #32302c;
 
   /* Project Box Colors */
   --color-surface: #fff;
-  --color-border: #e0e0e0;
-  --color-primary: #0078d4;
-  --color-primary-dark: #005fa3;
-  --color-primary-light: #e3f2fd;
-  --color-text-secondary: #666;
-
-  /* Toggle Variables */
-  --toggle-width: 60px;
-  --toggle-height: 30px;
-  --toggle-circle-diameter: 20px;
-  --toggle-border: 1px solid var(--color-toggle-border);
-  --color-toggle-border: #32302c;
-  --toggle-bg: transparent;
-  --toggle-circle-bg: transparent;
-
-  /* Sidebar Variables */
-  --color-sidebar-bg-rgb: 255, 255, 255;
-  --sidebar-bg-alpha: 0.5;
+  --color-surface-secondary: #fafafa;
+  --color-box-border: #ececec;
+  --color-primary: #4281db;
+  --color-primary-dark: #e4edfa;
+  --color-primary-light: #f2f6fc;
 
   /* Theme Transition Variables */
   --transition-theme: background-color 0.16s, border-color 0.16s, color 0.08s;
@@ -34,38 +25,49 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
     --color-bg: #191919;
+
     --color-text: #d4d4d4;
+    --color-text-secondary: #838383;
+    --color-text-tertiary: #5a5a5a;
+
+    --color-border: #d4d4d4;
+    --color-border-rgb: 212, 212, 212;
+    --color-accent: #4281db;
+    --color-ripple: #d4d4d4;
     --color-toggle-border: #d4d4d4;
     --color-sidebar-bg-rgb: 25, 25, 25;
-    --color-ripple: #d4d4d4;
-    /* Project Box Colors */
-    --color-surface: #232323;
-    --color-border: #333;
-    --color-primary: #93bbe3;
-    --color-primary-dark: #b3d4fc;
-    --color-primary-light: #2a3a4d;
-    --color-text-secondary: #aaa;
-  }
-}
+    --sidebar-bg-alpha: 0.75;
 
-/* Theme Overrides */
-[data-theme="light"] {
-  /* No overrides needed, uses :root values */
+    /* Project Box Colors */
+    --color-surface: #1c1c1c;
+    --color-surface-secondary: #202020;
+    --color-box-border: #474747;
+    --color-primary: #4281db;
+    --color-primary-dark: #1e2734;
+    --color-primary-light: #1c2026;
+  }
 }
 
 [data-theme="dark"] {
   --color-bg: #191919;
+
   --color-text: #d4d4d4;
-  --color-accent: #93bbe3;
+  --color-text-secondary: #838383;
+  --color-text-tertiary: #5a5a5a;
+
+  --color-border: #d4d4d4;
+  --color-border-rgb: 212, 212, 212;
+  --color-accent: #4281db;
   --color-ripple: #d4d4d4;
   --color-toggle-border: #d4d4d4;
   --color-sidebar-bg-rgb: 25, 25, 25;
   --sidebar-bg-alpha: 0.75;
+  
   /* Project Box Colors */
-  --color-surface: #232323;
-  --color-border: #333;
-  --color-primary: #93bbe3;
-  --color-primary-dark: #b3d4fc;
-  --color-primary-light: #2a3a4d;
-  --color-text-secondary: #aaa;
+  --color-surface: #1c1c1c;
+  --color-surface-secondary: #202020;
+  --color-box-border: #474747;
+  --color-primary: #4281db;
+  --color-primary-dark: #1e2734;
+  --color-primary-light: #1c2026;
 }

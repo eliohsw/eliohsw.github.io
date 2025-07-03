@@ -25,7 +25,6 @@
   text-decoration: none;
 }
 
-/* Contact List Styles */
 .contact-list {
   list-style: none;
   padding: 0;
@@ -62,7 +61,6 @@
   font-size: 1.1em;
 }
 
-/* Icon variants (outline/filled) */
 .icon-filled { display: none; }
 
 @media (prefers-color-scheme: dark) {
@@ -95,5 +93,5 @@
 }
 
 .color-fade-transition {
-  animation: color-fade 0.24s;
+  animation: color-fade 0.16s;
 }

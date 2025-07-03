@@ -1,0 +1,20 @@
+[
+  {
+    "title": "First Blog Post",
+    "url": "#",
+    "date": "2024-06-10",
+    "subtitle": "This is the first blog post."
+  },
+  {
+    "title": "Second Blog Post",
+    "url": "#",
+    "date": "2024-06-05",
+    "subtitle": "A follow-up post with more content."
+  },
+  {
+    "title": "Third Blog Post",
+    "url": "#",
+    "date": "2024-05-28",
+    "subtitle": "Insights and updates in this entry."
+  }
+] 
