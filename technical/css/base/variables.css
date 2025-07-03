@@ -5,6 +5,14 @@
   --color-accent: #196cc4;
   --color-ripple: rgba(0, 0, 0, 1);
 
+  /* Project Box Colors */
+  --color-surface: #fff;
+  --color-border: #e0e0e0;
+  --color-primary: #0078d4;
+  --color-primary-dark: #005fa3;
+  --color-primary-light: #e3f2fd;
+  --color-text-secondary: #666;
+
   /* Toggle Variables */
   --toggle-width: 60px;
   --toggle-height: 30px;
@@ -30,6 +38,13 @@
     --color-toggle-border: #d4d4d4;
     --color-sidebar-bg-rgb: 25, 25, 25;
     --color-ripple: #d4d4d4;
+    /* Project Box Colors */
+    --color-surface: #232323;
+    --color-border: #333;
+    --color-primary: #93bbe3;
+    --color-primary-dark: #b3d4fc;
+    --color-primary-light: #2a3a4d;
+    --color-text-secondary: #aaa;
   }
 }
 
@@ -46,4 +61,11 @@
   --color-toggle-border: #d4d4d4;
   --color-sidebar-bg-rgb: 25, 25, 25;
   --sidebar-bg-alpha: 0.75;
+  /* Project Box Colors */
+  --color-surface: #232323;
+  --color-border: #333;
+  --color-primary: #93bbe3;
+  --color-primary-dark: #b3d4fc;
+  --color-primary-light: #2a3a4d;
+  --color-text-secondary: #aaa;
 }

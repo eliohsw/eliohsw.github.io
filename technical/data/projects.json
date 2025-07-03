@@ -1,0 +1,37 @@
+[
+  {
+    "title": "Project Title 1",
+    "url": "#",
+    "date": "2024-06-01",
+    "subtitle": "A short subtitle or description goes here.",
+    "tags": ["Keyword1", "Keyword2", "Keyword3"]
+  },
+  {
+    "title": "Project Title 2",
+    "url": "#",
+    "date": "2024-05-15",
+    "subtitle": "Another project description.",
+    "tags": ["TagA", "TagB", "Keyword1"]
+  },
+  {
+    "title": "Project Title 3",
+    "url": "#",
+    "date": "2024-04-10",
+    "subtitle": "Third project with shared tags.",
+    "tags": ["Keyword2", "TagA", "TagC"]
+  },
+  {
+    "title": "Project Title 4",
+    "url": "#",
+    "date": "2024-03-20",
+    "subtitle": "Fourth project, testing filter.",
+    "tags": ["Keyword3", "TagB", "TagC"]
+  },
+  {
+    "title": "Project Title 5",
+    "url": "#",
+    "date": "2024-02-05",
+    "subtitle": "Fifth project, more shared tags.",
+    "tags": ["Keyword1", "TagC", "TagA"]
+  }
+] 

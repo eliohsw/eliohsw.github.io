@@ -53,6 +53,10 @@ export function initTheme() {
     document.documentElement.setAttribute('data-theme', newTheme);
     animateLinkTransition();
     updateUIState(false);
+    // Haptic feedback
+    if ('vibrate' in navigator) {
+      navigator.vibrate(10);
+    }
   });
 
   // Initialize theme on page load
