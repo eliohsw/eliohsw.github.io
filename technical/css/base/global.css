@@ -44,4 +44,6 @@ p {
 
 footer {
   padding: 4px 16px 4px 18px;
+  text-align: center;
+  /* font-family: 'CMU Serif'; */
 }

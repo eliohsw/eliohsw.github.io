@@ -12,11 +12,11 @@ export function initTheme() {
     };
   }
 
-  // Update UI state
+  // Update UI state (never disable theme toggle)
   function updateUIState(isSystem) {
     systemToggle.classList.toggle('active', isSystem);
-    themeToggle.classList.toggle('disabled', isSystem);
-    themeToggle.style.pointerEvents = isSystem ? 'none' : 'auto';
+    themeToggle.classList.remove('disabled');
+    themeToggle.style.pointerEvents = 'auto';
   }
 
   // Helper to animate link transitions
@@ -47,14 +47,12 @@ export function initTheme() {
 
   // Theme toggle handler
   themeToggle.addEventListener('click', () => {
-    if (!themeToggle.classList.contains('disabled')) {
-      const { currentTheme } = getThemeState();
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      localStorage.setItem('theme', newTheme);
-      document.documentElement.setAttribute('data-theme', newTheme);
-      animateLinkTransition();
-      updateUIState(false);
-    }
+    const { currentTheme } = getThemeState();
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
+    animateLinkTransition();
+    updateUIState(false);
   });
 
   // Initialize theme on page load

@@ -79,5 +79,5 @@
 }
 
 .system-toggle.active .system-indicator {
-  background: var(--color-toggle-border);
+  background: transparent;
 }
