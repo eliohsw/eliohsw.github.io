@@ -21,7 +21,7 @@
 }
 
 .intro-content a {
-  color: var(--color-accent);
+  color: var(--color-accent-primary);
   text-decoration: none;
 }
 
@@ -47,7 +47,7 @@
 }
 
 .contact-link {
-  color: var(--color-accent);
+  color: var(--color-accent-primary);
   text-decoration: none;
   display: flex;
   align-items: center;

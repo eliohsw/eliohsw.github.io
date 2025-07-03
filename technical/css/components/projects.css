@@ -7,8 +7,8 @@
 }
 
 .filter-btn {
-  background: var(--color-primary-light);
-  color: var(--color-primary);
+  background: var(--color-bg-accent-light);
+  color: var(--color-accent-primary);
   border-radius: 999px;
   border: 0;
   padding: 0.4em 0.9em;
@@ -27,7 +27,7 @@
 }
 
 .filter-btn:hover {
-  background: var(--color-primary-dark);
+  background: var(--color-bg-accent-dark);
 }
 
 .filter-input-wrapper {
@@ -56,11 +56,11 @@
 }
 
 .filter-input:focus {
-  border-color: var(--color-primary);
+  border-color: var(--color-accent-primary);
   color: var(--color-text);
 }
 .filter-input:focus + .filter-input-icon {
-  color: var(--color-accent);
+  color: var(--color-accent-primary);
 }
 
 .filter-input:not(:focus) + .filter-input-icon {
@@ -79,7 +79,7 @@
 }
 
 .filter-search-btn {
-  background: var(--color-primary);
+  background: var(--color-accent-primary);
   color: #fff;
   border: none;
   border-radius: 50%;
@@ -97,7 +97,7 @@
 }
 
 .filter-search-btn:hover {
-  background: var(--color-primary-dark);
+  background: var(--color-bg-accent-dark);
 }
 
 .filter-search-btn ion-icon {
@@ -123,7 +123,7 @@
   background: var(--color-bg);
   border-radius: 1rem;
   box-shadow: 0 2px 12px rgba(var(--color-border-rgb), 0.07);
-  padding: 2rem;
+  padding: 1.5rem;
   transition: box-shadow 0.2s, background 0.2s, border-color 0.2s;
   display: flex;
   flex-direction: column;
@@ -134,7 +134,7 @@
 .card-box:hover {
   background: var(--color-surface);
   box-shadow: 0 4px 24px rgba(var(--color-border-rgb), 0.12);
-  border-color: var(--color-primary);
+  border-color: var(--color-accent-primary);
 }
 
 .card-box-header {
@@ -164,6 +164,11 @@
   text-decoration: none;
 }
 
+.blog-list .card-title a {
+  font-size: 1.2rem;
+  font-weight: 500;
+  font-stretch: expanded;
+}
 .card-date {
   font-size: 0.98em;
   color: var(--color-text-secondary);
@@ -176,19 +181,19 @@
   display: flex;
   align-items: center;
   gap: 0.3em;
-  color: var(--color-primary);
+  color: var(--color-accent-primary);
   text-decoration: none;
   font-weight: 500;
-}
-
-.card-link:hover {
-  color: var(--color-text-secondary);
 }
 
 .card-subtitle {
   color: var(--color-text-secondary);
   font-size: 1rem;
   margin-bottom: 0.5rem;
+}
+
+.blog-list .card-subtitle {
+  margin-bottom: 0;
 }
 
 .project-tags {
@@ -198,8 +203,8 @@
 }
 
 .project-tag {
-  background: var(--color-primary-light);
-  color: var(--color-primary);
+  background: var(--color-bg-accent-light);
+  color: var(--color-accent-primary);
   border-radius: 999px;
   padding: 0.3em 0.75em;
   font-size: 0.9em;
@@ -208,7 +213,7 @@
 }
 
 .project-tag:hover {
-  background: var(--color-primary-dark);
+  background: var(--color-bg-accent-dark);
 }
 
 .no-projects {

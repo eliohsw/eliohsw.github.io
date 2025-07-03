@@ -80,6 +80,8 @@ function renderFilter() {
 async function loadProjects() {
   const res = await fetch('../technical/data/projects.json');
   allProjects = await res.json();
+  // Sort projects by date descending (newest first)
+  allProjects.sort((a, b) => new Date(b.date) - new Date(a.date));
   renderFilter();
   renderProjects(allProjects);
 }
