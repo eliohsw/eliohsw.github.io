@@ -4,7 +4,11 @@
 
 /* Base Styles */
 body, body * {
-  transition: var(--transition-theme);
+  transition: var(--transition-bg-color);
+}
+
+h1, h2, h3, h4, h5, h6, a, p, li {
+  transition: var(--transition-color-fast);
 }
 
 body {
@@ -25,12 +29,8 @@ body {
 
 @media (max-width: 600px) {
   .main-container {
-    max-width: 100vw;
     margin-left: 0;
     margin-right: 0;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    padding-top: 56px;
   }
 }
 
@@ -45,5 +45,4 @@ p {
 footer {
   padding: 4px 16px 4px 18px;
   text-align: center;
-  /* font-family: 'CMU Serif'; */
 }

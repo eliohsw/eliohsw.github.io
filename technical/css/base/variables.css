@@ -19,7 +19,14 @@
   --color-bg-accent-dark: #e4edfa;
   --color-bg-accent-light: #f2f6fc;
 
-  --transition-theme: background-color 0.16s, border-color 0.16s, color 0.08s;
+  --transition-color: color 0.32s ease;
+  --transition-color-fast: color 0.16s ease;
+  --transition-color-slow: color 0.64s ease;
+
+  --transition-bg-color: background-color 0.32s ease;
+  --transition-bg-color-fast: background-color 0.16s ease;
+  --transition-border-color: border-color 0.32s ease;
+  --transition-fill: fill 0.32s ease;
 }
 
 @media (prefers-color-scheme: dark) {

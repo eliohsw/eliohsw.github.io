@@ -84,14 +84,3 @@
 [data-theme="light"] .icon-filled {
   display: none !important;
 }
-
-@keyframes color-fade {
-  0% { opacity: 1; }
-  49% { opacity: 0; }
-  50% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-.color-fade-transition {
-  animation: color-fade 0.16s;
-}

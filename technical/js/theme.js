@@ -19,14 +19,6 @@ export function initTheme() {
     themeToggle.style.pointerEvents = 'auto';
   }
 
-  // Helper to animate link transitions
-  function animateLinkTransition() {
-    document.querySelectorAll('.intro-content a, .contact-link').forEach(link => {
-      link.classList.add('color-fade-transition');
-      setTimeout(() => link.classList.remove('color-fade-transition'), 240);
-    });
-  }
-
   // System toggle handler (temporarily disabled)
   // systemToggle.addEventListener('click', () => {
   //   const currentState = getThemeState();

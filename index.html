@@ -23,6 +23,8 @@
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
+  <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
+  <script src="https://tikzjax.com/v1/tikzjax.js"></script>
 
   <script>
     (function() {
@@ -45,8 +47,10 @@
   <div id="loader" class="loader-overlay">
     <div class="loader-spinner"></div>
   </div>
+
   <div id="navbar-placeholder"></div>
   <div id="mobile-sidebar-placeholder"></div>
+
   <div class="main-container">
     <div class="main-content">
       <div class="greeting-container">
@@ -120,6 +124,7 @@
         <p>I'm also a \(\LaTeX\) enthusiast.</p>
         
         <p style="font-style: italic;">This website is still under construction.</p>
+
       </div>
 
     </div>
@@ -161,7 +166,7 @@
         initSidebar();
         initScrollEffects();
         initGreeting();
-        initRipple();
+        // initRipple();
       });
     });
 

@@ -1,4 +1,3 @@
-/* Toggle Styles */
 .toggle-group {
   z-index: 1102;
   display: flex;
@@ -17,7 +16,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
-  transition: filter 0.3s;
+  transition: filter 0.32s;
 
   &:hover, &:focus {
     filter: brightness(1.1);
@@ -32,34 +31,31 @@
   background: transparent;
   border: 1px solid var(--color-border);
   border-radius: 50%;
-  transition: transform 0.3s;
+  transition: transform 0.32s;
 
   [data-theme="dark"] & {
     transform: translateX(28px);
   }
 }
 
-/* Disabled state for theme toggle */
 .theme-toggle.disabled {
   opacity: 0.4375;
   cursor: not-allowed;
 }
 
-/* System Toggle Styles */
 .system-toggle {
   top: 10px;
-  right: 80px; /* Position left of theme toggle */
+  right: 80px;
   width: 30px;
   height: 30px;
   background: transparent;
   border: 1px solid var(--color-border);
   border-radius: 50%;
   cursor: pointer;
-  transition: all 0.3s;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.3s;
+  transition: opacity 0.32s;
 }
 
 .system-indicator {
@@ -69,13 +65,12 @@
   border-radius: 50%;
   border: 1px solid var(--color-border);
   opacity: 1;
-  transition: opacity 0.3s;
+  transition: opacity 0.32s;
 }
 
-/* Active state for system mode */
 .system-toggle.active {
   background: transparent;
-  transition: opacity 0.3s;
+  transition: opacity 0.32s;
 }
 
 .system-toggle.active .system-indicator {
