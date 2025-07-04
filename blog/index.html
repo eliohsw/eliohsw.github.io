@@ -75,31 +75,15 @@
     });
   </script>
   <script type="module">
-    import { initTheme } from '../technical/js/theme.js';
-    import { initSidebar } from '../technical/js/sidebar.js';
-    import { initScrollEffects } from '../technical/js/scroll.js';
-
-    function loadComponent(id, url, callback) {
-      fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById(id).innerHTML = html;
-          if (callback) callback();
-        });
-    }
-
-    // Load navbar, then sidebar, then initialize theme, sidebar, and scroll effects
-    loadComponent('navbar-placeholder', '/technical/components/navbar.html', () => {
-      loadComponent('mobile-sidebar-placeholder', '/technical/components/mobile-sidebar.html', () => {
-        initTheme();
-        initSidebar();
-        initScrollEffects();
-      });
-    });
-
-    // Load footer as before
-    loadComponent('footer-placeholder', '/technical/components/footer.html');
+    import { initComponentPlaceholders } from '../technical/js/ui-loader.js';
+    import { initTheme, initSidebar, initScrollEffects } from '../technical/js/ui-effects.js';
+    initComponentPlaceholders();
+    setTimeout(() => {
+      if (document.querySelector('.nav-bar')) initScrollEffects();
+      if (document.querySelector('.menu-btn') && document.querySelector('.mobile-sidebar')) initSidebar();
+      if (document.getElementById('theme-toggle')) initTheme();
+    }, 200);
   </script>
-  <script type="module" src="../technical/js/blog.js"></script>
+  <script type="module" src="../technical/js/data-blog.js"></script>
 </body>
 </html>

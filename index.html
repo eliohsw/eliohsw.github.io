@@ -143,35 +143,19 @@
       }, 750);
     });
   </script>
+  <script type="module" src="./technical/js/main.js"></script>
   <script type="module">
-    import { initTheme } from './technical/js/theme.js';
-    import { initSidebar } from './technical/js/sidebar.js';
-    import { initScrollEffects } from './technical/js/scroll.js';
-    import { initGreeting } from './technical/js/greetings.js';
-    import { initRipple } from './technical/js/ripple.js';
-
-    function loadComponent(id, url, callback) {
-      fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById(id).innerHTML = html;
-          if (callback) callback();
-        });
-    }
-
-    // Load navbar, then sidebar, then initialize theme, sidebar, scroll effects, and greeting
-    loadComponent('navbar-placeholder', '/technical/components/navbar.html', () => {
-      loadComponent('mobile-sidebar-placeholder', '/technical/components/mobile-sidebar.html', () => {
-        initTheme();
-        initSidebar();
-        initScrollEffects();
-        initGreeting();
-        // initRipple();
-      });
-    });
-
-    // Load footer as before
-    loadComponent('footer-placeholder', '/technical/components/footer.html');
+    import { initComponentPlaceholders } from './technical/js/ui-loader.js';
+    import { initTheme, initSidebar, initScrollEffects, initGreeting, initRipple } from './technical/js/ui-effects.js';
+    initComponentPlaceholders();
+    // Wait for components to load before initializing UI effects
+    setTimeout(() => {
+      if (document.querySelector('.nav-bar')) initScrollEffects();
+      if (document.querySelector('.menu-btn') && document.querySelector('.mobile-sidebar')) initSidebar();
+      if (document.getElementById('theme-toggle')) initTheme();
+      if (document.getElementById('greeting')) initGreeting();
+      if (document.body) initRipple();
+    }, 200); // 200ms delay to allow components to load
   </script>
 </body>
 </html>
