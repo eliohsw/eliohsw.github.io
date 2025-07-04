@@ -1,3 +1,11 @@
+/* Merged from: accessibility.css, animations.css */
+@media (prefers-reduced-motion: reduce) {
+  .ripple, .toggle-circle {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 .ripple {
   position: fixed;
   z-index: 5000;
