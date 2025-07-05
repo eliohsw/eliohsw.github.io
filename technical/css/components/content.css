@@ -1,6 +1,7 @@
 .intro-quote {
-  font-family: 'EB Garamond', serif;
+  font-family: "Satoshi", sans-serif;
   font-weight: 500;
+  margin: 0;
 }
 
 .intro-content {
@@ -29,9 +30,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 4rem;
   gap: 6px;
-  padding: 0;
+  margin-top: 6px;
+  margin-bottom: 12px;
+  font-family: "Satoshi", sans-serif;
 }
 
 .social-links-text-container {
@@ -40,11 +42,11 @@
   gap: 6px;
 }
 
-.social-links-text-container .social-links-arrow {
+.social-links-arrow {
   transition: var(--transition-color-fast);
 }
 
-.social-links-text-container p {
+.social-links-text {
   font-weight: bold;
 }
 

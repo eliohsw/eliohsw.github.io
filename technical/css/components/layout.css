@@ -79,8 +79,14 @@
   color: var(--color-text);
   text-decoration: none;
   font-size: 140%;
-  font-weight: 650;
+  font-weight: 450;
   margin-right: auto;
+  font-family: "Satoshi", 'Inter', sans-serif;
+  transition: font-weight 0.32s ease, width 0.32s ease;
+}
+
+.logo:hover {
+  font-weight: 730;
 }
 
 .nav-links {
@@ -94,8 +100,9 @@
   padding: 6px 0;
   text-decoration: none;
   color: var(--color-text);
-  font-weight: 200;
-  font-stretch: semi-expanded;
+  font-weight: 300;
+  font-family: "General Sans", 'Inter', sans-serif;
+  transition: font-weight 0.32s ease, width 0.32s ease;
 }
 
 .nav-links a::after {
@@ -107,6 +114,10 @@
   height: 1px;
   background: currentColor;
   transition: width 0.32s;
+}
+
+.nav-links a:hover {
+  font-weight: 510;
 }
 
 .nav-links a:hover::after {
@@ -165,10 +176,12 @@
   color: var(--color-text);
   text-decoration: none;
   font-size: 1.1rem;
-  font-weight: 200;
+  font-weight: 300;
   font-stretch: semi-expanded;
   padding: 8px 0;
   position: relative;
+  font-family: "General Sans", 'Inter', sans-serif;
+  transition: font-weight 0.32s ease, width 0.32s ease;
 }
 
 .sidebar-links a::after {
@@ -180,6 +193,10 @@
   height: 1px;
   background: currentColor;
   transition: width 0.32s ease;
+}
+
+.sidebar-links a:hover {
+  font-weight: 540;
 }
 
 .sidebar-links a:hover::after {

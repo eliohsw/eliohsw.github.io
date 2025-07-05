@@ -1,3 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@font-face {
+  font-family: "Satoshi";
+  src: url('../../assets/fonts/Satoshi-Variable.ttf') format('truetype');
+  font-weight: 300 900;
+}
+
+@font-face {
+  font-family: "Satoshi";
+  src: url('../../assets/fonts/Satoshi-VariableItalic.ttf') format('truetype');
+  font-weight: 300 900;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "General Sans";
+  src: url('../../assets/fonts/GeneralSans-Variable.ttf') format('truetype');
+  font-weight: 200 700;
+}
+
+@font-face {
+  font-family: "General Sans";
+  src: url('../../assets/fonts/GeneralSans-VariableItalic.ttf') format('truetype');
+  font-weight: 200 700;
+  font-style: italic;
+}
+
 @font-face {
   font-family: "CMU Serif";
   src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunrm.otf');
@@ -33,8 +61,4 @@
   src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunbl.otf');
   font-weight: bold;
   font-style: oblique;
-}
-
-.cmu-text {
-  font-family: "CMU Serif", 'Noto Serif TC', serif;
 }
