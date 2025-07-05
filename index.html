@@ -147,15 +147,29 @@
   <script type="module">
     import { initComponentPlaceholders } from './technical/js/ui-loader.js';
     import { initTheme, initSidebar, initScrollEffects, initGreeting, initRipple } from './technical/js/ui-effects.js';
+    
+    // Initialize components
     initComponentPlaceholders();
-    // Wait for components to load before initializing UI effects
-    setTimeout(() => {
+    
+    // Function to initialize UI effects
+    function initializeUIEffects() {
       if (document.querySelector('.nav-bar')) initScrollEffects();
       if (document.querySelector('.menu-btn') && document.querySelector('.mobile-sidebar')) initSidebar();
       if (document.getElementById('theme-toggle')) initTheme();
       if (document.getElementById('greeting')) initGreeting();
       if (document.body) initRipple();
-    }, 200); // 200ms delay to allow components to load
+    }
+    
+    // Wait for all components to load before initializing UI effects
+    document.addEventListener('componentsLoaded', initializeUIEffects);
+    
+    // Fallback: if componentsLoaded doesn't fire within 6 seconds, try to initialize anyway
+    setTimeout(() => {
+      if (!document.querySelector('.nav-bar')) {
+        console.warn('Components may not have loaded properly - attempting UI initialization anyway');
+        initializeUIEffects();
+      }
+    }, 6000);
   </script>
 </body>
 </html>

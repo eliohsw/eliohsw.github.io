@@ -11,6 +11,10 @@ h1, h2, h3, h4, h5, h6, a, p, li {
   transition: var(--transition-color-fast);
 }
 
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a, p a, li a {
+  transition: 0ms;
+}
+
 body {
   margin: 0;
   background-color: var(--color-bg);

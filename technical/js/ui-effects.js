@@ -104,6 +104,17 @@ export function initScrollEffects() {
 export function initSidebar() {
   const menuBtn = document.querySelector('.menu-btn');
   const mobileSidebar = document.querySelector('.mobile-sidebar');
+  
+  if (!menuBtn) {
+    console.warn('Menu button not found - sidebar initialization skipped');
+    return;
+  }
+  
+  if (!mobileSidebar) {
+    console.warn('Mobile sidebar not found - sidebar initialization skipped');
+    return;
+  }
+  
   const overlay = document.createElement('div');
   overlay.className = 'overlay';
   document.body.appendChild(overlay);
@@ -136,6 +147,17 @@ export function initSidebar() {
 export function initTheme() {
   const themeToggle = document.getElementById('theme-toggle');
   const systemToggle = document.getElementById('system-toggle');
+  
+  if (!themeToggle) {
+    console.warn('Theme toggle not found - theme initialization skipped');
+    return;
+  }
+  
+  if (!systemToggle) {
+    console.warn('System toggle not found - theme initialization skipped');
+    return;
+  }
+  
   function getThemeState() {
     return {
       isSystem: !localStorage.getItem('theme'),
