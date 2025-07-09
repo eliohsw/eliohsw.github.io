@@ -41,9 +41,14 @@
 #greeting {
   position: relative;
   opacity: 1;
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  transition: opacity 1s ease-in-out;
+  font-family: 'Inter', 'Noto Sans Thai', 'Noto Sans Tamil', 'Noto Sans Devanagari', sans-serif;
+  font-weight: 640;
+  transition: opacity 1s ease-in-out, font-weight 0.24s ease;
+}
+
+#greeting[lang="ja"], #greeting[lang="ko"] {
+  font-family: 'Inter', 'Noto Sans JP', 'Noto Sans KR', sans-serif;
+  font-weight: 620;
 }
 
 #greeting.fade {

@@ -11,13 +11,15 @@ export function initGreeting() {
       return response.json();
     })
     .then(greetings => {
-      greetingElement.textContent = greetings[0];
+      greetingElement.textContent = greetings[0].text;
+      greetingElement.setAttribute('lang', greetings[0].lang);
       let currentIndex = 0;
       function changeText() {
         greetingElement.classList.add('fade');
         setTimeout(() => {
           currentIndex = (currentIndex + 1) % greetings.length;
-          greetingElement.textContent = greetings[currentIndex];
+          greetingElement.textContent = greetings[currentIndex].text;
+          greetingElement.setAttribute('lang', greetings[currentIndex].lang);
           greetingElement.classList.remove('fade');
         }, 1000);
       }
