@@ -5,27 +5,111 @@ export function initGreeting() {
   const greetingElement = document.getElementById('greeting');
   if (!greetingElement) return;
   greetingElement.textContent = "Loading...";
+  
+  let allGreetings = [];
+  let validGreetings = [];
+  let currentIndex = 0;
+  let changeTextInterval = null;
+  
+  // Helper function to measure text width
+  function getTextWidth(text, lang, element) {
+    const tempElement = document.createElement('div');
+    tempElement.style.position = 'absolute';
+    tempElement.style.visibility = 'hidden';
+    tempElement.style.whiteSpace = 'nowrap';
+    tempElement.style.fontSize = getComputedStyle(element).fontSize;
+    tempElement.style.fontFamily = getComputedStyle(element).fontFamily;
+    tempElement.style.fontWeight = getComputedStyle(element).fontWeight;
+    
+    // Apply language-specific font styling
+    if (lang === 'ja' || lang === 'ko') {
+      tempElement.style.fontFamily = "'Inter', 'Noto Sans JP', 'Noto Sans KR', sans-serif";
+      tempElement.style.fontWeight = '620';
+    } else {
+      tempElement.style.fontFamily = "'Inter', 'Noto Sans Thai', 'Noto Sans Tamil', 'Noto Sans Devanagari', sans-serif";
+      tempElement.style.fontWeight = '640';
+    }
+    
+    tempElement.textContent = text;
+    document.body.appendChild(tempElement);
+    const width = tempElement.offsetWidth;
+    document.body.removeChild(tempElement);
+    return width;
+  }
+  
+  // Function to filter greetings based on current container width
+  function filterGreetingsByWidth() {
+    const containerWidth = greetingElement.parentElement ? 
+      greetingElement.parentElement.offsetWidth : 
+      greetingElement.offsetWidth || window.innerWidth * 0.8;
+    
+    const filteredGreetings = allGreetings.filter(greeting => {
+      const textWidth = getTextWidth(greeting.text, greeting.lang, greetingElement);
+      return textWidth <= containerWidth;
+    });
+    
+    return filteredGreetings.length > 0 ? filteredGreetings : allGreetings;
+  }
+  
+  // Function to update greeting list and restart rotation
+  function updateGreetingList() {
+    const newValidGreetings = filterGreetingsByWidth();
+    
+    // If the valid greetings changed, update and restart
+    if (JSON.stringify(newValidGreetings) !== JSON.stringify(validGreetings)) {
+      validGreetings = newValidGreetings;
+      
+      // Find the current greeting in the new list or reset to 0
+      const currentText = greetingElement.textContent;
+      const newIndex = validGreetings.findIndex(greeting => greeting.text === currentText);
+      currentIndex = newIndex !== -1 ? newIndex : 0;
+      
+      // If current greeting is not in the new valid list, change immediately
+      if (newIndex === -1) {
+        greetingElement.textContent = validGreetings[currentIndex].text;
+        greetingElement.setAttribute('lang', validGreetings[currentIndex].lang);
+      }
+    }
+  }
+  
+  function changeText() {
+    greetingElement.classList.add('fade');
+    setTimeout(() => {
+      currentIndex = (currentIndex + 1) % validGreetings.length;
+      greetingElement.textContent = validGreetings[currentIndex].text;
+      greetingElement.setAttribute('lang', validGreetings[currentIndex].lang);
+      greetingElement.classList.remove('fade');
+    }, 1000);
+  }
+  
+  // Debounced resize handler to avoid excessive recalculations
+  let resizeTimeout;
+  function handleResize() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      updateGreetingList();
+    }, 100);
+  }
+  
   fetch('../technical/data/greeting.json')
     .then(response => {
       if (!response.ok) throw new Error('Network response was not ok');
       return response.json();
     })
     .then(greetings => {
-      greetingElement.textContent = greetings[0].text;
-      greetingElement.setAttribute('lang', greetings[0].lang);
-      let currentIndex = 0;
-      function changeText() {
-        greetingElement.classList.add('fade');
-        setTimeout(() => {
-          currentIndex = (currentIndex + 1) % greetings.length;
-          greetingElement.textContent = greetings[currentIndex].text;
-          greetingElement.setAttribute('lang', greetings[currentIndex].lang);
-          greetingElement.classList.remove('fade');
-        }, 1000);
-      }
+      allGreetings = greetings;
+      validGreetings = filterGreetingsByWidth();
+      
+      greetingElement.textContent = validGreetings[0].text;
+      greetingElement.setAttribute('lang', validGreetings[0].lang);
+      currentIndex = 0;
+      
+      // Add resize listener for dynamic updates
+      window.addEventListener('resize', handleResize);
+      
       setTimeout(() => {
         changeText();
-        setInterval(changeText, 4000);
+        changeTextInterval = setInterval(changeText, 4000);
       }, 2000);
     })
     .catch(error => {

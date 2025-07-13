@@ -19,7 +19,7 @@ body {
   margin: 0;
   background-color: var(--color-bg);
   color: var(--color-text);
-  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  font-family: 'Inter', 'Noto Sans TC', sans-serif;
 }
 
 .main-container {
@@ -31,7 +31,7 @@ body {
   padding-top: 56px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .main-container {
     margin-left: 0;
     margin-right: 0;

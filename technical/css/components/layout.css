@@ -79,14 +79,10 @@
   color: var(--color-text);
   text-decoration: none;
   font-size: 140%;
-  font-weight: 450;
+  font-weight: 710;
   margin-right: auto;
   font-family: "Satoshi", 'Inter', sans-serif;
   transition: font-weight 0.32s ease, width 0.32s ease;
-}
-
-.logo:hover {
-  font-weight: 730;
 }
 
 .nav-links {
