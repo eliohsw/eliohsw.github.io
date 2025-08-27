@@ -1,84 +1,125 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+---
+layout: subpage
+title: "Projects | Elio Huang"
+page_title: "Projects"
+css_path: "../technical/css/main.css"
+js_main_path: "../technical/js/main.js"
+js_ui_loader_path: "../technical/js/ui-loader.js"
+js_ui_effects_path: "../technical/js/ui-effects.js"
+favicon_path: "../technical/assets/icons/favicon.png"
+---
 
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="../technical/css/main.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css">
+{% assign sorted_projects = site.data.projects | sort: 'date' | reverse %}
 
-
-  <!-- Scripts -->
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/contrib/auto-render.min.js" 
-    onload="renderMathInElement(document.body);"></script>
-  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-  <script type="module" src="../technical/js/main.js"></script>
-
-  <script>
-    (function() {
-      try {
-        var theme = localStorage.getItem('theme');
-        if (theme) {
-          document.documentElement.setAttribute('data-theme', theme);
-        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          document.documentElement.setAttribute('data-theme', 'dark');
-        } else {
-          document.documentElement.setAttribute('data-theme', 'light');
-        }
-      } catch (e) {}
-    })();
-  </script>
-
-  <title>Projects | Elio Huang</title>
-  <link rel="icon" href="../technical/assets/icons/favicon.png">
-</head>
-<body>
-  <div id="loader" class="loader-overlay">
-    <div class="loader-spinner"></div>
+<!-- Projects Filter -->
+<div class="projects-filter">
+  <div class="filter-input-wrapper">
+    <input type="text" class="filter-input" placeholder="Enter keyword" />
+    <ion-icon class="filter-input-icon" name="search"></ion-icon>
   </div>
-  <div id="navbar-placeholder"></div>
-  <div id="mobile-sidebar-placeholder"></div>
+  <button class="filter-btn active" data-tag="__all">Show All</button>
+</div>
 
-  <div class="main-container">
-    <div class="main-content">
-      <h1 class="subpage-title">
-        Projects
-        <span class="last-updated" id="last-updated" title="Last Updated"></span>
-      </h1>
-      <div class="divider"></div>
-      
-      <div class="projects-list">
-        <!-- Project boxes will be inserted here by JavaScript -->
+<div class="projects-list">
+  {% if sorted_projects.size > 0 %}
+    {% for project in sorted_projects %}
+    <div class="card-box" data-tags="{{ project.tags | join: ',' | downcase }}">
+      <div class="card-box-header">
+        <div class="card-header-row">
+          <span class="card-date">{{ project.date | date: "%Y-%m-%d" }}</span>
+          <a class="card-link" href="{{ project.url }}" target="_blank" aria-label="View Project">
+            <span>View</span>
+            <ion-icon name="arrow-forward-outline"></ion-icon>
+          </a>
+        </div>
+        <h2 class="card-title"><a href="{{ project.url }}" target="_blank">{{ project.title }}</a></h2>
+      </div>
+      <div class="card-subtitle">{{ project.subtitle }}</div>
+      <div class="project-tags">
+        {% for tag in project.tags %}
+        <span class="project-tag" data-tag="{{ tag | downcase }}">{{ tag }}</span>
+        {% endfor %}
       </div>
     </div>
-  </div>
+    {% endfor %}
+  {% else %}
+    <div class="no-projects">Projects coming soon...</div>
+  {% endif %}
+</div>
 
-  <div id="footer-placeholder"></div>
-  <script>
-    window.addEventListener('DOMContentLoaded', function() {
-      setTimeout(function() {
-        const loader = document.getElementById('loader');
-        if (loader) {
-          loader.style.opacity = '0';
-          loader.style.pointerEvents = 'none';
-          setTimeout(() => loader.remove(), 400);
-        }
-      }, 750);
+<script>
+// Simplified JavaScript for filtering (client-side)
+document.addEventListener('DOMContentLoaded', function() {
+  const filterInput = document.querySelector('.filter-input');
+  const filterIcon = document.querySelector('.filter-input-icon');
+  const showAllBtn = document.querySelector('.filter-btn[data-tag="__all"]');
+  const projectCards = document.querySelectorAll('.card-box');
+  const projectsList = document.querySelector('.projects-list');
+  
+  function filterProjects(keyword = '') {
+    const lowerKeyword = keyword.toLowerCase().trim();
+    let visibleCount = 0;
+    
+    projectCards.forEach(card => {
+      const tags = card.getAttribute('data-tags');
+      const title = card.querySelector('.card-title').textContent.toLowerCase();
+      const subtitle = card.querySelector('.card-subtitle').textContent.toLowerCase();
+      
+      const matches = lowerKeyword === '' || 
+                     tags.includes(lowerKeyword) || 
+                     title.includes(lowerKeyword) || 
+                     subtitle.includes(lowerKeyword);
+      
+      if (matches) {
+        card.style.display = 'block';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
     });
-  </script>
-  <script type="module">
-    import { initComponentPlaceholders } from '../technical/js/ui-loader.js';
-    import { initTheme, initSidebar, initScrollEffects } from '../technical/js/ui-effects.js';
-    initComponentPlaceholders();
-    setTimeout(() => {
-      if (document.querySelector('.nav-bar')) initScrollEffects();
-      if (document.querySelector('.menu-btn') && document.querySelector('.mobile-sidebar')) initSidebar();
-      if (document.getElementById('theme-toggle')) initTheme();
-    }, 200);
-  </script>
-  <script type="module" src="../technical/js/data-projects.js"></script>
-</body>
-</html>
+    
+    // Show "no projects found" message if no matches
+    const noProjectsMsg = document.querySelector('.no-projects-filter');
+    if (noProjectsMsg) noProjectsMsg.remove();
+    
+    if (visibleCount === 0 && lowerKeyword !== '') {
+      const noProjectsDiv = document.createElement('div');
+      noProjectsDiv.className = 'no-projects no-projects-filter';
+      noProjectsDiv.textContent = 'No projects found for this keyword.';
+      projectsList.appendChild(noProjectsDiv);
+    }
+    
+    // Update filter button state
+    showAllBtn.classList.toggle('active', lowerKeyword === '');
+  }
+  
+  function doSearch() {
+    filterProjects(filterInput.value);
+  }
+  
+  filterInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doSearch();
+  });
+  
+  filterInput.addEventListener('input', function() {
+    filterProjects(this.value);
+  });
+  
+  filterIcon.addEventListener('click', doSearch);
+  
+  showAllBtn.addEventListener('click', function() {
+    filterInput.value = '';
+    filterProjects();
+  });
+  
+  // Add click events to project tags
+  document.querySelectorAll('.project-tag').forEach(tag => {
+    tag.style.cursor = 'pointer';
+    tag.addEventListener('click', function() {
+      const tagName = this.getAttribute('data-tag');
+      filterInput.value = tagName;
+      filterProjects(tagName);
+    });
+  });
+});
+</script>
