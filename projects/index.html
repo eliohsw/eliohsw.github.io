@@ -7,10 +7,119 @@ js_main_path: "../technical/js/main.js"
 js_ui_loader_path: "../technical/js/ui-loader.js"
 js_ui_effects_path: "../technical/js/ui-effects.js"
 favicon_path: "../technical/assets/icons/favicon.png"
-additional_scripts:
-  - "../technical/js/data-projects.js"
 ---
 
-<div class="projects-list">
-  <!-- Project boxes will be inserted here by JavaScript -->
+{% assign sorted_projects = site.data.projects | sort: 'date' | reverse %}
+
+<!-- Projects Filter -->
+<div class="projects-filter">
+  <div class="filter-input-wrapper">
+    <input type="text" class="filter-input" placeholder="Enter keyword" />
+    <ion-icon class="filter-input-icon" name="search"></ion-icon>
+  </div>
+  <button class="filter-btn active" data-tag="__all">Show All</button>
 </div>
+
+<div class="projects-list">
+  {% if sorted_projects.size > 0 %}
+    {% for project in sorted_projects %}
+    <div class="card-box" data-tags="{{ project.tags | join: ',' | downcase }}">
+      <div class="card-box-header">
+        <div class="card-header-row">
+          <span class="card-date">{{ project.date | date: "%Y-%m-%d" }}</span>
+          <a class="card-link" href="{{ project.url }}" target="_blank" aria-label="View Project">
+            <span>View</span>
+            <ion-icon name="arrow-forward-outline"></ion-icon>
+          </a>
+        </div>
+        <h2 class="card-title"><a href="{{ project.url }}" target="_blank">{{ project.title }}</a></h2>
+      </div>
+      <div class="card-subtitle">{{ project.subtitle }}</div>
+      <div class="project-tags">
+        {% for tag in project.tags %}
+        <span class="project-tag" data-tag="{{ tag | downcase }}">{{ tag }}</span>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="no-projects">Projects coming soon...</div>
+  {% endif %}
+</div>
+
+<script>
+// Simplified JavaScript for filtering (client-side)
+document.addEventListener('DOMContentLoaded', function() {
+  const filterInput = document.querySelector('.filter-input');
+  const filterIcon = document.querySelector('.filter-input-icon');
+  const showAllBtn = document.querySelector('.filter-btn[data-tag="__all"]');
+  const projectCards = document.querySelectorAll('.card-box');
+  const projectsList = document.querySelector('.projects-list');
+  
+  function filterProjects(keyword = '') {
+    const lowerKeyword = keyword.toLowerCase().trim();
+    let visibleCount = 0;
+    
+    projectCards.forEach(card => {
+      const tags = card.getAttribute('data-tags');
+      const title = card.querySelector('.card-title').textContent.toLowerCase();
+      const subtitle = card.querySelector('.card-subtitle').textContent.toLowerCase();
+      
+      const matches = lowerKeyword === '' || 
+                     tags.includes(lowerKeyword) || 
+                     title.includes(lowerKeyword) || 
+                     subtitle.includes(lowerKeyword);
+      
+      if (matches) {
+        card.style.display = 'block';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    
+    // Show "no projects found" message if no matches
+    const noProjectsMsg = document.querySelector('.no-projects-filter');
+    if (noProjectsMsg) noProjectsMsg.remove();
+    
+    if (visibleCount === 0 && lowerKeyword !== '') {
+      const noProjectsDiv = document.createElement('div');
+      noProjectsDiv.className = 'no-projects no-projects-filter';
+      noProjectsDiv.textContent = 'No projects found for this keyword.';
+      projectsList.appendChild(noProjectsDiv);
+    }
+    
+    // Update filter button state
+    showAllBtn.classList.toggle('active', lowerKeyword === '');
+  }
+  
+  function doSearch() {
+    filterProjects(filterInput.value);
+  }
+  
+  filterInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doSearch();
+  });
+  
+  filterInput.addEventListener('input', function() {
+    filterProjects(this.value);
+  });
+  
+  filterIcon.addEventListener('click', doSearch);
+  
+  showAllBtn.addEventListener('click', function() {
+    filterInput.value = '';
+    filterProjects();
+  });
+  
+  // Add click events to project tags
+  document.querySelectorAll('.project-tag').forEach(tag => {
+    tag.style.cursor = 'pointer';
+    tag.addEventListener('click', function() {
+      const tagName = this.getAttribute('data-tag');
+      filterInput.value = tagName;
+      filterProjects(tagName);
+    });
+  });
+});
+</script>

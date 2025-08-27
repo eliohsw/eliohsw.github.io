@@ -7,11 +7,30 @@ js_main_path: "../technical/js/main.js"
 js_ui_loader_path: "../technical/js/ui-loader.js"
 js_ui_effects_path: "../technical/js/ui-effects.js"
 favicon_path: "../technical/assets/icons/favicon.png"
-additional_scripts:
-  - "../technical/js/data-blog.js"
 ---
 
-<p class="subpage-intro">This is a place where you can find ...</p>
+{% assign sorted_blogs = site.data.blog | sort: 'date' | reverse %}
+
+<p class="subpage-intro">This is a place where you can find my comments on all sorts of topics.</p>
+
 <div class="blog-list">
-  <!-- Blog post boxes will be inserted here by JavaScript -->
+  {% if sorted_blogs.size > 0 %}
+    {% for blog in sorted_blogs %}
+    <div class="card-box">
+      <div class="card-box-header">
+        <div class="card-header-row">
+          <span class="card-date">{{ blog.date | date: "%Y-%m-%d" }}</span>
+          <a class="card-link" href="{{ blog.url }}" target="_blank" aria-label="Read Blog">
+            <span>Read</span>
+            <ion-icon name="arrow-forward-outline"></ion-icon>
+          </a>
+        </div>
+        <h2 class="card-title"><a href="{{ blog.url }}" target="_blank">{{ blog.title }}</a></h2>
+      </div>
+      <div class="card-subtitle">{{ blog.subtitle }}</div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="no-projects">Blog posts coming soon.</div>
+  {% endif %}
 </div>
