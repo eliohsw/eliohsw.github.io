@@ -4,3 +4,6 @@
 **test**
 **temp**
 **virtual**
+
+_site/
+.jekyll-cache/
