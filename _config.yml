@@ -1,0 +1,41 @@
+# Jekyll Configuration
+title: "Elio Huang"
+description: "Personal website and portfolio"
+url: "https://eliohsw.github.io"
+baseurl: ""
+
+# Collections configuration
+collections:
+  projects:
+    output: true
+    permalink: /projects/:name/
+  blog:
+    output: true
+    permalink: /blog/:name/
+
+# Defaults for collections
+defaults:
+  - scope:
+      path: ""
+      type: "projects"
+    values:
+      layout: "project"
+  - scope:
+      path: ""
+      type: "blog"
+    values:
+      layout: "blog-post"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+# Exclude files from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - temp.txt

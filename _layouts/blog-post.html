@@ -1,0 +1,69 @@
+---
+layout: default
+---
+
+<div class="blog-post-page">
+  <div class="blog-post-header">
+    <div class="breadcrumb">
+      <a href="/">Home</a> / <a href="/blog/">Blog</a> / <span class="breadcrumb-title" onclick="copyPageLink()" title="Click to copy link to this page">{{ page.title }}</span>
+    </div>
+    <div class="blog-post-meta">
+      <span class="blog-post-date">{{ page.date | date: "%B %d, %Y" }}</span>
+      {% if page.reading_time %}
+      <span class="reading-time">{{ page.reading_time }} min read</span>
+      {% endif %}
+    </div>
+    <h1 class="blog-post-title">{{ page.title }}</h1>
+    {% if page.subtitle %}
+    <p class="blog-post-subtitle">{{ page.subtitle }}</p>
+    {% endif %}
+    
+    {% if page.tags and page.tags.size > 0 %}
+    <div class="blog-post-tags">
+      {% for tag in page.tags %}
+      <span class="blog-post-tag">{{ tag }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="blog-post-content">
+    {{ content }}
+  </div>
+
+  <div class="blog-post-navigation">
+    {% assign posts = site.blog | where: 'hidden', false | sort: 'date' | reverse %}
+    {% assign current_index = nil %}
+    {% for post in posts %}
+      {% if post.url == page.url %}
+        {% assign current_index = forloop.index0 %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+    
+    {% if current_index %}
+      {% assign prev_index = current_index | minus: 1 %}
+      {% assign next_index = current_index | plus: 1 %}
+      
+      <div class="nav-links">
+        {% if prev_index >= 0 %}
+          {% assign prev_post = posts[prev_index] %}
+          <a href="{{ prev_post.url }}" class="nav-link prev">
+            <ion-icon name="chevron-back-outline"></ion-icon>
+            <span>{{ prev_post.title }}</span>
+          </a>
+        {% endif %}
+        
+        {% if next_index < posts.size %}
+          {% assign next_post = posts[next_index] %}
+          <a href="{{ next_post.url }}" class="nav-link next">
+            <span>{{ next_post.title }}</span>
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<script src="/technical/js/copy-page-link.js"></script>

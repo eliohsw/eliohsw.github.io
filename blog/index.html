@@ -9,7 +9,7 @@ js_ui_effects_path: "../technical/js/ui-effects.js"
 favicon_path: "../technical/assets/icons/favicon.png"
 ---
 
-{% assign sorted_blogs = site.data.blog | sort: 'date' | reverse %}
+{% assign sorted_blogs = site.blog | where: 'hidden', false | sort: 'date' | reverse %}
 
 <p class="subpage-intro">This is a place where you can find my comments on all sorts of topics.</p>
 
@@ -20,12 +20,12 @@ favicon_path: "../technical/assets/icons/favicon.png"
       <div class="card-box-header">
         <div class="card-header-row">
           <span class="card-date">{{ blog.date | date: "%Y-%m-%d" }}</span>
-          <a class="card-link" href="{{ blog.url }}" target="_blank" aria-label="Read Blog">
+          <a class="card-link" href="{{ blog.url }}" aria-label="Read Blog">
             <span>Read</span>
             <ion-icon name="arrow-forward-outline"></ion-icon>
           </a>
         </div>
-        <h2 class="card-title"><a href="{{ blog.url }}" target="_blank">{{ blog.title }}</a></h2>
+        <h2 class="card-title"><a href="{{ blog.url }}">{{ blog.title }}</a></h2>
       </div>
       <div class="card-subtitle">{{ blog.subtitle }}</div>
     </div>

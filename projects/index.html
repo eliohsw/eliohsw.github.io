@@ -9,7 +9,7 @@ js_ui_effects_path: "../technical/js/ui-effects.js"
 favicon_path: "../technical/assets/icons/favicon.png"
 ---
 
-{% assign sorted_projects = site.data.projects | sort: 'date' | reverse %}
+{% assign sorted_projects = site.projects | where: 'hidden', false | sort: 'date' | reverse %}
 
 <!-- Projects Filter -->
 <div class="projects-filter">
@@ -27,12 +27,12 @@ favicon_path: "../technical/assets/icons/favicon.png"
       <div class="card-box-header">
         <div class="card-header-row">
           <span class="card-date">{{ project.date | date: "%Y-%m-%d" }}</span>
-          <a class="card-link" href="{{ project.url }}" target="_blank" aria-label="View Project">
+          <a class="card-link" href="{{ project.url }}" aria-label="View Project">
             <span>View</span>
             <ion-icon name="arrow-forward-outline"></ion-icon>
           </a>
         </div>
-        <h2 class="card-title"><a href="{{ project.url }}" target="_blank">{{ project.title }}</a></h2>
+        <h2 class="card-title"><a href="{{ project.url }}">{{ project.title }}</a></h2>
       </div>
       <div class="card-subtitle">{{ project.subtitle }}</div>
       <div class="project-tags">
