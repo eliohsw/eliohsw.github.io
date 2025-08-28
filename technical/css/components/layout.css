@@ -11,7 +11,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: 999999;
   transition: opacity 0.4s ease-out;
 }
 
@@ -231,7 +231,7 @@
     margin-right: 0;
   }
 
-  .nav-links {
+  .nav-bar .nav-links {
     display: none;
   }
 

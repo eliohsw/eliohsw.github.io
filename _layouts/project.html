@@ -45,11 +45,11 @@ layout: default
     {% endfor %}
     
     {% if current_index %}
-      {% assign prev_index = current_index | minus: 1 %}
-      {% assign next_index = current_index | plus: 1 %}
+      {% assign prev_index = current_index | plus: 1 %}
+      {% assign next_index = current_index | minus: 1 %}
       
       <div class="nav-links">
-        {% if prev_index >= 0 %}
+        {% if prev_index < projects.size %}
           {% assign prev_project = projects[prev_index] %}
           <a href="{{ prev_project.url }}" class="nav-link prev" title="{{ prev_project.title }}">
             <ion-icon name="chevron-back-outline"></ion-icon>
@@ -57,7 +57,7 @@ layout: default
           </a>
         {% endif %}
         
-        {% if next_index < projects.size %}
+        {% if next_index >= 0 %}
           {% assign next_project = projects[next_index] %}
           <a href="{{ next_project.url }}" class="nav-link next" title="{{ next_project.title }}">
             <span>NEXT</span>
@@ -70,3 +70,4 @@ layout: default
 </div>
 
 <script src="/technical/js/copy-page-link.js"></script>
+<script src="/technical/js/to-top-button.js"></script>

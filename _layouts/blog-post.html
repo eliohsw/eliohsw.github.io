@@ -42,22 +42,22 @@ layout: default
     {% endfor %}
     
     {% if current_index %}
-      {% assign prev_index = current_index | minus: 1 %}
-      {% assign next_index = current_index | plus: 1 %}
+      {% assign prev_index = current_index | plus: 1 %}
+      {% assign next_index = current_index | minus: 1 %}
       
       <div class="nav-links">
-        {% if prev_index >= 0 %}
+        {% if prev_index < posts.size %}
           {% assign prev_post = posts[prev_index] %}
-          <a href="{{ prev_post.url }}" class="nav-link prev">
+          <a href="{{ prev_post.url }}" class="nav-link prev" title="{{ prev_post.title }}">
             <ion-icon name="chevron-back-outline"></ion-icon>
-            <span>{{ prev_post.title }}</span>
+            <span>PREV</span>
           </a>
         {% endif %}
         
-        {% if next_index < posts.size %}
+        {% if next_index >= 0 %}
           {% assign next_post = posts[next_index] %}
-          <a href="{{ next_post.url }}" class="nav-link next">
-            <span>{{ next_post.title }}</span>
+          <a href="{{ next_post.url }}" class="nav-link next" title="{{ next_post.title }}">
+            <span>NEXT</span>
             <ion-icon name="chevron-forward-outline"></ion-icon>
           </a>
         {% endif %}
@@ -67,3 +67,4 @@ layout: default
 </div>
 
 <script src="/technical/js/copy-page-link.js"></script>
+<script src="/technical/js/to-top-button.js"></script>

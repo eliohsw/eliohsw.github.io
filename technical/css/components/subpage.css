@@ -262,7 +262,7 @@
 .project-page, .blog-post-page {
   max-width: 800px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 2rem 0rem;
 
   .project-header, .blog-post-header {
     margin-bottom: 3rem;
@@ -449,6 +449,10 @@
     margin: 0;
   }
 
+  .nav-links:has(.nav-link.next:only-child) {
+    justify-content: flex-end;
+  }
+
   .nav-link {
     display: flex;
     align-items: center;
@@ -463,6 +467,7 @@
     padding: 0.5rem;
     border-radius: 9999px;
     max-width: 45%;
+    height: 1.2rem;
 
     transition: var(--transition-color-fast), var(--transition-bg-color-fast);
   }
@@ -474,13 +479,65 @@
 
   .nav-link.prev {
     text-align: left;
-    padding: 0.5rem 0.9rem 0.5rem 0.5rem;
+    padding: 0.5rem calc(0.5rem + (16px - 4.5px)/2) 0.5rem 0.5rem;
   }
 
   .nav-link.next {
     text-align: right;
     justify-content: flex-end;
-    padding: 0.5rem 0.5rem 0.5rem 0.9rem;
+    padding: 0.5rem 0.5rem 0.5rem calc(0.5rem + (16px - 4.5px)/2);
+  }
+
+  .to-top-button {
+    position: fixed;
+    top: 6rem;
+    left: calc(50vw + 400px + 1.5rem);
+    height: 2.2rem;
+
+    background-color: var(--color-surface-secondary);
+    color: var(--color-text-secondary);
+    border: none;
+    border-radius: 9999px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.1rem;
+    font-family: "General Sans", 'Inter', sans-serif;
+    font-weight: 460;
+    font-size: 1rem;
+    padding: 0.5rem calc(0.5rem + (16px - 4.5px)/2) 0.5rem calc(0.5rem + (9px - 4.5px)/2);
+    box-shadow: 0 2px 8px rgba(var(--color-border-rgb), 0.07);
+
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition-color), var(--transition-bg-color), opacity 0.32s ease, visibility 0.32s ease;
+    z-index: 99999;
+    margin-left: auto;
+  }
+
+  .to-top-button ion-icon {
+    font-size: 1rem;
+  }
+
+  .to-top-button.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .to-top-button:hover {
+    background-color: var(--color-bg-accent-dark);
+    color: var(--color-accent-primary);
+  }
+}
+
+@media (max-width: calc(800px + (1.5rem + 73.375px + 1.2rem) * 2)) {
+  .project-page, .blog-post-page {
+    .to-top-button {
+      left: auto;
+      right: 1.2rem !important;
+    }
   }
 }
 
@@ -491,6 +548,23 @@
     .project-title, .blog-post-title {
       font-size: 1.75rem;
       margin: 0 0 0.5rem 0;
+    }
+  }
+}
+
+@media (max-width: 575px) {
+  .project-page, .blog-post-page {
+    .to-top-button {
+      padding: 0;
+      width: 2.2rem;
+    }
+
+    .to-top-button span {
+      display: none;
+    }
+
+    .to-top-button ion-icon {
+      font-size: 1.2rem;
     }
   }
 }
