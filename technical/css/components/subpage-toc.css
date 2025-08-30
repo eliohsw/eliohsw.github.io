@@ -1,0 +1,165 @@
+/* =================================================================
+   Table of Contents (TOC) Styles
+   ================================================================= */
+
+.toc-container {
+  position: sticky;
+  top: calc(48px + 35.2px + 2rem);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-box-border);
+  border-radius: 0.8rem;
+  padding: 1rem;
+  max-height: calc(100vh - 48px - 4rem);
+  overflow-y: auto;
+  transition: var(--transition-bg-color), var(--transition-border-color);
+}
+
+.toc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1.5px solid var(--color-box-border);
+  transition: var(--transition-border-color);
+  gap: 1rem;
+}
+
+.toc-header h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.toc-top-btn {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  border-radius: 4px;
+  transition: var(--transition-color-fast);
+}
+
+.toc-top-btn:hover {
+  color: var(--color-accent-primary);
+}
+
+.toc-toggle {
+  display: none;
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: var(--transition-color-fast);
+}
+
+.toc-toggle:hover {
+  color: var(--color-text);
+}
+
+.toc-toggle ion-icon {
+  font-size: 1.2rem;
+}
+
+.toc-content {
+  overflow: hidden;
+}
+
+.toc-nav {
+  font-size: 0.9rem;
+}
+
+.toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toc-nested {
+  padding-left: 0.75rem;
+}
+
+.toc-item {
+  margin: 0;
+}
+
+.toc-link {
+  display: block;
+  padding: 0.25rem;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  border-radius: 0.4rem;
+  transition: var(--transition-color-fast);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+
+.toc-list > .toc-item:first-child > .toc-link {
+  padding-top: 0;
+}
+
+.toc-link:hover {
+  color: var(--color-text);
+}
+
+.toc-link.active {
+  font-weight: 500;
+  color: var(--color-accent-primary);
+}
+
+/* =================================================================
+   TOC Responsive Behavior
+   ================================================================= */
+
+@media (max-width: calc(800px + 280px + 3 * 2rem)) {
+  .toc-container {
+    position: static;
+    max-height: none;
+  }
+  
+  .toc-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .toc-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  
+  .toc-content.expanded {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  
+  .toc-header {
+    margin-bottom: 0;
+    padding-bottom: 0.75rem;
+  }
+  
+  .toc-content.expanded + .toc-header {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .toc-container {
+    padding: 1rem;
+  }
+  
+  .toc-header h4 {
+    font-size: 0.9rem;
+  }
+  
+  .toc-link {
+    font-size: 0.85rem;
+    padding: 0.4rem 0;
+  }
+}
