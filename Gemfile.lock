@@ -113,6 +113,8 @@ GEM
       google-protobuf (~> 4.31)
     sass-embedded (1.91.0-aarch64-linux-musl)
       google-protobuf (~> 4.31)
+    sass-embedded (1.91.0-aarch64-mingw-ucrt)
+      google-protobuf (~> 4.31)
     sass-embedded (1.91.0-arm-linux-androideabi)
       google-protobuf (~> 4.31)
     sass-embedded (1.91.0-arm-linux-gnueabihf)
@@ -144,6 +146,7 @@ PLATFORMS
   aarch64-linux-android
   aarch64-linux-gnu
   aarch64-linux-musl
+  aarch64-mingw-ucrt
   arm-linux-androideabi
   arm-linux-gnu
   arm-linux-gnueabihf
@@ -169,4 +172,4 @@ DEPENDENCIES
   jekyll-timeago (~> 0.13.1)
 
 BUNDLED WITH
-   2.7.1
+   2.5.11
