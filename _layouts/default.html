@@ -3,6 +3,12 @@
 {% include head.html %}
 <body>
   {% include navigation.html %}
+
+  {% if page.banner_image %}
+  <div class="page-banner">
+    <img src="{{ page.banner_image }}" alt="{{ page.title }}" class="page-banner-image">
+  </div>
+  {% endif %}
   
   <div class="main-container">
     <div class="main-content">
