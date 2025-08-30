@@ -19,6 +19,8 @@
   --color-bg-accent-dark: #e4edfa;
   --color-bg-accent-light: #f2f6fc;
 
+  --font-stack-default: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+
   --transition-color: color 0.32s ease;
   --transition-color-fast: color 0.16s ease;
   --transition-color-slow: color 0.64s ease;

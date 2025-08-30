@@ -1,23 +1,11 @@
-.intro-quote {
-  font-family: "Satoshi", sans-serif;
-  font-weight: 500;
-  margin: 0;
-}
-
 .intro-content {
-  font-size: 1.15rem;
+  margin-top: 4rem;
+  font-size: 1.2rem;
 }
 
-.intro-content-name {
-  display: flex;
-  gap: .5rem;
+.intro-name {
   margin: 1rem 0 0.5rem 0;
-  height: max-content;
-}
-
-.intro-content-name h2 {
-  margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: normal;
 }
 
