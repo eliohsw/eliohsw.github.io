@@ -22,37 +22,120 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Generate TOC from headings
   function generateTOC() {
-    const headings = document.querySelectorAll('.blog-post-content h1, .blog-post-content h2, .blog-post-content h3');
+    // Look for content containers (either blog-post-content or project-content)
+    const contentContainer = document.querySelector('.blog-post-content, .project-content');
+    if (!contentContainer) {
+      tocContainer.style.display = 'none';
+      return;
+    }
+    
+    // Look for headings within the content container
+    const headings = contentContainer.querySelectorAll('h1, h2, h3');
     
     if (headings.length === 0) {
       tocContainer.style.display = 'none';
       return;
     }
     
-    // Function to truncate long titles
-    function truncateTitle(text, maxLength = 50) {
-      if (text.length <= maxLength) {
+    // Function to measure text width in pixels
+    function getTextWidth(text, font) {
+      // Create a canvas element to measure text width
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+      context.font = font;
+      return context.measureText(text).width;
+    }
+    
+    // Function to get the computed font style for TOC links
+    function getTocFont() {
+      // Create a temporary element with TOC link styles to get the computed font
+      const tempElement = document.createElement('a');
+      tempElement.className = 'toc-link';
+      tempElement.style.visibility = 'hidden';
+      tempElement.style.position = 'absolute';
+      tempElement.textContent = 'Sample';
+      document.body.appendChild(tempElement);
+      
+      const computedStyle = window.getComputedStyle(tempElement);
+      const font = `${computedStyle.fontWeight} ${computedStyle.fontSize} ${computedStyle.fontFamily}`;
+      
+      document.body.removeChild(tempElement);
+      return font;
+    }
+    
+    // Function to get max width based on heading level
+    function getMaxWidthForLevel(level) {
+      // Convert rem to pixels (assuming 1rem = 16px)
+      const remToPx = 16;
+      const baseWidth = 280;
+      const basePadding = 2 * remToPx; // 2rem
+      const itemPadding = 2 * 0.625 * remToPx; // 2 * 0.625rem
+      
+      let levelIndent = 0;
+      if (level === 2) {
+        levelIndent = 1 * remToPx; // 1rem for h2
+      } else if (level === 3) {
+        levelIndent = 2 * remToPx; // 2rem for h3
+      }
+      // h1 has no additional indent (levelIndent = 0)
+      
+      return baseWidth - basePadding - levelIndent - itemPadding;
+    }
+    
+    // Function to truncate long titles based on pixel width and heading level
+    function truncateTitle(text, level) {
+      const font = getTocFont();
+      const maxWidthPx = getMaxWidthForLevel(level);
+      const fullWidth = getTextWidth(text, font);
+      
+      if (fullWidth <= maxWidthPx) {
         return text;
       }
       
-      // Find a good breaking point (space or punctuation)
-      let truncated = text.substring(0, maxLength);
-      const lastSpace = truncated.lastIndexOf(' ');
+      // Binary search to find the optimal truncation point
+      let left = 0;
+      let right = text.length;
+      let bestTruncation = '';
+      
+      while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        const candidate = text.substring(0, mid);
+        const candidateWidth = getTextWidth(candidate + '...', font);
+        
+        if (candidateWidth <= maxWidthPx) {
+          bestTruncation = candidate;
+          left = mid + 1;
+        } else {
+          right = mid - 1;
+        }
+      }
+      
+      // Now find a good breaking point near the optimal truncation
+      let truncated = bestTruncation;
+      const searchStart = Math.max(0, truncated.length - 15); // Look back up to 15 chars
+      const searchText = text.substring(searchStart, truncated.length);
+      
+      const lastSpace = searchText.lastIndexOf(' ');
       const lastPunctuation = Math.max(
-        truncated.lastIndexOf('.'),
-        truncated.lastIndexOf(','),
-        truncated.lastIndexOf(':'),
-        truncated.lastIndexOf(';')
+        searchText.lastIndexOf('.'),
+        searchText.lastIndexOf(','),
+        searchText.lastIndexOf(':'),
+        searchText.lastIndexOf(';')
       );
       
       // Use the last space or punctuation as breaking point if it's reasonable
-      if (lastSpace > maxLength * 0.7) {
-        truncated = text.substring(0, lastSpace);
-      } else if (lastPunctuation > maxLength * 0.7) {
-        truncated = text.substring(0, lastPunctuation + 1);
+      if (lastSpace > searchText.length * 0.5) {
+        truncated = text.substring(0, searchStart + lastSpace);
+      } else if (lastPunctuation > searchText.length * 0.5) {
+        truncated = text.substring(0, searchStart + lastPunctuation);
       }
       
-      return truncated.trim() + '...';
+      // Remove all trailing spaces and punctuation before adding ellipsis
+      // Be very aggressive about removing any trailing whitespace or punctuation
+      // This includes regular spaces, non-breaking spaces, and various punctuation
+      truncated = truncated.replace(/[\s\u00A0\u2000-\u200B\u2028\u2029\.,;:!?\-\(\)\[\]]+$/, '');
+      
+      return truncated + '...';
     }
     
     let tocHTML = '<ul class="toc-list">';
@@ -62,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
     headings.forEach(function(heading, index) {
       const level = parseInt(heading.tagName.charAt(1));
       const text = heading.textContent.trim();
-      const truncatedText = truncateTitle(text);
+      const truncatedText = truncateTitle(text, level);
       const id = heading.id || 'heading-' + index;
       
       // Ensure heading has an ID for linking
@@ -142,7 +225,11 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Highlight current section based on scroll position
   function highlightCurrentSection() {
-    const headings = document.querySelectorAll('.blog-post-content h1, .blog-post-content h2');
+    // Look for content containers (either blog-post-content or project-content)
+    const contentContainer = document.querySelector('.blog-post-content, .project-content');
+    if (!contentContainer) return;
+    
+    const headings = contentContainer.querySelectorAll('h1, h2, h3');
     const tocLinks = tocNav.querySelectorAll('.toc-link');
     
     function updateActiveLink() {
