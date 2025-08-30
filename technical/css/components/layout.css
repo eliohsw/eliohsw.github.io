@@ -37,8 +37,8 @@
   right: 0;
   z-index: 1000;
   display: flex;
-  padding: 10px 16px 10px 16px;
-  background: transparent;
+  padding: 8px 16px 8px 16px;
+  background: rgba(var(--color-bg-rgb), var(--nav-opacity, 1));
   overflow: hidden;
   border-bottom: none;
 }
@@ -52,18 +52,9 @@
   left: 0;
   width: 0;
   height: 1.5px;
-  background: #32302c;
+  background: var(--color-text-tertiary);
   transition: width 0.32s ease-out;
   transform-origin: left center;
-}
-
-@media (prefers-color-scheme: dark) {
-  .nav-bar::after {
-    background: #d4d4d4;
-  }
-}
-[data-theme="dark"] .nav-bar::after {
-  background: #d4d4d4;
 }
 
 .nav-bar.scrolled {

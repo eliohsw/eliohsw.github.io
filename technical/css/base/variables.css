@@ -26,6 +26,7 @@
   --transition-bg-color: background-color 0.32s ease;
   --transition-bg-color-fast: background-color 0.16s ease;
   --transition-border-color: border-color 0.32s ease;
+  --transition-border-color-fast: border-color 0.16s ease;
   --transition-fill: fill 0.32s ease;
 
   --transition-transform: transform 0.32s ease;

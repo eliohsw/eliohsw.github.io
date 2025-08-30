@@ -178,13 +178,53 @@ export function initRipple() {
 
 export function initScrollEffects() {
   const navBar = document.querySelector('.nav-bar');
-  window.addEventListener('scroll', () => {
+  const pageBanner = document.querySelector('.page-banner');
+  
+  // Function to update navigation opacity based on scroll position
+  function updateNavOpacity() {
+    if (pageBanner) {
+      // If there's a page banner, check if we've scrolled past it
+      const bannerBottom = pageBanner.offsetTop + pageBanner.offsetHeight;
+      const scrollPosition = window.scrollY;
+      
+      if (scrollPosition > bannerBottom) {
+        // Scrolled past banner - set opacity to 0.1
+        document.documentElement.style.setProperty('--nav-opacity', '0.1');
+      } else {
+        document.documentElement.style.setProperty('--nav-opacity', '1');
+      }
+    } else {
+      document.documentElement.style.setProperty('--nav-opacity', '0.1');
+    }
+  }
+  
+  // Function to update scrolled class and effects
+  function updateScrolledState() {
     if (window.scrollY > 0) {
       navBar.classList.add('scrolled');
     } else {
       navBar.classList.remove('scrolled');
     }
-  });
+  }
+  
+  // Combined update function
+  function updateAllScrollEffects() {
+    updateScrolledState();
+    updateNavOpacity();
+  }
+  
+  window.addEventListener('scroll', updateAllScrollEffects);
+  
+  // Initialize both opacity and scrolled state on page load
+  updateAllScrollEffects();
+  
+  // Handle browser scroll restoration with multiple checks
+  // Check again after a short delay in case browser restores scroll position
+  setTimeout(updateAllScrollEffects, 100);
+  setTimeout(updateAllScrollEffects, 300);
+  
+  // Also listen for page show event (when returning from cache)
+  window.addEventListener('pageshow', updateAllScrollEffects);
 }
 
 export function initSidebar() {
