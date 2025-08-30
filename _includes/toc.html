@@ -1,0 +1,218 @@
+<div class="toc-container" id="toc-container">
+  <div class="toc-header">
+    <h4>Contents</h4>
+    <a href="#" class="toc-top-btn" id="toc-top-btn" title="Back to top">TOP</a>
+    <button class="toc-toggle" id="toc-toggle" aria-label="Toggle table of contents">
+      <ion-icon name="chevron-down-outline"></ion-icon>
+    </button>
+  </div>
+  <div class="toc-content" id="toc-content">
+    <nav class="toc-nav">
+      <!-- TOC will be populated by JavaScript -->
+    </nav>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tocContainer = document.getElementById('toc-container');
+  const tocContent = document.getElementById('toc-content');
+  const tocToggle = document.getElementById('toc-toggle');
+  const tocNav = document.querySelector('.toc-nav');
+  
+  // Generate TOC from headings
+  function generateTOC() {
+    const headings = document.querySelectorAll('.blog-post-content h1, .blog-post-content h2, .blog-post-content h3');
+    
+    if (headings.length === 0) {
+      tocContainer.style.display = 'none';
+      return;
+    }
+    
+    // Function to truncate long titles
+    function truncateTitle(text, maxLength = 50) {
+      if (text.length <= maxLength) {
+        return text;
+      }
+      
+      // Find a good breaking point (space or punctuation)
+      let truncated = text.substring(0, maxLength);
+      const lastSpace = truncated.lastIndexOf(' ');
+      const lastPunctuation = Math.max(
+        truncated.lastIndexOf('.'),
+        truncated.lastIndexOf(','),
+        truncated.lastIndexOf(':'),
+        truncated.lastIndexOf(';')
+      );
+      
+      // Use the last space or punctuation as breaking point if it's reasonable
+      if (lastSpace > maxLength * 0.7) {
+        truncated = text.substring(0, lastSpace);
+      } else if (lastPunctuation > maxLength * 0.7) {
+        truncated = text.substring(0, lastPunctuation + 1);
+      }
+      
+      return truncated.trim() + '...';
+    }
+    
+    let tocHTML = '<ul class="toc-list">';
+    let currentLevel = 0;
+    let openLists = 0;
+    
+    headings.forEach(function(heading, index) {
+      const level = parseInt(heading.tagName.charAt(1));
+      const text = heading.textContent.trim();
+      const truncatedText = truncateTitle(text);
+      const id = heading.id || 'heading-' + index;
+      
+      // Ensure heading has an ID for linking
+      if (!heading.id) {
+        heading.id = id;
+      }
+      
+      if (level > currentLevel) {
+        while (currentLevel < level) {
+          if (currentLevel > 0) {
+            tocHTML += '<ul class="toc-list toc-nested">';
+            openLists++;
+          }
+          currentLevel++;
+        }
+      } else if (level < currentLevel) {
+        while (currentLevel > level) {
+          tocHTML += '</ul>';
+          openLists--;
+          currentLevel--;
+        }
+      }
+      
+      tocHTML += `<li class="toc-item toc-level-${level}">
+        <a href="#${id}" class="toc-link" data-level="${level}" title="${text}">${truncatedText}</a>
+      </li>`;
+    });
+    
+    // Close remaining lists
+    while (openLists > 0) {
+      tocHTML += '</ul>';
+      openLists--;
+    }
+    
+    tocHTML += '</ul>';
+    tocNav.innerHTML = tocHTML;
+    
+    // Add click handlers
+    const tocLinks = tocNav.querySelectorAll('.toc-link');
+    tocLinks.forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Handle regular heading links
+        const targetId = this.getAttribute('href').substring(1);
+        const targetElement = document.getElementById(targetId);
+        
+        if (targetElement) {
+          // Smooth scroll to target
+          targetElement.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+          });
+          
+          // Update active state
+          tocLinks.forEach(l => l.classList.remove('active'));
+          this.classList.add('active');
+        }
+      });
+    });
+    
+    // Add TOP button handler
+    const topBtn = document.getElementById('toc-top-btn');
+    if (topBtn) {
+      topBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
+    
+    // Highlight current section on scroll
+    highlightCurrentSection();
+  }
+  
+  // Highlight current section based on scroll position
+  function highlightCurrentSection() {
+    const headings = document.querySelectorAll('.blog-post-content h1, .blog-post-content h2');
+    const tocLinks = tocNav.querySelectorAll('.toc-link');
+    
+    function updateActiveLink() {
+      let currentHeading = null;
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const offset = 100; // Offset for better UX
+      
+      // Check if we're at the very top
+      const isAtTop = scrollTop <= 50; // Small threshold for "top"
+      
+      if (!isAtTop) {
+        headings.forEach(function(heading) {
+          const headingTop = heading.getBoundingClientRect().top + scrollTop;
+          if (headingTop <= scrollTop + offset) {
+            currentHeading = heading;
+          }
+        });
+      }
+      
+      tocLinks.forEach(function(link) {
+        link.classList.remove('active');
+        
+        if (currentHeading && link.getAttribute('href') === '#' + currentHeading.id) {
+          // Activate corresponding heading link
+          link.classList.add('active');
+        }
+      });
+    }
+    
+    // Update on scroll
+    let ticking = false;
+    window.addEventListener('scroll', function() {
+      if (!ticking) {
+        requestAnimationFrame(function() {
+          updateActiveLink();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+    
+    // Initial update
+    updateActiveLink();
+  }
+  
+  // Toggle TOC visibility (for mobile)
+  tocToggle.addEventListener('click', function() {
+    tocContent.classList.toggle('expanded');
+    const icon = tocToggle.querySelector('ion-icon');
+    if (tocContent.classList.contains('expanded')) {
+      icon.setAttribute('name', 'chevron-up-outline');
+    } else {
+      icon.setAttribute('name', 'chevron-down-outline');
+    }
+  });
+  
+  // Initialize TOC
+  generateTOC();
+  
+  // Handle window resize
+  let resizeTimeout;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(function() {
+      // Reset mobile toggle state on desktop
+      if (window.innerWidth >= 1024) {
+        tocContent.classList.remove('expanded');
+        tocToggle.querySelector('ion-icon').setAttribute('name', 'chevron-down-outline');
+      }
+    }, 250);
+  });
+});
+</script>
