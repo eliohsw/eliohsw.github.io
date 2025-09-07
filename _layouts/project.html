@@ -30,8 +30,14 @@ layout: default
     {% endif %}
   </div>
 
-  <div class="project-content">
-    {{ content }}
+  <div class="project-main">
+    <div class="project-content">
+      {{ content }}
+    </div>
+    
+    <aside class="project-sidebar">
+      {% include toc.html %}
+    </aside>
   </div>
 
   <div class="project-navigation">
@@ -70,4 +76,3 @@ layout: default
 </div>
 
 <script src="/technical/js/copy-page-link.js"></script>
-<script src="/technical/js/to-top-button.js"></script>

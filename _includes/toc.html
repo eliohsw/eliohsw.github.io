@@ -1,0 +1,211 @@
+<div class="toc-container" id="toc-container">
+  <div class="toc-header">
+    <h4>Contents</h4>
+    <a href="#" class="toc-top-btn" id="toc-top-btn" title="Back to top">TOP</a>
+    <button class="toc-toggle" id="toc-toggle" aria-label="Toggle table of contents">
+      <ion-icon name="chevron-down-outline"></ion-icon>
+    </button>
+  </div>
+  <div class="toc-content" id="toc-content">
+    <nav class="toc-nav">
+      <!-- TOC will be populated by JavaScript -->
+    </nav>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tocContainer = document.getElementById('toc-container');
+  const tocHeader = document.querySelector('.toc-header');
+  const tocContent = document.getElementById('toc-content');
+  const tocToggle = document.getElementById('toc-toggle');
+  const tocNav = document.querySelector('.toc-nav');
+  
+  function generateTOC() {
+    const contentContainer = document.querySelector('.blog-post-content, .project-content');
+    if (!contentContainer) {
+      tocContainer.style.display = 'none';
+      return;
+    }
+    
+    const headings = contentContainer.querySelectorAll('h1, h2, h3');
+    if (headings.length === 0) {
+      tocContainer.style.display = 'none';
+      return;
+    }
+    
+    function getTextWidth(text, font) {
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+      context.font = font;
+      return context.measureText(text).width;
+    }
+    
+    function getTocFont() {
+      const el = document.createElement('a');
+      el.className = 'toc-link';
+      el.style.cssText = 'visibility:hidden;position:absolute';
+      el.textContent = 'Sample';
+      document.body.appendChild(el);
+      const style = getComputedStyle(el);
+      const font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+      document.body.removeChild(el);
+      return font;
+    }
+    
+    const MAX_WIDTHS = {1: 228, 2: 212, 3: 196}; // Pre-calculated max widths for h1, h2, h3
+    
+    function truncateTitle(text, level) {
+      const font = getTocFont();
+      const maxWidth = MAX_WIDTHS[level];
+      if (getTextWidth(text, font) <= maxWidth) return text;
+      
+      let left = 0, right = text.length, best = '';
+      while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        const candidate = text.substring(0, mid);
+        if (getTextWidth(candidate + '...', font) <= maxWidth) {
+          best = candidate;
+          left = mid + 1;
+        } else {
+          right = mid - 1;
+        }
+      }
+      
+      const searchStart = Math.max(0, best.length - 15);
+      const searchText = text.substring(searchStart, best.length);
+      const lastSpace = searchText.lastIndexOf(' ');
+      const lastPunct = Math.max(searchText.lastIndexOf('.'), searchText.lastIndexOf(','), searchText.lastIndexOf(':'), searchText.lastIndexOf(';'));
+      
+      if (lastSpace > searchText.length * 0.5) {
+        best = text.substring(0, searchStart + lastSpace);
+      } else if (lastPunct > searchText.length * 0.5) {
+        best = text.substring(0, searchStart + lastPunct);
+      }
+      
+      return best.replace(/\s+$/, '').replace(/[\.,;:!?]+$/, '') + '...';
+    }
+    
+    let html = '<ul class="toc-list">', currentLevel = 0, openLists = 0;
+    
+    headings.forEach((heading, index) => {
+      const level = parseInt(heading.tagName.charAt(1));
+      const text = heading.textContent.trim();
+      const truncatedText = truncateTitle(text, level);
+      const id = heading.id || 'heading-' + index;
+      
+      if (!heading.id) heading.id = id;
+      
+      if (level > currentLevel) {
+        while (currentLevel < level) {
+          if (currentLevel > 0) {
+            html += '<ul class="toc-list toc-nested">';
+            openLists++;
+          }
+          currentLevel++;
+        }
+      } else if (level < currentLevel) {
+        while (currentLevel > level) {
+          html += '</ul>';
+          openLists--;
+          currentLevel--;
+        }
+      }
+      
+      html += `<li class="toc-item toc-level-${level}"><a href="#${id}" class="toc-link" data-level="${level}" title="${text}">${truncatedText}</a></li>`;
+    });
+    
+    while (openLists > 0) {
+      html += '</ul>';
+      openLists--;
+    }
+    html += '</ul>';
+    tocNav.innerHTML = html;
+    
+    const tocLinks = tocNav.querySelectorAll('.toc-link');
+    tocLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.getElementById(this.getAttribute('href').substring(1));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          tocLinks.forEach(l => l.classList.remove('active'));
+          this.classList.add('active');
+        }
+      });
+    });
+    
+    const topBtn = document.getElementById('toc-top-btn');
+    if (topBtn) {
+      topBtn.addEventListener('click', e => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+    
+    highlightCurrentSection();
+  }
+  
+  function highlightCurrentSection() {
+    const contentContainer = document.querySelector('.blog-post-content, .project-content');
+    if (!contentContainer) return;
+    
+    const headings = contentContainer.querySelectorAll('h1, h2, h3');
+    const tocLinks = tocNav.querySelectorAll('.toc-link');
+    
+    function updateActiveLink() {
+      let currentHeading = null;
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      
+      if (scrollTop > 50) {
+        headings.forEach(heading => {
+          if (heading.getBoundingClientRect().top + scrollTop <= scrollTop + 100) {
+            currentHeading = heading;
+          }
+        });
+      }
+      
+      tocLinks.forEach(link => {
+        link.classList.remove('active');
+        if (currentHeading && link.getAttribute('href') === '#' + currentHeading.id) {
+          link.classList.add('active');
+        }
+      });
+    }
+    
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateActiveLink();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+    
+    updateActiveLink();
+  }
+  
+  tocToggle.addEventListener('click', () => {
+    tocHeader.classList.toggle('expanded');
+    tocContent.classList.toggle('expanded');
+    const icon = tocToggle.querySelector('ion-icon');
+    icon.setAttribute('name', tocContent.classList.contains('expanded') ? 'chevron-up-outline' : 'chevron-down-outline');
+  });
+  
+  generateTOC();
+  
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      if (window.innerWidth >= 1024) {
+        tocHeader.classList.remove('expanded');
+        tocContent.classList.remove('expanded');
+        tocToggle.querySelector('ion-icon').setAttribute('name', 'chevron-down-outline');
+      }
+    }, 250);
+  });
+});
+</script>

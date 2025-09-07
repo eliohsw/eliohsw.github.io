@@ -188,13 +188,13 @@ export function initScrollEffects() {
       const scrollPosition = window.scrollY;
       
       if (scrollPosition > bannerBottom) {
-        // Scrolled past banner - set opacity to 0.1
-        document.documentElement.style.setProperty('--nav-opacity', '0.1');
+        // Scrolled past banner - set opacity to 0.5
+        document.documentElement.style.setProperty('--nav-opacity', '0.5');
       } else {
         document.documentElement.style.setProperty('--nav-opacity', '1');
       }
     } else {
-      document.documentElement.style.setProperty('--nav-opacity', '0.1');
+      document.documentElement.style.setProperty('--nav-opacity', '0.5');
     }
   }
   
