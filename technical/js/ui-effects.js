@@ -4,7 +4,7 @@
 export function initGreeting() {
   const greetingElement = document.getElementById('greeting');
   if (!greetingElement) return;
-  greetingElement.textContent = "Loading...";
+  greetingElement.textContent = "Hi, I'm Elio.";
   
   let allGreetings = [];
   let validGreetings = [];
