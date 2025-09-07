@@ -16,216 +16,137 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const tocContainer = document.getElementById('toc-container');
+  const tocHeader = document.querySelector('.toc-header');
   const tocContent = document.getElementById('toc-content');
   const tocToggle = document.getElementById('toc-toggle');
   const tocNav = document.querySelector('.toc-nav');
   
-  // Generate TOC from headings
   function generateTOC() {
-    // Look for content containers (either blog-post-content or project-content)
     const contentContainer = document.querySelector('.blog-post-content, .project-content');
     if (!contentContainer) {
       tocContainer.style.display = 'none';
       return;
     }
     
-    // Look for headings within the content container
     const headings = contentContainer.querySelectorAll('h1, h2, h3');
-    
     if (headings.length === 0) {
       tocContainer.style.display = 'none';
       return;
     }
     
-    // Function to measure text width in pixels
     function getTextWidth(text, font) {
-      // Create a canvas element to measure text width
       const canvas = document.createElement('canvas');
       const context = canvas.getContext('2d');
       context.font = font;
       return context.measureText(text).width;
     }
     
-    // Function to get the computed font style for TOC links
     function getTocFont() {
-      // Create a temporary element with TOC link styles to get the computed font
-      const tempElement = document.createElement('a');
-      tempElement.className = 'toc-link';
-      tempElement.style.visibility = 'hidden';
-      tempElement.style.position = 'absolute';
-      tempElement.textContent = 'Sample';
-      document.body.appendChild(tempElement);
-      
-      const computedStyle = window.getComputedStyle(tempElement);
-      const font = `${computedStyle.fontWeight} ${computedStyle.fontSize} ${computedStyle.fontFamily}`;
-      
-      document.body.removeChild(tempElement);
+      const el = document.createElement('a');
+      el.className = 'toc-link';
+      el.style.cssText = 'visibility:hidden;position:absolute';
+      el.textContent = 'Sample';
+      document.body.appendChild(el);
+      const style = getComputedStyle(el);
+      const font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+      document.body.removeChild(el);
       return font;
     }
     
-    // Function to get max width based on heading level
-    function getMaxWidthForLevel(level) {
-      // Convert rem to pixels (assuming 1rem = 16px)
-      const remToPx = 16;
-      const baseWidth = 280;
-      const basePadding = 2 * remToPx; // 2rem
-      const itemPadding = 2 * 0.625 * remToPx; // 2 * 0.625rem
-      
-      let levelIndent = 0;
-      if (level === 2) {
-        levelIndent = 1 * remToPx; // 1rem for h2
-      } else if (level === 3) {
-        levelIndent = 2 * remToPx; // 2rem for h3
-      }
-      // h1 has no additional indent (levelIndent = 0)
-      
-      return baseWidth - basePadding - levelIndent - itemPadding;
-    }
+    const MAX_WIDTHS = {1: 228, 2: 212, 3: 196}; // Pre-calculated max widths for h1, h2, h3
     
-    // Function to truncate long titles based on pixel width and heading level
     function truncateTitle(text, level) {
       const font = getTocFont();
-      const maxWidthPx = getMaxWidthForLevel(level);
-      const fullWidth = getTextWidth(text, font);
+      const maxWidth = MAX_WIDTHS[level];
+      if (getTextWidth(text, font) <= maxWidth) return text;
       
-      if (fullWidth <= maxWidthPx) {
-        return text;
-      }
-      
-      // Binary search to find the optimal truncation point
-      let left = 0;
-      let right = text.length;
-      let bestTruncation = '';
-      
+      let left = 0, right = text.length, best = '';
       while (left <= right) {
         const mid = Math.floor((left + right) / 2);
         const candidate = text.substring(0, mid);
-        const candidateWidth = getTextWidth(candidate + '...', font);
-        
-        if (candidateWidth <= maxWidthPx) {
-          bestTruncation = candidate;
+        if (getTextWidth(candidate + '...', font) <= maxWidth) {
+          best = candidate;
           left = mid + 1;
         } else {
           right = mid - 1;
         }
       }
       
-      // Now find a good breaking point near the optimal truncation
-      let truncated = bestTruncation;
-      const searchStart = Math.max(0, truncated.length - 15); // Look back up to 15 chars
-      const searchText = text.substring(searchStart, truncated.length);
-      
+      const searchStart = Math.max(0, best.length - 15);
+      const searchText = text.substring(searchStart, best.length);
       const lastSpace = searchText.lastIndexOf(' ');
-      const lastPunctuation = Math.max(
-        searchText.lastIndexOf('.'),
-        searchText.lastIndexOf(','),
-        searchText.lastIndexOf(':'),
-        searchText.lastIndexOf(';')
-      );
+      const lastPunct = Math.max(searchText.lastIndexOf('.'), searchText.lastIndexOf(','), searchText.lastIndexOf(':'), searchText.lastIndexOf(';'));
       
-      // Use the last space or punctuation as breaking point if it's reasonable
       if (lastSpace > searchText.length * 0.5) {
-        truncated = text.substring(0, searchStart + lastSpace);
-      } else if (lastPunctuation > searchText.length * 0.5) {
-        truncated = text.substring(0, searchStart + lastPunctuation);
+        best = text.substring(0, searchStart + lastSpace);
+      } else if (lastPunct > searchText.length * 0.5) {
+        best = text.substring(0, searchStart + lastPunct);
       }
       
-      // Remove all trailing spaces and punctuation before adding ellipsis
-      // Be very aggressive about removing any trailing whitespace or punctuation
-      // This includes regular spaces, non-breaking spaces, and various punctuation
-      truncated = truncated.replace(/[\s\u00A0\u2000-\u200B\u2028\u2029\.,;:!?\-\(\)\[\]]+$/, '');
-      
-      return truncated + '...';
+      return best.replace(/\s+$/, '').replace(/[\.,;:!?]+$/, '') + '...';
     }
     
-    let tocHTML = '<ul class="toc-list">';
-    let currentLevel = 0;
-    let openLists = 0;
+    let html = '<ul class="toc-list">', currentLevel = 0, openLists = 0;
     
-    headings.forEach(function(heading, index) {
+    headings.forEach((heading, index) => {
       const level = parseInt(heading.tagName.charAt(1));
       const text = heading.textContent.trim();
       const truncatedText = truncateTitle(text, level);
       const id = heading.id || 'heading-' + index;
       
-      // Ensure heading has an ID for linking
-      if (!heading.id) {
-        heading.id = id;
-      }
+      if (!heading.id) heading.id = id;
       
       if (level > currentLevel) {
         while (currentLevel < level) {
           if (currentLevel > 0) {
-            tocHTML += '<ul class="toc-list toc-nested">';
+            html += '<ul class="toc-list toc-nested">';
             openLists++;
           }
           currentLevel++;
         }
       } else if (level < currentLevel) {
         while (currentLevel > level) {
-          tocHTML += '</ul>';
+          html += '</ul>';
           openLists--;
           currentLevel--;
         }
       }
       
-      tocHTML += `<li class="toc-item toc-level-${level}">
-        <a href="#${id}" class="toc-link" data-level="${level}" title="${text}">${truncatedText}</a>
-      </li>`;
+      html += `<li class="toc-item toc-level-${level}"><a href="#${id}" class="toc-link" data-level="${level}" title="${text}">${truncatedText}</a></li>`;
     });
     
-    // Close remaining lists
     while (openLists > 0) {
-      tocHTML += '</ul>';
+      html += '</ul>';
       openLists--;
     }
+    html += '</ul>';
+    tocNav.innerHTML = html;
     
-    tocHTML += '</ul>';
-    tocNav.innerHTML = tocHTML;
-    
-    // Add click handlers
     const tocLinks = tocNav.querySelectorAll('.toc-link');
-    tocLinks.forEach(function(link) {
+    tocLinks.forEach(link => {
       link.addEventListener('click', function(e) {
         e.preventDefault();
-        
-        // Handle regular heading links
-        const targetId = this.getAttribute('href').substring(1);
-        const targetElement = document.getElementById(targetId);
-        
-        if (targetElement) {
-          // Smooth scroll to target
-          targetElement.scrollIntoView({ 
-            behavior: 'smooth',
-            block: 'start'
-          });
-          
-          // Update active state
+        const target = document.getElementById(this.getAttribute('href').substring(1));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
           tocLinks.forEach(l => l.classList.remove('active'));
           this.classList.add('active');
         }
       });
     });
     
-    // Add TOP button handler
     const topBtn = document.getElementById('toc-top-btn');
     if (topBtn) {
-      topBtn.addEventListener('click', function(e) {
+      topBtn.addEventListener('click', e => {
         e.preventDefault();
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     }
     
-    // Highlight current section on scroll
     highlightCurrentSection();
   }
   
-  // Highlight current section based on scroll position
   function highlightCurrentSection() {
-    // Look for content containers (either blog-post-content or project-content)
     const contentContainer = document.querySelector('.blog-post-content, .project-content');
     if (!contentContainer) return;
     
@@ -235,35 +156,27 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateActiveLink() {
       let currentHeading = null;
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const offset = 100; // Offset for better UX
       
-      // Check if we're at the very top
-      const isAtTop = scrollTop <= 50; // Small threshold for "top"
-      
-      if (!isAtTop) {
-        headings.forEach(function(heading) {
-          const headingTop = heading.getBoundingClientRect().top + scrollTop;
-          if (headingTop <= scrollTop + offset) {
+      if (scrollTop > 50) {
+        headings.forEach(heading => {
+          if (heading.getBoundingClientRect().top + scrollTop <= scrollTop + 100) {
             currentHeading = heading;
           }
         });
       }
       
-      tocLinks.forEach(function(link) {
+      tocLinks.forEach(link => {
         link.classList.remove('active');
-        
         if (currentHeading && link.getAttribute('href') === '#' + currentHeading.id) {
-          // Activate corresponding heading link
           link.classList.add('active');
         }
       });
     }
     
-    // Update on scroll
     let ticking = false;
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', () => {
       if (!ticking) {
-        requestAnimationFrame(function() {
+        requestAnimationFrame(() => {
           updateActiveLink();
           ticking = false;
         });
@@ -271,31 +184,24 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
     
-    // Initial update
     updateActiveLink();
   }
   
-  // Toggle TOC visibility (for mobile)
-  tocToggle.addEventListener('click', function() {
+  tocToggle.addEventListener('click', () => {
+    tocHeader.classList.toggle('expanded');
     tocContent.classList.toggle('expanded');
     const icon = tocToggle.querySelector('ion-icon');
-    if (tocContent.classList.contains('expanded')) {
-      icon.setAttribute('name', 'chevron-up-outline');
-    } else {
-      icon.setAttribute('name', 'chevron-down-outline');
-    }
+    icon.setAttribute('name', tocContent.classList.contains('expanded') ? 'chevron-up-outline' : 'chevron-down-outline');
   });
   
-  // Initialize TOC
   generateTOC();
   
-  // Handle window resize
   let resizeTimeout;
-  window.addEventListener('resize', function() {
+  window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(function() {
-      // Reset mobile toggle state on desktop
+    resizeTimeout = setTimeout(() => {
       if (window.innerWidth >= 1024) {
+        tocHeader.classList.remove('expanded');
         tocContent.classList.remove('expanded');
         tocToggle.querySelector('ion-icon').setAttribute('name', 'chevron-down-outline');
       }

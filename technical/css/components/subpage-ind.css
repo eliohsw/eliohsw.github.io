@@ -24,7 +24,7 @@
   padding: 2rem 0rem;
 
   .project-header, .blog-post-header {
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
   }
 
   .breadcrumb {
@@ -337,6 +337,10 @@
         }
       }
     }
+  }
+
+  .project-content > :first-child, .blog-post-content > :first-child {
+    margin-top: 0 !important;
   }
 
   .project-navigation, .blog-post-navigation {
