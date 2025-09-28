@@ -4,7 +4,7 @@
 export function initGreeting() {
   const greetingElement = document.getElementById('greeting');
   if (!greetingElement) return;
-  greetingElement.textContent = "Hi, I'm Elio.";
+  greetingElement.textContent = "Hi, I’m Elio.";
   
   let allGreetings = [];
   let validGreetings = [];
@@ -114,7 +114,7 @@ export function initGreeting() {
     })
     .catch(error => {
       console.error('Error loading greetings:', error);
-      greetingElement.textContent = "Hi, I'm Elio";
+      greetingElement.textContent = "Hi, I’m Elio";
     });
 }
 
