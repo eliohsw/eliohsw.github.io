@@ -92,6 +92,7 @@ GEM
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
+    logger (1.7.0)
     mercenary (0.4.0)
     mini_i18n (1.1.0)
     pathutil (0.16.2)
@@ -170,6 +171,7 @@ DEPENDENCIES
   jekyll-feed
   jekyll-sitemap
   jekyll-timeago (~> 0.13.1)
+  logger
 
 BUNDLED WITH
    2.5.11

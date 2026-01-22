@@ -4,6 +4,7 @@ source "https://rubygems.org"
 
 # Jekyll
 gem "jekyll", "~> 4.4"
+gem "logger"
 
 # Jekyll plugins
 gem "jekyll-feed"
