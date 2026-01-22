@@ -1,12 +1,13 @@
 ---
 layout: subpage
 title: "Blog | Elio Huang"
+permalink: /blog/
 page_title: "Blog"
-css_path: "../technical/css/main.css"
-js_main_path: "../technical/js/main.js"
-js_ui_loader_path: "../technical/js/ui-loader.js"
-js_ui_effects_path: "../technical/js/ui-effects.js"
-favicon_path: "../technical/assets/icons/favicon.png"
+css_path: "technical/css/main.css"
+js_main_path: "technical/js/main.js"
+js_ui_loader_path: "technical/js/ui-loader.js"
+js_ui_effects_path: "technical/js/ui-effects.js"
+favicon_path: "technical/assets/icons/favicon.png"
 ---
 
 {% assign sorted_blogs = site.blog | where: 'hidden', false | sort: 'date' | reverse %}

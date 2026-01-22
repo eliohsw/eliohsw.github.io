@@ -20,6 +20,45 @@ document.addEventListener('DOMContentLoaded', function() {
   const tocContent = document.getElementById('toc-content');
   const tocToggle = document.getElementById('toc-toggle');
   const tocNav = document.querySelector('.toc-nav');
+  let tocHeadings = [];
+  let tocLinks = [];
+  let scrollSpyInitialized = false;
+
+  function updateActiveLink() {
+    if (tocHeadings.length === 0 || tocLinks.length === 0) return;
+    let currentHeading = null;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (scrollTop > 50) {
+      tocHeadings.forEach(heading => {
+        if (heading.getBoundingClientRect().top + scrollTop <= scrollTop + 100) {
+          currentHeading = heading;
+        }
+      });
+    }
+    
+    tocLinks.forEach(link => {
+      link.classList.remove('active');
+      if (currentHeading && link.getAttribute('href') === '#' + currentHeading.id) {
+        link.classList.add('active');
+      }
+    });
+  }
+
+  function initScrollSpy() {
+    if (scrollSpyInitialized) return;
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateActiveLink();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+    scrollSpyInitialized = true;
+  }
   
   function generateTOC() {
     const contentContainer = document.querySelector('.blog-post-content, .project-content');
@@ -33,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
       tocContainer.style.display = 'none';
       return;
     }
+    tocHeadings = Array.from(headings);
     
     function getTextWidth(text, font) {
       const canvas = document.createElement('canvas');
@@ -41,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
       return context.measureText(text).width;
     }
     
-    function getTocFont() {
+    function getTocMetrics() {
       const el = document.createElement('a');
       el.className = 'toc-link';
       el.style.cssText = 'visibility:hidden;position:absolute';
@@ -49,15 +89,41 @@ document.addEventListener('DOMContentLoaded', function() {
       document.body.appendChild(el);
       const style = getComputedStyle(el);
       const font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+      const paddingX = (parseFloat(style.paddingLeft) || 0) + (parseFloat(style.paddingRight) || 0);
       document.body.removeChild(el);
-      return font;
+      return { font, paddingX };
+    }
+
+    function getNestedIndent() {
+      const el = document.createElement('ul');
+      el.className = 'toc-list toc-nested';
+      el.style.cssText = 'visibility:hidden;position:absolute';
+      tocNav.appendChild(el);
+      const indent = parseFloat(getComputedStyle(el).paddingLeft) || 0;
+      tocNav.removeChild(el);
+      return indent;
+    }
+
+    function getMaxWidths() {
+      const metrics = getTocMetrics();
+      const contentStyles = getComputedStyle(tocContent);
+      const contentPaddingX = (parseFloat(contentStyles.paddingLeft) || 0) + (parseFloat(contentStyles.paddingRight) || 0);
+      const contentWidth = tocContent.getBoundingClientRect().width || tocContainer.getBoundingClientRect().width;
+      const nestedIndent = getNestedIndent();
+      const fallbackBase = 240;
+      const baseWidth = Math.max(120, (contentWidth || fallbackBase) - contentPaddingX - metrics.paddingX);
+      return {
+        font: metrics.font,
+        widths: {
+          1: baseWidth,
+          2: Math.max(90, baseWidth - nestedIndent),
+          3: Math.max(70, baseWidth - nestedIndent * 2)
+        }
+      };
     }
     
-    const MAX_WIDTHS = {1: 228, 2: 212, 3: 196}; // Pre-calculated max widths for h1, h2, h3
-    
-    function truncateTitle(text, level) {
-      const font = getTocFont();
-      const maxWidth = MAX_WIDTHS[level];
+    function truncateTitle(text, level, font, maxWidths) {
+      const maxWidth = maxWidths[level] || maxWidths[3] || 180;
       if (getTextWidth(text, font) <= maxWidth) return text;
       
       let left = 0, right = text.length, best = '';
@@ -87,11 +153,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     let html = '<ul class="toc-list">', currentLevel = 0, openLists = 0;
+    const { font, widths: maxWidths } = getMaxWidths();
     
     headings.forEach((heading, index) => {
       const level = parseInt(heading.tagName.charAt(1));
       const text = heading.textContent.trim();
-      const truncatedText = truncateTitle(text, level);
+      const truncatedText = truncateTitle(text, level, font, maxWidths);
       const id = heading.id || 'heading-' + index;
       
       if (!heading.id) heading.id = id;
@@ -122,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
     html += '</ul>';
     tocNav.innerHTML = html;
     
-    const tocLinks = tocNav.querySelectorAll('.toc-link');
+    tocLinks = Array.from(tocNav.querySelectorAll('.toc-link'));
     tocLinks.forEach(link => {
       link.addEventListener('click', function(e) {
         e.preventDefault();
@@ -137,53 +204,16 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const topBtn = document.getElementById('toc-top-btn');
     if (topBtn) {
-      topBtn.addEventListener('click', e => {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
+      if (!topBtn.dataset.listenerAttached) {
+        topBtn.addEventListener('click', e => {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        topBtn.dataset.listenerAttached = 'true';
+      }
     }
     
-    highlightCurrentSection();
-  }
-  
-  function highlightCurrentSection() {
-    const contentContainer = document.querySelector('.blog-post-content, .project-content');
-    if (!contentContainer) return;
-    
-    const headings = contentContainer.querySelectorAll('h1, h2, h3');
-    const tocLinks = tocNav.querySelectorAll('.toc-link');
-    
-    function updateActiveLink() {
-      let currentHeading = null;
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      
-      if (scrollTop > 50) {
-        headings.forEach(heading => {
-          if (heading.getBoundingClientRect().top + scrollTop <= scrollTop + 100) {
-            currentHeading = heading;
-          }
-        });
-      }
-      
-      tocLinks.forEach(link => {
-        link.classList.remove('active');
-        if (currentHeading && link.getAttribute('href') === '#' + currentHeading.id) {
-          link.classList.add('active');
-        }
-      });
-    }
-    
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          updateActiveLink();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    });
-    
+    initScrollSpy();
     updateActiveLink();
   }
   
@@ -200,6 +230,7 @@ document.addEventListener('DOMContentLoaded', function() {
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
+      generateTOC();
       if (window.innerWidth >= 1024) {
         tocHeader.classList.remove('expanded');
         tocContent.classList.remove('expanded');
