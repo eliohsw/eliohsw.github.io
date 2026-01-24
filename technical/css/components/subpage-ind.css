@@ -392,6 +392,7 @@
   .project-navigation, .blog-post-navigation {
     border-top: 1.5px solid var(--color-text-tertiary);
     padding-top: 2rem;
+    transition: var(--transition-border-color);
   }
 
   .nav-links {
@@ -420,7 +421,7 @@
     max-width: 45%;
     height: 1.2rem;
 
-    transition: var(--transition-color-fast), var(--transition-bg-color-fast);
+    transition: var(--transition-color-fast), var(--transition-bg-color);
   }
 
   .nav-link:hover {
@@ -502,6 +503,7 @@
   .blog-post-main, .project-main {
     grid-template-columns: 1fr;
     gap: 2rem;
+    row-gap: 0;
   }
   
   .blog-post-sidebar, .project-sidebar {
@@ -511,6 +513,7 @@
 
 @media (max-width: 575px) {
   .blog-post-main, .project-main {
-    gap: 1.5rem;
+    column-gap: 1.5rem;
+    row-gap: 0;
   }
 }

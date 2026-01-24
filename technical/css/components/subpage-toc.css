@@ -146,6 +146,7 @@
   font-weight: 500;
   color: var(--color-accent-primary);
   background-color: var(--color-bg-accent-dark);
+  transition: var(--transition-bg-color);
 }
 
 /* =================================================================

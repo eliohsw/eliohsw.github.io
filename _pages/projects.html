@@ -27,7 +27,12 @@ favicon_path: "technical/assets/icons/favicon.png"
     <div class="card-box" data-tags="{{ project.tags | join: ',' | downcase }}">
       <div class="card-box-header">
         <div class="card-header-row">
-          <span class="card-date">{{ project.date | date: "%Y-%m-%d" }}</span>
+          <div class="card-meta">
+            <span class="card-date">{{ project.date | date: "%Y-%m-%d" }}</span>
+            {% if project.reading_time %}
+            <span class="card-reading-time">{{ project.reading_time }} min read</span>
+            {% endif %}
+          </div>
           <a class="card-link" href="{{ project.url }}" aria-label="View Project">
             <span>View</span>
             <ion-icon name="arrow-forward-outline"></ion-icon>
@@ -71,11 +76,9 @@ document.addEventListener('DOMContentLoaded', function() {
                      title.includes(lowerKeyword) || 
                      subtitle.includes(lowerKeyword);
       
+      card.style.display = matches ? '' : 'none';
       if (matches) {
-        card.style.display = 'block';
         visibleCount++;
-      } else {
-        card.style.display = 'none';
       }
     });
     
