@@ -5,7 +5,18 @@ layout: default
 <div class="project-page">
   <div class="project-header">
     <div class="breadcrumb">
-      <a href="/">Home</a> / <a href="/projects/">Projects</a> / <span class="breadcrumb-title" onclick="copyPageLink()" title="Click to copy link to this page">{{ page.title }}</span>
+      <div class="breadcrumb-item">
+        <a href="/">Home</a>
+      </div>
+      <div class="breadcrumb-separator">/</div>
+      <div class="breadcrumb-item">
+        <a href="/projects/">Projects</a>
+      </div>
+      <div class="breadcrumb-separator">/</div>
+      <div class="breadcrumb-item breadcrumb-title">{{ page.title }}</div>
+      <button class="breadcrumb-copy-btn" type="button" onclick="copyPageLink()" aria-label="Copy link to this page" title="Copy link to this page">
+        <ion-icon src="/technical/assets/icons/icon-copy.svg" aria-hidden="true"></ion-icon>
+      </button>
     </div>
     <div class="project-meta">
       <span class="project-date">{{ page.date | date: "%B %d, %Y" }}</span>

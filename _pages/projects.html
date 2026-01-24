@@ -25,21 +25,37 @@ favicon_path: "technical/assets/icons/favicon.png"
   {% if sorted_projects.size > 0 %}
     {% for project in sorted_projects %}
     <div class="card-box" data-tags="{{ project.tags | join: ',' | downcase }}">
-      <div class="card-box-header">
+      <div class="card-header">
         <div class="card-header-row">
-          <span class="card-date">{{ project.date | date: "%Y-%m-%d" }}</span>
+          <div class="card-meta">
+            <span class="card-date">{{ project.date | date: "%Y-%m-%d" }}</span>
+            {% if project.reading_time %}
+            <span class="card-reading-time">{{ project.reading_time }} min read</span>
+            {% endif %}
+          </div>
           <a class="card-link" href="{{ project.url }}" aria-label="View Project">
             <span>View</span>
             <ion-icon name="arrow-forward-outline"></ion-icon>
           </a>
         </div>
-        <h2 class="card-title"><a href="{{ project.url }}">{{ project.title }}</a></h2>
       </div>
-      <div class="card-subtitle">{{ project.subtitle }}</div>
-      <div class="project-tags">
-        {% for tag in project.tags %}
-        <span class="project-tag" data-tag="{{ tag | downcase }}">{{ tag }}</span>
-        {% endfor %}
+      <div class="card-contents">
+        <div class="card-info">
+          <h2 class="card-title"><a href="{{ project.url }}">{{ project.title }}</a></h2>
+          <div class="card-subtitle">{{ project.subtitle }}</div>
+          <div class="project-tags">
+            {% for tag in project.tags %}
+            <span class="project-tag" data-tag="{{ tag | downcase }}">{{ tag }}</span>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="card-images">
+          {% if project.images and project.images.size > 0 %}
+            {% for image in project.images %}
+            <img class="card-image" src="{{ image }}" alt="{{ project.title }} image {{ forloop.index }}" loading="lazy" />
+            {% endfor %}
+          {% endif %}
+        </div>
       </div>
     </div>
     {% endfor %}
@@ -71,11 +87,9 @@ document.addEventListener('DOMContentLoaded', function() {
                      title.includes(lowerKeyword) || 
                      subtitle.includes(lowerKeyword);
       
+      card.style.display = matches ? '' : 'none';
       if (matches) {
-        card.style.display = 'block';
         visibleCount++;
-      } else {
-        card.style.display = 'none';
       }
     });
     
@@ -122,5 +136,6 @@ document.addEventListener('DOMContentLoaded', function() {
       filterProjects(tagName);
     });
   });
+
 });
 </script>
