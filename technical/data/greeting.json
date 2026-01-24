@@ -1,6 +1,7 @@
 [
     { "text": "Hi, I’m Elio.",             "lang": "en" },
     { "text": "Hallo, ich bin Elio.",      "lang": "de" },
+    { "text": "Hallo, ik ben Elio.",       "lang": "nl" },
     { "text": "Salut, je suis Elio.",      "lang": "fr" },
     { "text": "こんにちは、黄師緯です。",      "lang": "ja" },
     { "text": "안녕, 난 황스웨이야.",          "lang": "ko" },
@@ -12,7 +13,6 @@
     { "text": "வணக்கம், நான் Elio.",        "lang": "ta" },
     { "text": "สวัสดี ฉันชื่อ Elio.",           "lang": "th" },
     { "text": "नमस्ते, मैं एलियो हूँ।",            "lang": "hi" },
-    { "text": "Hallo, ik ben Elio.",       "lang": "nl" },
     { "text": "Olá, eu sou Elio.",         "lang": "pt" },
     { "text": "Привет, я Elio.",           "lang": "ru" },
     { "text": "Hej, jag är Elio.",         "lang": "sv" },

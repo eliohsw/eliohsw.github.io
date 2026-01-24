@@ -1,6 +1,7 @@
 ---
 layout: subpage
 title: "Blog | Elio Huang"
+description: "Thoughts, experiences, and insights on topics that interest me."
 permalink: /blog/
 page_title: "Blog"
 css_path: "technical/css/main.css"
@@ -12,7 +13,9 @@ favicon_path: "technical/assets/icons/favicon.png"
 
 {% assign sorted_blogs = site.blog | where: 'hidden', false | sort: 'date' | reverse %}
 
-<p class="subpage-intro">This is a place where you can find my comments on all sorts of topics.</p>
+<p class="subpage-intro">
+  I write about all sorts of topics. Feel free to explore my thoughts, experiences, and insights on subjects that interest me. 
+</p>
 
 <div class="blog-list">
   {% if sorted_blogs.size > 0 %}
