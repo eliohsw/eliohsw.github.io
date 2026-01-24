@@ -320,11 +320,6 @@ export function initTheme() {
     return;
   }
   
-  if (!systemToggle) {
-    console.warn('System toggle not found - theme initialization skipped');
-    return;
-  }
-  
   function getThemeState() {
     return {
       isSystem: !localStorage.getItem('theme'),
@@ -334,7 +329,9 @@ export function initTheme() {
     };
   }
   function updateUIState(isSystem) {
-    systemToggle.classList.toggle('active', isSystem);
+    if (systemToggle) {
+      systemToggle.classList.toggle('active', isSystem);
+    }
     themeToggle.classList.remove('disabled');
     themeToggle.style.pointerEvents = 'auto';
   }
