@@ -1,0 +1,164 @@
+/* Combined Rouge GitHub theme with light/dark mode support */
+
+:root {
+  /* Light theme colors (default) */
+  --rouge-text: #24292f;
+  --rouge-bg: #f6f8fa;
+  --rouge-keyword: #cf222e;
+  --rouge-gr: #f6f8fa;
+  --rouge-gd: #82071e;
+  --rouge-gd-bg: #ffebe9;
+  --rouge-nb-nc-no-nn: #953800;
+  --rouge-sr-na-nt: #116329;
+  --rouge-gi: #116329;
+  --rouge-gi-bg: #dafbe1;
+  --rouge-kc-l-sb-bp-ne-nl-py-nv-o: #0550ae;
+  --rouge-gh-gu: #0550ae;
+  --rouge-string: #0a3069;
+  --rouge-nd-nf: #8250df;
+  --rouge-err: #f6f8fa;
+  --rouge-err-bg: #82071e;
+  --rouge-comment: #6e7781;
+  --rouge-ni-si-ge-gs: #24292f;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    /* Dark theme colors */
+    --rouge-text: #c9d1d9;
+    --rouge-bg: #161b22;
+    --rouge-keyword: #ff7b72;
+    --rouge-gr: #f0f6fc;
+    --rouge-gd: #ffdcd7;
+    --rouge-gd-bg: #67060c;
+    --rouge-nb-nc-no-nn: #ffa657;
+    --rouge-sr-na-nt: #7ee787;
+    --rouge-gi: #aff5b4;
+    --rouge-gi-bg: #033a16;
+    --rouge-kc-l-sb-bp-ne-nl-py-nv-o: #79c0ff;
+    --rouge-gh-gu: #1f6feb;
+    --rouge-string: #a5d6ff;
+    --rouge-nd-nf: #d2a8ff;
+    --rouge-err: #f0f6fc;
+    --rouge-err-bg: #8e1519;
+    --rouge-comment: #8b949e;
+    --rouge-ni-si-ge-gs: #c9d1d9;
+  }
+}
+
+[data-theme="dark"] {
+  /* Dark theme colors for manual theme switching */
+  --rouge-text: #c9d1d9;
+  --rouge-bg: #161b22;
+  --rouge-keyword: #ff7b72;
+  --rouge-gr: #f0f6fc;
+  --rouge-gd: #ffdcd7;
+  --rouge-gd-bg: #67060c;
+  --rouge-nb-nc-no-nn: #ffa657;
+  --rouge-sr-na-nt: #7ee787;
+  --rouge-gi: #aff5b4;
+  --rouge-gi-bg: #033a16;
+  --rouge-kc-l-sb-bp-ne-nl-py-nv-o: #79c0ff;
+  --rouge-gh-gu: #1f6feb;
+  --rouge-string: #a5d6ff;
+  --rouge-nd-nf: #d2a8ff;
+  --rouge-err: #f0f6fc;
+  --rouge-err-bg: #8e1519;
+  --rouge-comment: #8b949e;
+  --rouge-ni-si-ge-gs: #c9d1d9;
+}
+
+/* Rouge syntax highlighting styles using CSS custom properties */
+.highlight table td { 
+  padding: 5px; 
+}
+
+.highlight table pre { 
+  margin: 0; 
+}
+
+.highlight, .highlight .w {
+  color: var(--rouge-text);
+  background-color: var(--rouge-bg);
+}
+
+.highlight .k, .highlight .kd, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kt, .highlight .kv {
+  color: var(--rouge-keyword);
+}
+
+.highlight .gr {
+  color: var(--rouge-gr);
+}
+
+.highlight .gd {
+  color: var(--rouge-gd);
+  background-color: var(--rouge-gd-bg);
+}
+
+.highlight .nb, .highlight .nc, .highlight .no, .highlight .nn {
+  color: var(--rouge-nb-nc-no-nn);
+}
+
+.highlight .sr, .highlight .na, .highlight .nt {
+  color: var(--rouge-sr-na-nt);
+}
+
+.highlight .gi {
+  color: var(--rouge-gi);
+  background-color: var(--rouge-gi-bg);
+}
+
+.highlight .ges {
+  font-weight: bold;
+  font-style: italic;
+}
+
+.highlight .kc,
+.highlight .l, .highlight .ld, .highlight .m, .highlight .mb, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mx,
+.highlight .sb,
+.highlight .bp,
+.highlight .ne,
+.highlight .nl,
+.highlight .py,
+.highlight .nv, .highlight .vc, .highlight .vg, .highlight .vi, .highlight .vm,
+.highlight .o, .highlight .ow {
+  color: var(--rouge-kc-l-sb-bp-ne-nl-py-nv-o);
+}
+
+.highlight .gh, .highlight .gu {
+  color: var(--rouge-gh-gu);
+  font-weight: bold;
+}
+
+.highlight .s, .highlight .sa, .highlight .sc, .highlight .dl, .highlight .sd, .highlight .s2, .highlight .se, .highlight .sh, .highlight .sx, .highlight .s1, .highlight .ss {
+  color: var(--rouge-string);
+}
+
+.highlight .nd, .highlight .nf, .highlight .fm {
+  color: var(--rouge-nd-nf);
+}
+
+.highlight .err {
+  color: var(--rouge-err);
+  background-color: var(--rouge-err-bg);
+}
+
+.highlight .c, .highlight .ch, .highlight .cd, .highlight .cm, .highlight .cp, .highlight .cpf, .highlight .c1, .highlight .cs,
+.highlight .gl,
+.highlight .gt {
+  color: var(--rouge-comment);
+}
+
+.highlight .ni, .highlight .si {
+  color: var(--rouge-ni-si-ge-gs);
+}
+
+.highlight .ge {
+  color: var(--rouge-ni-si-ge-gs);
+  font-style: italic;
+}
+
+.highlight .gs {
+  color: var(--rouge-ni-si-ge-gs);
+  font-weight: bold;
+}

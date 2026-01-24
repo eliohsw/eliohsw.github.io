@@ -335,15 +335,20 @@
       pre {
         margin: 0;
         background: transparent;
-        font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-        font-size: 1rem;
+        font-family: /*"JetBrains Mono",*/ ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.9rem;
       }
 
       pre code {
         display: block;
-        padding: 1rem;
         background: none;
-        color: var(--color-text-secondary);
+        color: var(--rouge-text);
+      }
+
+      pre code,
+      td.gutter,
+      td.rouge-gutter {
+        transition: var(--transition-color-fast);
       }
 
       table {
@@ -355,14 +360,24 @@
         user-select: none;
         -webkit-user-select: none;
         white-space: nowrap;
-        padding: 0 0 0 0.5rem;
-        text-align: left;
+        padding-block: 1rem;
+        padding-inline-start: 1.5rem;
+        padding-inline-end: 1.5rem;
+        width: 1%;
+        text-align: right;
         vertical-align: top;
         color: var(--color-text-tertiary);
       }
 
+      td.gutter pre,
+      td.rouge-gutter pre,
+      pre.lineno {
+        display: inline-block;
+        width: auto;
+      }
+
       td.code {
-        padding-left: 1.75rem;
+        padding-block: 1rem;
       }
       
       td.code pre > code {
