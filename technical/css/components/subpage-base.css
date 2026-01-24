@@ -219,12 +219,16 @@
 }
 
 .card-images {
-  display: flex;
+  display: none;
   flex-direction: row;
   gap: 0.5rem;
   position: relative;
   right: 0;
   z-index: 2;
+}
+
+.card-images.is-ready {
+  display: flex;
 }
 
 .card-image {
@@ -314,6 +318,10 @@
   }
   
   .card-images {
+    display: none;
+  }
+  
+  .card-images.is-ready {
     display: none;
   }
 }

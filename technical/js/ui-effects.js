@@ -273,6 +273,10 @@ export function initSidebar() {
 export function initCardImageHeights() {
   const cards = document.querySelectorAll('.card-contents');
   if (!cards.length) return;
+  cards.forEach(card => {
+    const images = card.querySelector('.card-images');
+    if (images) images.classList.remove('is-ready');
+  });
   const measures = new WeakMap();
   const measure = (card, info) => {
     let m = measures.get(card);
@@ -286,14 +290,18 @@ export function initCardImageHeights() {
   };
   const setHeight = (card) => {
     const info = card.querySelector('.card-info');
-    if (!info) return;
+    const images = card.querySelector('.card-images');
+    if (!info || !images || !images.querySelector('.card-image')) return;
     const w = card.getBoundingClientRect().width;
     if (!w) return;
     const m = measure(card, info);
     if (m.innerHTML !== info.innerHTML) m.innerHTML = info.innerHTML;
     m.style.width = `${Math.round(w)}px`;
     const h = m.getBoundingClientRect().height;
-    if (h > 0) card.style.setProperty('--card-info-height', `${Math.round(h)}px`);
+    if (h > 0) {
+      card.style.setProperty('--card-info-height', `${Math.round(h)}px`);
+      images.classList.add('is-ready');
+    }
   };
   const update = () => requestAnimationFrame(() => cards.forEach(setHeight));
   let t;
