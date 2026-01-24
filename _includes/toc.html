@@ -20,9 +20,36 @@ document.addEventListener('DOMContentLoaded', function() {
   const tocContent = document.getElementById('toc-content');
   const tocToggle = document.getElementById('toc-toggle');
   const tocNav = document.querySelector('.toc-nav');
+  const breadcrumb = document.querySelector('.breadcrumb');
+  const fullWidthQuery = '(min-width: calc(800px + 280px + 3 * 2rem + 0.02px))';
+  const fullWidthMedia = window.matchMedia(fullWidthQuery);
   let tocHeadings = [];
   let tocLinks = [];
   let scrollSpyInitialized = false;
+  let tocMinTop = null;
+
+  function updateTocMinTop() {
+    if (fullWidthMedia.matches) {
+      tocContainer.style.removeProperty('--toc-float-top');
+      tocMinTop = null;
+      return;
+    }
+    tocContainer.style.removeProperty('--toc-float-top');
+    tocMinTop = parseFloat(getComputedStyle(tocContainer).top) || 0;
+  }
+
+  function updateTocFloatingTop() {
+    if (!breadcrumb) return;
+    if (fullWidthMedia.matches) {
+      tocContainer.style.removeProperty('--toc-float-top');
+      tocMinTop = null;
+      return;
+    }
+    if (tocMinTop === null) updateTocMinTop();
+    const breadcrumbTop = breadcrumb.getBoundingClientRect().top;
+    const clampedTop = Math.max(tocMinTop, breadcrumbTop);
+    tocContainer.style.setProperty('--toc-float-top', `${clampedTop}px`);
+  }
 
   function updateActiveLink() {
     if (tocHeadings.length === 0 || tocLinks.length === 0) return;
@@ -52,6 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!ticking) {
         requestAnimationFrame(() => {
           updateActiveLink();
+          updateTocFloatingTop();
           ticking = false;
         });
         ticking = true;
@@ -215,6 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     initScrollSpy();
     updateActiveLink();
+    updateTocFloatingTop();
   }
   
   tocToggle.addEventListener('click', () => {
@@ -227,7 +256,13 @@ document.addEventListener('DOMContentLoaded', function() {
   generateTOC();
   
   let resizeTimeout;
+  let resizeRaf = null;
   window.addEventListener('resize', () => {
+    if (resizeRaf) cancelAnimationFrame(resizeRaf);
+    resizeRaf = requestAnimationFrame(() => {
+      updateTocMinTop();
+      updateTocFloatingTop();
+    });
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
       generateTOC();
@@ -238,5 +273,17 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }, 250);
   });
+
+  if (fullWidthMedia.addEventListener) {
+    fullWidthMedia.addEventListener('change', () => {
+      updateTocMinTop();
+      updateTocFloatingTop();
+    });
+  } else if (fullWidthMedia.addListener) {
+    fullWidthMedia.addListener(() => {
+      updateTocMinTop();
+      updateTocFloatingTop();
+    });
+  }
 });
 </script>

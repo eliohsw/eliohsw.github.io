@@ -1,6 +1,6 @@
 /**
  * Copy Page Link Functionality
- * Allows users to copy the current page URL to clipboard by clicking on breadcrumb titles
+ * Allows users to copy the current page URL to clipboard using the breadcrumb copy button
  */
 
 function copyPageLink() {
@@ -41,16 +41,20 @@ function fallbackCopyTextToClipboard(text) {
 }
 
 function showCopyFeedback() {
-  const breadcrumbTitle = document.querySelector('.breadcrumb-title');
-  const originalText = breadcrumbTitle.textContent;
-  
-  // Show feedback
-  breadcrumbTitle.textContent = 'Link copied';
-  breadcrumbTitle.style.color = '#4CAF50';
-  
+  const copyButton = document.querySelector('.breadcrumb-copy-btn');
+  if (!copyButton) return;
+
+  const originalAriaLabel = copyButton.getAttribute('aria-label') || 'Copy link to this page';
+  const originalTitle = copyButton.getAttribute('title') || 'Copy link to this page';
+
+  copyButton.classList.add('is-copied');
+  copyButton.setAttribute('aria-label', 'Link copied');
+  copyButton.setAttribute('title', 'Link copied');
+
   // Reset after 2 seconds
   setTimeout(() => {
-    breadcrumbTitle.textContent = originalText;
-    breadcrumbTitle.style.color = '';
+    copyButton.classList.remove('is-copied');
+    copyButton.setAttribute('aria-label', originalAriaLabel);
+    copyButton.setAttribute('title', originalTitle);
   }, 2000);
 }
