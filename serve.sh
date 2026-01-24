@@ -14,4 +14,4 @@ if lsof -ti tcp:4000 >/dev/null 2>&1; then
 fi
 
 echo "Starting Jekyll at http://${IP}:4000 \n"
-bundle exec jekyll serve --host 0.0.0.0 --port 4000 --livereload --livereload-port 35729
+bundle exec jekyll serve --config _config.yml --host ${IP} --port 4000 --livereload --livereload-port 35729

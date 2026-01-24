@@ -40,6 +40,8 @@ kramdown:
 plugins:
   - jekyll-feed
   - jekyll-sitemap
+  - jekyll-redirect-from
+  - jekyll-seo-tag
 
 # Exclude files from processing
 exclude:
