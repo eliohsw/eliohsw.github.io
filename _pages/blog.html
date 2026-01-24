@@ -18,7 +18,7 @@ favicon_path: "technical/assets/icons/favicon.png"
   {% if sorted_blogs.size > 0 %}
     {% for blog in sorted_blogs %}
     <div class="card-box">
-      <div class="card-box-header">
+      <div class="card-header">
         <div class="card-header-row">
           <div class="card-meta">
             <span class="card-date">{{ blog.date | date: "%Y-%m-%d" }}</span>
@@ -31,9 +31,13 @@ favicon_path: "technical/assets/icons/favicon.png"
             <ion-icon name="arrow-forward-outline"></ion-icon>
           </a>
         </div>
-        <h2 class="card-title"><a href="{{ blog.url }}">{{ blog.title }}</a></h2>
       </div>
-      <div class="card-subtitle">{{ blog.subtitle }}</div>
+      <div class="card-contents">
+        <div class="card-info">
+          <h2 class="card-title"><a href="{{ blog.url }}">{{ blog.title }}</a></h2>
+          <div class="card-subtitle">{{ blog.subtitle }}</div>
+        </div>
+      </div>
     </div>
     {% endfor %}
   {% else %}

@@ -270,6 +270,39 @@ export function initSidebar() {
   }
 }
 
+export function initCardImageHeights() {
+  const cards = document.querySelectorAll('.card-contents');
+  if (!cards.length) return;
+  const measures = new WeakMap();
+  const measure = (card, info) => {
+    let m = measures.get(card);
+    if (!m) {
+      m = info.cloneNode(true);
+      Object.assign(m.style, { position: 'absolute', visibility: 'hidden', pointerEvents: 'none', left: '-9999px', top: '0', height: 'auto', maxWidth: 'none', width: '0px' });
+      document.body.appendChild(m);
+      measures.set(card, m);
+    }
+    return m;
+  };
+  const setHeight = (card) => {
+    const info = card.querySelector('.card-info');
+    if (!info) return;
+    const w = card.getBoundingClientRect().width;
+    if (!w) return;
+    const m = measure(card, info);
+    if (m.innerHTML !== info.innerHTML) m.innerHTML = info.innerHTML;
+    m.style.width = `${Math.round(w)}px`;
+    const h = m.getBoundingClientRect().height;
+    if (h > 0) card.style.setProperty('--card-info-height', `${Math.round(h)}px`);
+  };
+  const update = () => requestAnimationFrame(() => cards.forEach(setHeight));
+  let t;
+  window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(update, 100); });
+  update();
+  document.fonts?.ready?.then(update).catch(() => {});
+  window.addEventListener('load', update);
+}
+
 export function initTheme() {
   const themeToggle = document.getElementById('theme-toggle');
   const systemToggle = document.getElementById('system-toggle');
