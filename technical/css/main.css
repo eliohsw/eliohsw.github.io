@@ -4,7 +4,7 @@
 @import url('./base/fontshape.css');
 @import url('./base/base.css');
 
-/* @import url('./base/rouge-github-combined.css'); */
+@import url('./base/rouge-github.css');
 
 @import url('./components/layout.css');
 @import url('./components/content.css');
