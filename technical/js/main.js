@@ -1,5 +1,3 @@
-import { initLastUpdated } from './data-updated.js';
-
 function initSubpageTopButton() {
   const topBtn = document.getElementById('subpage-top-btn');
   if (!topBtn) return;
@@ -30,7 +28,6 @@ function initSubpageTopButton() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-  initLastUpdated();
   initSubpageTopButton();
   // Add other main entry logic here if needed in the future
 });

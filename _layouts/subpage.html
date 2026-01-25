@@ -3,7 +3,9 @@ layout: default
 ---
 <h1 class="subpage-title">
   {{ page.page_title | default: page.title }}
-  <span class="last-updated" id="last-updated" title="Last Updated"></span>
+  {% if page.last_updated %}
+    <span class="last-updated" title="Last Updated">{{ page.last_updated }}</span>
+  {% endif %}
 </h1>
 <div class="subpage-content">
   {{ content }}
