@@ -79,6 +79,33 @@
   display: block;
 }
 
+.nav-logo-image.logo-rotate-ccw {
+  animation: logo-ccw-rotate 0.7s ease-in-out;
+  transform-origin: 50% 50%;
+}
+
+.nav-logo-image.logo-rotate-cw {
+  animation: logo-cw-rotate 0.7s ease-in-out;
+  transform-origin: 50% 50%;
+}
+
+@keyframes logo-ccw-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); }
+}
+
+@keyframes logo-cw-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-logo-image.logo-rotate-ccw,
+  .nav-logo-image.logo-rotate-cw {
+    animation: none;
+  }
+}
+
 .logo {
   align-self: center;
   color: var(--color-text);

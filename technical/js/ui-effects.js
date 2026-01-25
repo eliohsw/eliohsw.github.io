@@ -314,11 +314,20 @@ export function initCardImageHeights() {
 export function initTheme() {
   const themeToggle = document.getElementById('theme-toggle');
   const systemToggle = document.getElementById('system-toggle');
+  const logoImage = document.querySelector('.nav-logo-image');
   
   if (!themeToggle) {
     console.warn('Theme toggle not found - theme initialization skipped');
     return;
   }
+
+  const rotateLogo = (direction) => {
+    if (!logoImage) return;
+    logoImage.classList.remove('logo-rotate-ccw', 'logo-rotate-cw');
+    // Force reflow so the animation restarts on each theme change.
+    void logoImage.offsetWidth;
+    logoImage.classList.add(direction === 'ccw' ? 'logo-rotate-ccw' : 'logo-rotate-cw');
+  };
   
   function getThemeState() {
     return {
@@ -341,6 +350,7 @@ export function initTheme() {
     localStorage.setItem('theme', newTheme);
     document.documentElement.setAttribute('data-theme', newTheme);
     animateLinkTransition();
+    rotateLogo(newTheme === 'dark' ? 'ccw' : 'cw');
     updateUIState(false);
     if ('vibrate' in navigator) {
       navigator.vibrate(10);
@@ -351,8 +361,10 @@ export function initTheme() {
   updateUIState(initialTheme.isSystem);
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
     if (getThemeState().isSystem) {
-      document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+      const nextTheme = e.matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', nextTheme);
       animateLinkTransition();
+      rotateLogo(nextTheme === 'dark' ? 'ccw' : 'cw');
     }
   });
 }

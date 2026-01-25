@@ -153,16 +153,22 @@
    TOC Responsive Behavior
    ================================================================= */
 
-.toc-content::before {
-  content: "Contents";
-  display: block;
+.toc-content-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 0.75rem;
   padding-bottom: 0.75rem;
   border-bottom: 1.5px solid var(--color-box-border);
   font-size: 1rem;
   font-weight: 600;
   color: var(--color-text);
+  gap: 0.5rem;
   transition: var(--transition-border-color);
+}
+
+.toc-content-header .toc-top-btn {
+  display: inline-flex;
 }
 
 .toc-content.expanded {
@@ -249,8 +255,8 @@
     pointer-events: auto;
   }
 
-  .toc-content::before {
-    content: none;
+  .toc-content-header {
+    display: none;
   }
 
   .toc-content.expanded {

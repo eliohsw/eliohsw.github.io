@@ -71,7 +71,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin-left: 0.4rem;
+    margin-left: 0.25rem;
     padding: 0.2rem;
     border: 1px solid transparent;
     border-radius: 0.4rem;
@@ -186,7 +186,12 @@
     }
 
     p {
+      line-height: 1.75;
       margin-bottom: 1rem;
+    }
+
+    span.katex {
+      font-size: 1.15em;
     }
 
     img {
@@ -320,7 +325,7 @@
       padding: 0.15rem 0.35rem;
       border-radius: 0.375rem;
       font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: 1rem;
+      font-size: 0.9rem;
     }
 
     .highlight {

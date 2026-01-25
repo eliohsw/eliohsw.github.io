@@ -7,6 +7,10 @@
     </button>
   </div>
   <div class="toc-content" id="toc-content">
+    <div class="toc-content-header">
+      <span>Contents</span>
+      <a href="#" class="toc-top-btn toc-top-btn--dropdown" title="Back to top">TOP</a>
+    </div>
     <nav class="toc-nav">
       <!-- TOC will be populated by JavaScript -->
     </nav>
@@ -20,16 +24,18 @@ document.addEventListener('DOMContentLoaded', function() {
   const tocContent = document.getElementById('toc-content');
   const tocToggle = document.getElementById('toc-toggle');
   const tocNav = document.querySelector('.toc-nav');
-  const breadcrumb = document.querySelector('.breadcrumb');
+  const tocAnchor = document.querySelector('.breadcrumb');
   const fullWidthQuery = '(min-width: calc(800px + 280px + 3 * 2rem + 0.02px))';
+  const mobileQuery = '(max-width: 575px)';
   const fullWidthMedia = window.matchMedia(fullWidthQuery);
+  const mobileMedia = window.matchMedia(mobileQuery);
   let tocHeadings = [];
   let tocLinks = [];
   let scrollSpyInitialized = false;
   let tocMinTop = null;
 
   function updateTocMinTop() {
-    if (fullWidthMedia.matches) {
+    if (fullWidthMedia.matches || mobileMedia.matches) {
       tocContainer.style.removeProperty('--toc-float-top');
       tocMinTop = null;
       return;
@@ -39,15 +45,15 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function updateTocFloatingTop() {
-    if (!breadcrumb) return;
-    if (fullWidthMedia.matches) {
+    if (!tocAnchor) return;
+    if (fullWidthMedia.matches || mobileMedia.matches) {
       tocContainer.style.removeProperty('--toc-float-top');
       tocMinTop = null;
       return;
     }
     if (tocMinTop === null) updateTocMinTop();
-    const breadcrumbTop = breadcrumb.getBoundingClientRect().top;
-    const clampedTop = Math.max(tocMinTop, breadcrumbTop);
+    const anchorTop = tocAnchor.getBoundingClientRect().top;
+    const clampedTop = Math.max(tocMinTop, anchorTop);
     tocContainer.style.setProperty('--toc-float-top', `${clampedTop}px`);
   }
 
@@ -230,16 +236,16 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
     
-    const topBtn = document.getElementById('toc-top-btn');
-    if (topBtn) {
-      if (!topBtn.dataset.listenerAttached) {
-        topBtn.addEventListener('click', e => {
+    const topButtons = document.querySelectorAll('.toc-top-btn');
+    topButtons.forEach(btn => {
+      if (!btn.dataset.listenerAttached) {
+        btn.addEventListener('click', e => {
           e.preventDefault();
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-        topBtn.dataset.listenerAttached = 'true';
+        btn.dataset.listenerAttached = 'true';
       }
-    }
+    });
     
     initScrollSpy();
     updateActiveLink();
@@ -274,16 +280,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 250);
   });
 
+  function handleMediaChange() {
+    updateTocMinTop();
+    updateTocFloatingTop();
+  }
+
   if (fullWidthMedia.addEventListener) {
-    fullWidthMedia.addEventListener('change', () => {
-      updateTocMinTop();
-      updateTocFloatingTop();
-    });
+    fullWidthMedia.addEventListener('change', handleMediaChange);
+    mobileMedia.addEventListener('change', handleMediaChange);
   } else if (fullWidthMedia.addListener) {
-    fullWidthMedia.addListener(() => {
-      updateTocMinTop();
-      updateTocFloatingTop();
-    });
+    fullWidthMedia.addListener(handleMediaChange);
+    mobileMedia.addListener(handleMediaChange);
   }
 });
 </script>
