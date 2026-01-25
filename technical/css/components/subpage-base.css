@@ -69,7 +69,7 @@
 }
 
 .subpage-content p {
-  line-height: 1.6;
+  line-height: var(--subpage-line-height);
   margin: 0.75rem 0;
 }
 

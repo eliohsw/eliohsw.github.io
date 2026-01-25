@@ -32,6 +32,8 @@
   --transition-fill: fill 0.32s ease;
 
   --transition-transform: transform 0.32s ease;
+
+  --subpage-line-height: 1.75;
 }
 
 @media (prefers-color-scheme: dark) {
