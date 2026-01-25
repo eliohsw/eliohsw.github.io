@@ -28,6 +28,7 @@ function initSubpageTopButton() {
 }
 
 function initTaskListToggle() {
+  if (document.querySelector('.blog-post-page, .project-page')) return;
   const items = document.querySelectorAll('li.task-list-item');
   if (!items.length) return;
 

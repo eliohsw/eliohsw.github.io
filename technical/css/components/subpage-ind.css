@@ -314,7 +314,7 @@
     li.task-list-item {
       --list-bullet-size: 0.8rem;
       --list-bullet-thickness: 1.5px;
-      cursor: pointer;
+      cursor: default;
     }
 
     li.task-list-item::before {
