@@ -28,6 +28,56 @@
   flex-direction: column;
 }
 
+.subpage-top-btn {
+  position: fixed;
+  right: 1.5rem;
+  top: calc(48px + 1.5rem);
+  z-index: 1200;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1.5px solid var(--color-box-border);
+  background: var(--color-surface);
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition: opacity 0.2s ease, transform 0.2s ease, var(--transition-bg-color), var(--transition-border-color), var(--transition-color-fast);
+}
+
+.subpage-top-btn:hover {
+  color: var(--color-text);
+  background: var(--color-surface-secondary);
+  border-color: var(--color-accent-primary);
+}
+
+.subpage-top-btn.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.subpage-top-btn ion-icon {
+  font-size: 1.1rem;
+}
+
+.subpage-content p {
+  line-height: 1.6;
+  margin: 0.75rem 0;
+}
+
+.subpage-content a {
+  color: var(--color-accent-primary);
+  text-decoration: none;
+}
+
 .subpage-intro {
   margin: 1rem 0;
 }
@@ -37,6 +87,15 @@
   color: var(--color-text-secondary);
   font-size: 1.1em;
   margin: 2em 0;
+}
+
+@media (max-width: calc(800px + 280px + 3 * 2rem)) {
+  .subpage-top-btn {
+    right: 1rem;
+    top: calc(48px + 1rem);
+    width: 40px;
+    height: 40px;
+  }
 }
 
 /* =================================================================
