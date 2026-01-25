@@ -20,9 +20,6 @@ layout: default
     </div>
     <div class="blog-post-meta">
       <span class="blog-post-date">{{ page.date | date: "%B %d, %Y" }}</span>
-      {% if page.reading_time %}
-      <span class="reading-time">{{ page.reading_time }} min read</span>
-      {% endif %}
     </div>
     <h1 class="blog-post-title">{{ page.title }}</h1>
     {% if page.subtitle %}

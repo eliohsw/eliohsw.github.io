@@ -34,9 +34,6 @@ favicon_path: "technical/assets/icons/favicon.png"
         <div class="card-header-row">
           <div class="card-meta">
             <span class="card-date">{{ project.date | date: "%Y-%m-%d" }}</span>
-            {% if project.reading_time %}
-            <span class="card-reading-time">{{ project.reading_time }} min read</span>
-            {% endif %}
           </div>
           <a class="card-link" href="{{ project.url }}" aria-label="View Project">
             <span>View</span>

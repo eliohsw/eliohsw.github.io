@@ -320,12 +320,6 @@
   white-space: nowrap;
 }
 
-.card-reading-time {
-  font-size: 0.98em;
-  color: var(--color-text-secondary);
-  white-space: nowrap;
-}
-
 .card-link {
   flex-shrink: 0;
   display: flex;

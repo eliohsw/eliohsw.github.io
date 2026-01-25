@@ -26,9 +26,6 @@ favicon_path: "technical/assets/icons/favicon.png"
         <div class="card-header-row">
           <div class="card-meta">
             <span class="card-date">{{ blog.date | date: "%Y-%m-%d" }}</span>
-            {% if blog.reading_time %}
-            <span class="card-reading-time">{{ blog.reading_time }} min read</span>
-            {% endif %}
           </div>
           <a class="card-link" href="{{ blog.url }}" aria-label="Read Blog">
             <span>Read</span>
