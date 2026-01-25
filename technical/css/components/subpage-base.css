@@ -214,17 +214,11 @@
 }
 
 /* List Layouts */
-.projects-list {
+.projects-list, .blog-list {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  margin-top: 2rem;
-}
-
-.blog-list {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  margin-top: 1rem;
 }
 
 /* Card Components */
@@ -244,6 +238,10 @@
   background: var(--color-surface);
   box-shadow: 0 4px 24px rgba(var(--color-border-rgb), 0.12);
   border-color: var(--color-accent-primary);
+}
+
+.card-box:last-child {
+  margin-bottom: 1rem;
 }
 
 .card-box-header,
