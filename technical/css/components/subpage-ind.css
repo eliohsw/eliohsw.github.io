@@ -21,7 +21,7 @@
 
 .project-page, .blog-post-page {
   margin: 0 auto;
-  padding: 2rem 0rem;
+  padding: 2rem 0 0 0;
 
   .project-header, .blog-post-header {
     margin-bottom: 4rem;
@@ -501,14 +501,18 @@
 
   .project-navigation, .blog-post-navigation {
     border-top: 1.5px solid var(--color-text-tertiary);
-    padding-top: 2rem;
+    margin-top: 1rem;
     transition: var(--transition-border-color);
   }
 
   .nav-links {
     display: flex;
     justify-content: space-between;
-    margin: 0;
+    margin: 1rem 0;
+  }
+
+  .nav-links:not(:has(.nav-link)) {
+    display: none;
   }
 
   .nav-links:has(.nav-link.next:only-child) {
