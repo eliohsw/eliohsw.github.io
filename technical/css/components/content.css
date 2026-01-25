@@ -1,18 +1,9 @@
 .intro-content {
   margin-top: 4rem;
-  font-size: 1.2rem;
-}
-
-.intro-paragraph .intro-line {
-  display: block;
-}
-
-.intro-paragraph .intro-line + .intro-line {
-  margin-top: 0.35rem;
+  font-size: 1.15rem;
 }
 
 .intro-name {
-  margin: 1rem 0 0.5rem 0;
   font-size: 1.75rem;
   font-weight: normal;
 }

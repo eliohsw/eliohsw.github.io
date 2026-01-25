@@ -61,3 +61,11 @@ footer {
   font-family: "General Sans", sans-serif;
   font-weight: 425;
 }
+
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.10em 0;
+  margin: 0.90em 0;
+  -webkit-overflow-scrolling: touch;
+}
