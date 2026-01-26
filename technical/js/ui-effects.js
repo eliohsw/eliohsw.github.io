@@ -311,6 +311,151 @@ export function initCardImageHeights() {
   window.addEventListener('load', update);
 }
 
+export function initCardImagePreview() {
+  const cardImages = Array.from(document.querySelectorAll('.card-image'));
+  if (!cardImages.length) return;
+
+  let overlay = document.querySelector('.image-preview-overlay');
+  let previewImage = null;
+  let closeButton = null;
+  let activeSource = null;
+
+  const buildOverlay = () => {
+    overlay = document.createElement('div');
+    overlay.className = 'image-preview-overlay';
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.innerHTML = `
+      <div class="image-preview-dialog" role="dialog" aria-modal="true" aria-label="Image preview">
+        <button class="image-preview-close" type="button" aria-label="Close preview">
+          <ion-icon name="close"></ion-icon>
+        </button>
+        <img class="image-preview-image" alt="" />
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    previewImage = overlay.querySelector('.image-preview-image');
+    closeButton = overlay.querySelector('.image-preview-close');
+
+    overlay.addEventListener('click', (event) => {
+      if (event.target === overlay) closePreview();
+    });
+
+    closeButton.addEventListener('click', closePreview);
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && overlay.classList.contains('is-visible')) {
+        closePreview();
+      }
+    });
+  };
+
+  const ensureOverlay = () => {
+    if (!overlay) buildOverlay();
+    if (!previewImage) previewImage = overlay.querySelector('.image-preview-image');
+    if (!closeButton) closeButton = overlay.querySelector('.image-preview-close');
+  };
+
+  const setPreviewSize = (sourceImage) => {
+    if (!previewImage || !sourceImage) return;
+    const naturalWidth = previewImage.naturalWidth || sourceImage.naturalWidth;
+    const naturalHeight = previewImage.naturalHeight || sourceImage.naturalHeight;
+    if (!naturalWidth || !naturalHeight) return;
+
+    const baseWidth = naturalWidth;
+    const baseHeight = naturalHeight;
+    const maxWidth = Math.min(baseWidth * 1, window.innerWidth * 0.9);
+    const maxHeight = Math.min(baseHeight * 1, window.innerHeight * 0.9);
+    const scale = Math.min(maxWidth / naturalWidth, maxHeight / naturalHeight);
+    const displayWidth = Math.max(1, Math.floor(naturalWidth * scale));
+    const displayHeight = Math.max(1, Math.floor(naturalHeight * scale));
+
+    previewImage.style.width = `${displayWidth}px`;
+    previewImage.style.height = `${displayHeight}px`;
+  };
+
+  const openPreview = (sourceImage) => {
+    ensureOverlay();
+    activeSource = sourceImage;
+    previewImage.removeAttribute('srcset');
+    previewImage.removeAttribute('sizes');
+
+    if (sourceImage.srcset) {
+      previewImage.srcset = sourceImage.srcset;
+      if (sourceImage.sizes) previewImage.sizes = sourceImage.sizes;
+    }
+
+    previewImage.src = sourceImage.currentSrc || sourceImage.src;
+    previewImage.alt = sourceImage.alt || 'Image preview';
+
+    overlay.classList.add('is-visible');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('image-preview-open');
+
+    const applySize = () => setPreviewSize(sourceImage);
+    if (previewImage.complete) {
+      applySize();
+    } else {
+      previewImage.addEventListener('load', applySize, { once: true });
+    }
+  };
+
+  const closePreview = () => {
+    if (!overlay) return;
+    overlay.classList.remove('is-visible');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('image-preview-open');
+    const clearPreviewImage = () => {
+      if (!previewImage || overlay?.classList.contains('is-visible')) return;
+      previewImage.removeAttribute('src');
+      previewImage.removeAttribute('srcset');
+      previewImage.removeAttribute('sizes');
+      previewImage.style.width = '';
+      previewImage.style.height = '';
+      previewImage.alt = '';
+    };
+    if (previewImage) {
+      overlay.addEventListener(
+        'transitionend',
+        (event) => {
+          if (event.target !== overlay) return;
+          clearPreviewImage();
+        },
+        { once: true }
+      );
+      setTimeout(clearPreviewImage, 260);
+    }
+    activeSource = null;
+  };
+
+  cardImages.forEach((image) => {
+    image.addEventListener('click', (event) => {
+      event.preventDefault();
+      openPreview(image);
+    });
+
+    image.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      openPreview(image);
+    });
+
+    if (!image.hasAttribute('tabindex')) {
+      image.setAttribute('tabindex', '0');
+    }
+    image.setAttribute('role', 'button');
+    if (!image.hasAttribute('aria-label')) {
+      const labelText = image.alt ? `Preview ${image.alt}` : 'Preview image';
+      image.setAttribute('aria-label', labelText);
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (overlay?.classList.contains('is-visible') && activeSource) {
+      setPreviewSize(activeSource);
+    }
+  });
+}
+
 export function initTheme() {
   const themeToggle = document.getElementById('theme-toggle');
   const systemToggle = document.getElementById('system-toggle');

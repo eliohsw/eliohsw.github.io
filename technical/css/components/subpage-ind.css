@@ -72,9 +72,8 @@
     align-items: center;
     justify-content: center;
     margin-left: 0.25rem;
-    padding: 0.2rem;
+    padding: auto 0.2rem;
     border: 1px solid transparent;
-    border-radius: 0.4rem;
     background: transparent;
     color: var(--color-text-secondary);
     cursor: pointer;
@@ -83,12 +82,11 @@
 
   .breadcrumb-copy-btn ion-icon {
     font-size: 1.25rem;
+    transform: translateY(1px);
   }
 
   .breadcrumb-copy-btn:hover {
     color: var(--color-accent-primary);
-    border-color: var(--color-box-border);
-    background: var(--color-surface-secondary);
   }
 
   .breadcrumb-copy-btn:focus-visible {
@@ -150,7 +148,7 @@
   }
 
   .project-content, .blog-post-content {
-    line-height: var(--subpage-line-height);
+    line-height: var(--subpage-line-height-narrow);
     font-size: 1rem;
 
     h1 {
@@ -186,7 +184,6 @@
     }
 
     p {
-      line-height: var(--subpage-line-height);
       margin-bottom: 1rem;
     }
 

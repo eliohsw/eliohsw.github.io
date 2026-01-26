@@ -2,6 +2,10 @@
   overflow: hidden;
 }
 
+body.image-preview-open {
+  overflow: hidden;
+}
+
 /* Base Styles */
 body, body * {
   transition: var(--transition-bg-color);

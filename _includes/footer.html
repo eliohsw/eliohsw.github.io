@@ -17,7 +17,7 @@
 
 <script type="module">
   import { initComponentPlaceholders } from '{{ site.baseurl }}/{{ page.js_ui_loader_path | default: "technical/js/ui-loader.js" }}';
-  import { initTheme, initSidebar, initScrollEffects, initCardImageHeights{% if page.include_greeting %}, initGreeting{% endif %}{% if page.include_ripple %}, initRipple{% endif %} } from '{{ site.baseurl }}/{{ page.js_ui_effects_path | default: "technical/js/ui-effects.js" }}';
+  import { initTheme, initSidebar, initScrollEffects, initCardImageHeights, initCardImagePreview{% if page.include_greeting %}, initGreeting{% endif %}{% if page.include_ripple %}, initRipple{% endif %} } from '{{ site.baseurl }}/{{ page.js_ui_effects_path | default: "technical/js/ui-effects.js" }}';
   
   // Initialize components
   initComponentPlaceholders();
@@ -28,6 +28,7 @@
     if (document.querySelector('.menu-btn') && document.querySelector('.mobile-sidebar')) initSidebar();
     if (document.getElementById('theme-toggle')) initTheme();
     if (document.querySelector('.card-contents')) initCardImageHeights();
+    if (document.querySelector('.card-image')) initCardImagePreview();
     {% if page.include_greeting %}
     if (document.getElementById('greeting')) initGreeting();
     {% endif %}
@@ -53,6 +54,7 @@
     if (document.querySelector('.menu-btn') && document.querySelector('.mobile-sidebar')) initSidebar();
     if (document.getElementById('theme-toggle')) initTheme();
     if (document.querySelector('.card-contents')) initCardImageHeights();
+    if (document.querySelector('.card-image')) initCardImagePreview();
   }, 200);
   {% endif %}
 </script>

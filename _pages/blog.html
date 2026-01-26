@@ -63,6 +63,13 @@ additional_scripts:
           </div>
           {% endif %}
         </div>
+        <div class="card-images">
+          {% if blog.images and blog.images.size > 0 %}
+            {% for image in blog.images %}
+            <img class="card-image" src="{{ image }}" alt="{{ blog.title }} image {{ forloop.index }}" loading="lazy" />
+            {% endfor %}
+          {% endif %}
+        </div>
       </div>
     </div>
     {% endfor %}
