@@ -27,11 +27,18 @@ layout: default
     {% endif %}
     
     {% if page.tags and page.tags.size > 0 %}
-  <div class="card-tags">
-    {% for tag in page.tags %}
-    <span class="card-tag" data-type="blog">{{ tag }}</span>
-    {% endfor %}
-  </div>
+    <div class="card-tags">
+      {% for tag in page.tags %}
+      <span class="card-tag" data-type="blog">{{ tag }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% assign pdf_link = page.pdf_url | default: page.pdf %}
+    {% if pdf_link %}
+    <div class="card-tags card-tags-pdf">
+      <a class="card-tag card-tag--pdf" href="{{ pdf_link }}" target="_blank" rel="noopener">PDF</a>
+    </div>
     {% endif %}
   </div>
 

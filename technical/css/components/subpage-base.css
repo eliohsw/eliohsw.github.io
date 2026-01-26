@@ -76,6 +76,10 @@
   text-decoration: none;
 }
 
+.subpage-content a.card-tag--pdf {
+  color: var(--color-tag-pdf-text);
+}
+
 .subpage-intro {
   margin: 1rem 0;
 }
@@ -481,10 +485,31 @@
   border-radius: 999px;
   font-size: 0.85rem;
   font-weight: 475;
+  text-decoration: none;
 }
 
 .card-tag:hover {
   background: var(--color-bg-accent-dark);
+}
+
+.card-tag--pdf {
+  background: var(--color-tag-pdf-bg);
+  color: var(--color-tag-pdf-text);
+}
+
+.card-tag--pdf:hover {
+  background: var(--color-tag-pdf-bg-hover);
+}
+
+.card-tag--overflow {
+  background: var(--color-tag-muted-bg);
+  color: var(--color-tag-muted-text);
+  cursor: default;
+  pointer-events: none;
+}
+
+.card-tag--overflow:hover {
+  background: var(--color-tag-muted-bg);
 }
 
 .no-projects {

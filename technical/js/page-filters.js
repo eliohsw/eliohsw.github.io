@@ -23,6 +23,78 @@ function initCardFilters() {
     filterInput.placeholder = isTagSearch ? tagPlaceholder : defaultPlaceholder;
   }
 
+  function parseCardTags(card) {
+    const rawTags = card.dataset.tagsJson;
+    if (!rawTags) return [];
+    try {
+      const parsed = JSON.parse(rawTags);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function renderCardTags(card, highlightTag = '') {
+    const tagContainer = card.querySelector('.card-tags');
+    if (!tagContainer) return;
+
+    const tags = parseCardTags(card);
+    const tagsLower = tags.map((tag) => tag.toLowerCase());
+    const pdfUrl = (card.dataset.pdfUrl || '').trim();
+    const hasPdf = pdfUrl !== '';
+    const totalTags = tags.length + (hasPdf ? 1 : 0);
+    const overflowCount = totalTags > 4 ? totalTags - 4 : 0;
+    const displayLimit = Math.max(0, 4 - (hasPdf ? 1 : 0));
+    const highlight = highlightTag.trim().toLowerCase();
+    const tagType = card.dataset.tagType;
+
+    let orderedTags = tags;
+    if (highlight) {
+      let matchIndex = tagsLower.indexOf(highlight);
+      if (matchIndex === -1) {
+        matchIndex = tagsLower.findIndex((tag) => tag.includes(highlight));
+      }
+      if (matchIndex !== -1) {
+        orderedTags = [tags[matchIndex], ...tags.filter((_, index) => index !== matchIndex)];
+      }
+    }
+
+    tagContainer.innerHTML = '';
+
+    if (hasPdf) {
+      const pdfTag = document.createElement('a');
+      pdfTag.className = 'card-tag card-tag--pdf';
+      pdfTag.textContent = 'PDF';
+      pdfTag.href = pdfUrl;
+      pdfTag.target = '_blank';
+      pdfTag.rel = 'noopener';
+      if (tagType) pdfTag.dataset.type = tagType;
+      tagContainer.appendChild(pdfTag);
+    }
+
+    orderedTags.slice(0, displayLimit).forEach((tag) => {
+      const tagEl = document.createElement('span');
+      tagEl.className = 'card-tag';
+      tagEl.textContent = tag;
+      tagEl.dataset.tag = tag.toLowerCase();
+      if (tagType) tagEl.dataset.type = tagType;
+      tagEl.style.cursor = 'pointer';
+      tagContainer.appendChild(tagEl);
+    });
+
+    if (overflowCount > 0) {
+      const overflowTag = document.createElement('span');
+      overflowTag.className = 'card-tag card-tag--overflow';
+      overflowTag.textContent = `+${overflowCount}`;
+      overflowTag.setAttribute('aria-hidden', 'true');
+      tagContainer.appendChild(overflowTag);
+    }
+  }
+
+  function updateCardTagsDisplay(highlightTag = '') {
+    cards.forEach((card) => renderCardTags(card, highlightTag));
+  }
+
   function filterCards(keyword = '') {
     const lowerKeyword = keyword.toLowerCase().trim();
     let visibleCount = 0;
@@ -53,6 +125,7 @@ function initCardFilters() {
     }
 
     showAllBtn.classList.toggle('active', visibleCount < cards.length);
+    updateCardTagsDisplay(isTagSearch ? lowerKeyword : '');
   }
 
   function doSearch() {
@@ -83,18 +156,19 @@ function initCardFilters() {
     filterCards();
   });
 
-  listEl.querySelectorAll('.card-tag').forEach((tag) => {
-    tag.style.cursor = 'pointer';
-    tag.addEventListener('click', function() {
-      const tagName = this.textContent.trim();
-      isTagSearch = true;
-      updateSearchModeUI();
-      filterInput.value = tagName;
-      filterCards(tagName);
-    });
+  listEl.addEventListener('click', (event) => {
+    const tag = event.target.closest('.card-tag');
+    if (!tag) return;
+    if (tag.classList.contains('card-tag--overflow') || tag.classList.contains('card-tag--pdf')) return;
+    const tagName = tag.textContent.trim();
+    isTagSearch = true;
+    updateSearchModeUI();
+    filterInput.value = tagName;
+    filterCards(tagName);
   });
 
   updateSearchModeUI();
+  updateCardTagsDisplay();
 }
 
 if (document.readyState === 'loading') {

@@ -37,7 +37,40 @@ additional_scripts:
 <div class="blog-list">
   {% if sorted_blogs.size > 0 %}
     {% for blog in sorted_blogs %}
-    <div class="card-box" data-tags="{{ blog.tags | join: ',' | downcase }}">
+    {% assign pdf_link = blog.pdf_url | default: blog.pdf %}
+    {% assign has_pdf = false %}
+    {% if pdf_link %}
+      {% assign has_pdf = true %}
+    {% endif %}
+    {% assign tags_json = '[]' %}
+    {% if blog.tags %}
+      {% assign tags_json = blog.tags | jsonify %}
+    {% endif %}
+    {% assign tag_count = blog.tags | size %}
+    {% assign total_tags = tag_count %}
+    {% if has_pdf %}
+      {% assign total_tags = total_tags | plus: 1 %}
+    {% endif %}
+    {% assign overflow_count = 0 %}
+    {% if total_tags > 4 %}
+      {% assign overflow_count = total_tags | minus: 4 %}
+    {% endif %}
+    {% assign display_limit = 4 %}
+    {% if has_pdf %}
+      {% assign display_limit = display_limit | minus: 1 %}
+    {% endif %}
+    {% assign card_tags = '' %}
+    {% if blog.tags %}
+      {% assign card_tags = blog.tags | join: ',' | downcase %}
+    {% endif %}
+    {% if has_pdf %}
+      {% if card_tags != '' %}
+        {% assign card_tags = card_tags | append: ',pdf' %}
+      {% else %}
+        {% assign card_tags = 'pdf' %}
+      {% endif %}
+    {% endif %}
+    <div class="card-box" data-tags="{{ card_tags }}" data-tags-json='{{ tags_json | escape }}' data-pdf-url="{{ pdf_link | escape }}" data-tag-type="blog">
       <div class="card-header">
         <div class="card-header-row">
           <div class="card-meta">
@@ -55,11 +88,19 @@ additional_scripts:
           {% if blog.subtitle %}
           <div class="card-subtitle">{{ blog.subtitle }}</div>
           {% endif %}
-          {% if blog.tags %}
+          {% if has_pdf or tag_count > 0 %}
           <div class="card-tags">
-            {% for tag in blog.tags %}
-            <span class="card-tag" data-tag="{{ tag | downcase }}" data-type="blog">{{ tag }}</span>
-            {% endfor %}
+            {% if has_pdf %}
+            <a class="card-tag card-tag--pdf" href="{{ pdf_link }}" target="_blank" rel="noopener">PDF</a>
+            {% endif %}
+            {% if tag_count > 0 and display_limit > 0 %}
+              {% for tag in blog.tags limit: display_limit %}
+              <span class="card-tag" data-tag="{{ tag | downcase }}" data-type="blog">{{ tag }}</span>
+              {% endfor %}
+            {% endif %}
+            {% if overflow_count > 0 %}
+            <span class="card-tag card-tag--overflow" aria-hidden="true">+{{ overflow_count }}</span>
+            {% endif %}
           </div>
           {% endif %}
         </div>

@@ -22,6 +22,12 @@
   --color-accent-primary-rgb: 66, 129, 219;
   --color-bg-accent-dark: #e4edfa;
   --color-bg-accent-light: #f2f6fc;
+  
+  --color-tag-pdf-bg: #fde8e8;
+  --color-tag-pdf-bg-hover: #f7cfcf;
+  --color-tag-pdf-text: #c03d3d;
+  --color-tag-muted-bg: var(--color-surface-secondary);
+  --color-tag-muted-text: var(--color-text-secondary);
 
   --font-stack-default: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
 
@@ -64,6 +70,9 @@
     --color-accent-primary: #4281db;
     --color-bg-accent-dark: #1e2734;
     --color-bg-accent-light: #1c2026;
+    --color-tag-pdf-bg: #3b1f1f;
+    --color-tag-pdf-bg-hover: #4b2323;
+    --color-tag-pdf-text: #f07171;
   }
 }
 
@@ -87,4 +96,7 @@
   --color-accent-primary: #4281db;
   --color-bg-accent-dark: #1e2734;
   --color-bg-accent-light: #1c2026;
+  --color-tag-pdf-bg: #3b1f1f;
+  --color-tag-pdf-bg-hover: #4b2323;
+  --color-tag-pdf-text: #f07171;
 }
