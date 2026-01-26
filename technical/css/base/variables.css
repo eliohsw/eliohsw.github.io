@@ -35,6 +35,8 @@
 
   --subpage-line-height: 1.75;
   --subpage-line-height-narrow: 1.5;
+
+  --width-main-container: 800px;
 }
 
 @media (prefers-color-scheme: dark) {

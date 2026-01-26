@@ -255,7 +255,7 @@
     }
 
     ol {
-      padding-left: 1.5rem;
+      padding-left: calc(var(--subpage-line-height) * 1em);
     }
 
     ul li {
@@ -611,7 +611,7 @@
 
 @media (max-width: calc(800px + 280px + 3 * 2rem)) {
   .blog-post-page, .project-page {
-    max-width: 800px;
+    max-width: var(--width-main-container);
   }
 
   .blog-post-main, .project-main {

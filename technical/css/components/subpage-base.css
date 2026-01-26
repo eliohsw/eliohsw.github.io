@@ -101,10 +101,6 @@
    About Page Styles
    ================================================================= */
 
-.main-container:has(.about-content) {
-  max-width: 800px;
-}
-
 .about-content p {
   line-height: var(--subpage-line-height-narrow) !important;
   font-weight: 350;

@@ -26,19 +26,16 @@ body {
 .main-container {
   margin-left: auto;
   margin-right: auto;
-  max-width: 900px;
+  max-width: var(--width-main-container);
   padding: 56px 2rem 0 2rem;
 }
 
-.main-container:has(.blog-post-content, .project-content) {
-  max-width: calc(800px + 2rem + 280px);
+.main-container:has(.intro-content, .about-content) {
+  max-width: var(--width-main-container);
 }
 
-@media (max-width: 900px) {
-  .main-container {
-    margin-left: 0;
-    margin-right: 0;
-  }
+.main-container:has(.blog-post-content, .project-content) {
+  max-width: calc(var(--width-main-container) + 2rem + 280px);
 }
 
 @media (max-width: 768px) {
