@@ -355,6 +355,16 @@ export function initCardImageHeights() {
     const h = m.getBoundingClientRect().height;
     if (h > 0) {
       card.style.setProperty('--card-info-height', `${Math.round(h)}px`);
+      const isCompact = window.matchMedia('(max-width: 768px)').matches;
+      if (isCompact) {
+        images.classList.remove('is-ready');
+        card.style.setProperty('--card-space-left', '0px');
+        images.style.width = '';
+        images.style.height = '';
+        const counter = images.querySelector('.card-image-count');
+        if (counter) counter.style.display = 'none';
+        return;
+      }
       images.classList.add('is-ready');
       updateImageLayout(card, info, images);
     }
