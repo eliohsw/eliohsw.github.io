@@ -30,6 +30,7 @@
   .breadcrumb {
     margin-bottom: 0.5rem;
     font-size: 1rem;
+    font-weight: 400;
     color: var(--color-text-secondary);
     display: flex;
     flex-direction: row;
