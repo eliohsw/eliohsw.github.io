@@ -1,5 +1,4 @@
-<!-- Footer Placeholder -->
-<div id="footer-placeholder"></div>
+{% include footer-content.html %}
 
 <!-- Common Scripts -->
 <script>
@@ -16,12 +15,8 @@
 </script>
 
 <script type="module">
-  import { initComponentPlaceholders } from '{{ site.baseurl }}/{{ page.js_ui_loader_path | default: "technical/js/ui-loader.js" }}';
   import { initTheme, initSidebar, initScrollEffects, initCardImageHeights, initCardImagePreview{% if page.include_greeting %}, initGreeting{% endif %}{% if page.include_ripple %}, initRipple{% endif %} } from '{{ site.baseurl }}/{{ page.js_ui_effects_path | default: "technical/js/ui-effects.js" }}';
-  
-  // Initialize components
-  initComponentPlaceholders();
-  
+
   // Function to initialize UI effects
   function initializeUIEffects() {
     if (document.querySelector('.nav-bar')) initScrollEffects();
@@ -36,27 +31,16 @@
     if (document.body) initRipple();
     {% endif %}
   }
-  
-  {% if page.include_greeting %}
-  // Wait for all components to load before initializing UI effects
-  document.addEventListener('componentsLoaded', initializeUIEffects);
-  
-  // Fallback: if componentsLoaded doesn't fire within 6 seconds, try to initialize anyway
-  setTimeout(() => {
-    if (!document.querySelector('.nav-bar')) {
-      console.warn('Components may not have loaded properly - attempting UI initialization anyway');
-      initializeUIEffects();
-    }
-  }, 6000);
-  {% else %}
-  setTimeout(() => {
-    if (document.querySelector('.nav-bar')) initScrollEffects();
-    if (document.querySelector('.menu-btn') && document.querySelector('.mobile-sidebar')) initSidebar();
-    if (document.getElementById('theme-toggle')) initTheme();
-    if (document.querySelector('.card-contents')) initCardImageHeights();
-    if (document.querySelector('.card-image')) initCardImagePreview();
-  }, 200);
-  {% endif %}
+
+  const runUIEffects = () => {
+    initializeUIEffects();
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runUIEffects, { once: true });
+  } else {
+    runUIEffects();
+  }
 </script>
 
 {% if page.additional_scripts %}
