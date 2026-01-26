@@ -81,7 +81,8 @@
     transition: var(--transition-color-fast), var(--transition-border-color-fast), var(--transition-bg-color-fast);
   }
 
-  .breadcrumb-copy-btn ion-icon {
+  .breadcrumb-copy-btn ion-icon,
+  .breadcrumb-copy-btn .ionicon {
     font-size: 1.25rem;
     transform: translateY(1px);
   }
@@ -610,7 +611,8 @@
       padding: 0 0.45rem;
     }
 
-    .breadcrumb-copy-btn ion-icon {
+    .breadcrumb-copy-btn ion-icon,
+    .breadcrumb-copy-btn .ionicon {
       font-size: 1.1rem;
     }
 

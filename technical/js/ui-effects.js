@@ -379,7 +379,9 @@ export function initCardImagePreview() {
     overlay.innerHTML = `
       <div class="image-preview-dialog" role="dialog" aria-modal="true" aria-label="Image preview">
         <button class="image-preview-close" type="button" aria-label="Close preview">
-          <ion-icon name="close"></ion-icon>
+          <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512" aria-hidden="true">
+            <path d="M289.94 256l95-95A24 24 0 00351 127l-95 95-95-95a24 24 0 00-34 34l95 95-95 95a24 24 0 1034 34l95-95 95 95a24 24 0 0034-34z"></path>
+          </svg>
         </button>
         <img class="image-preview-image" alt="" />
       </div>

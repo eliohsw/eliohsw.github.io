@@ -15,7 +15,10 @@ layout: default
       <div class="breadcrumb-separator">/</div>
       <div class="breadcrumb-item breadcrumb-title">{{ page.title }}</div>
       <button class="breadcrumb-copy-btn" type="button" onclick="copyPageLink()" aria-label="Copy link to this page" title="Copy link to this page">
-        <ion-icon src="/technical/assets/icons/icon-copy.svg" aria-hidden="true"></ion-icon>
+        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512" aria-hidden="true">
+          <rect x="128" y="128" width="336" height="336" rx="57" ry="57" stroke-linejoin="round" class="ionicon-fill-none ionicon-stroke-width"></rect>
+          <path d="M383.5 128l.5-24a56.16 56.16 0 00-56-56H112a64.19 64.19 0 00-64 64v216a56.16 56.16 0 0056 56h24" stroke-linecap="round" stroke-linejoin="round" class="ionicon-fill-none ionicon-stroke-width"></path>
+        </svg>
       </button>
     </div>
     <div class="project-meta">
@@ -23,7 +26,9 @@ layout: default
       {% if page.external_url %}
       <a class="project-external-link" href="{{ page.external_url }}" target="_blank" rel="noopener">
         <span>View Project</span>
-        <ion-icon name="open-outline"></ion-icon>
+        <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+          <path d="M384 224v184a40 40 0 01-40 40H104a40 40 0 01-40-40V168a40 40 0 0140-40h167.48M336 64h112v112M224 288L440 72" stroke-linecap="round" stroke-linejoin="round" class="ionicon-fill-none ionicon-stroke-width"></path>
+        </svg>
       </a>
       {% endif %}
     </div>
@@ -76,7 +81,9 @@ layout: default
         {% if prev_index < projects.size %}
           {% assign prev_project = projects[prev_index] %}
           <a href="{{ prev_project.url }}" class="nav-link prev" title="{{ prev_project.title }}">
-            <ion-icon name="chevron-back-outline"></ion-icon>
+            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M328 112L184 256l144 144" class="ionicon-fill-none"></path>
+            </svg>
             <span>PREV</span>
           </a>
         {% endif %}
@@ -85,7 +92,9 @@ layout: default
           {% assign next_project = projects[next_index] %}
           <a href="{{ next_project.url }}" class="nav-link next" title="{{ next_project.title }}">
             <span>NEXT</span>
-            <ion-icon name="chevron-forward-outline"></ion-icon>
+            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M184 112l144 144-144 144" class="ionicon-fill-none"></path>
+            </svg>
           </a>
         {% endif %}
       </div>

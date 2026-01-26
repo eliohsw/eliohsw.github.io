@@ -11,6 +11,24 @@ body, body * {
   transition: var(--transition-bg-color);
 }
 
+.ionicon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+  stroke: currentColor;
+  vertical-align: middle;
+}
+
+.ionicon-fill-none {
+  fill: none;
+}
+
+.ionicon-stroke-width {
+  stroke-width: 32px;
+  stroke-width: var(--ionicon-stroke-width, 32px);
+}
+
 h1, h2, h3, h4, h5, h6, a, p, li {
   transition: var(--transition-color-fast);
 }

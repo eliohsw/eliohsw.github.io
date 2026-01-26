@@ -63,7 +63,8 @@
   transform: translateY(0);
 }
 
-.subpage-top-btn ion-icon {
+.subpage-top-btn ion-icon,
+.subpage-top-btn .ionicon {
   font-size: 1.1rem;
 }
 
@@ -139,7 +140,8 @@
   transition: var(--transition-bg-color), var(--transition-color), var(--transition-border-color);
 }
 
-.filter-btn ion-icon {
+.filter-btn ion-icon,
+.filter-btn .ionicon {
   font-size: 1.2em;
 }
 
@@ -439,7 +441,8 @@
   transition: var(--transition-bg-color), var(--transition-color), var(--transition-border-color);
 }
 
-.image-preview-close ion-icon {
+.image-preview-close ion-icon,
+.image-preview-close .ionicon {
   font-size: 1.2em;
 }
 

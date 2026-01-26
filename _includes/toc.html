@@ -3,7 +3,9 @@
     <h4>Contents</h4>
     <a href="#" class="toc-top-btn" id="toc-top-btn" title="Back to top">TOP</a>
     <button class="toc-toggle" id="toc-toggle" aria-label="Toggle table of contents">
-      <ion-icon name="chevron-down-outline"></ion-icon>
+      <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M112 184l144 144 144-144" class="ionicon-fill-none"></path>
+      </svg>
     </button>
   </div>
   <div class="toc-content" id="toc-content">
@@ -255,8 +257,6 @@ document.addEventListener('DOMContentLoaded', function() {
   tocToggle.addEventListener('click', () => {
     tocHeader.classList.toggle('expanded');
     tocContent.classList.toggle('expanded');
-    const icon = tocToggle.querySelector('ion-icon');
-    icon.setAttribute('name', tocContent.classList.contains('expanded') ? 'chevron-up-outline' : 'chevron-down-outline');
   });
   
   generateTOC();
@@ -275,7 +275,6 @@ document.addEventListener('DOMContentLoaded', function() {
       if (window.innerWidth >= 1024) {
         tocHeader.classList.remove('expanded');
         tocContent.classList.remove('expanded');
-        tocToggle.querySelector('ion-icon').setAttribute('name', 'chevron-down-outline');
       }
     }, 250);
   });

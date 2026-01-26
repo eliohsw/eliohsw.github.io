@@ -72,8 +72,15 @@
   border-color: var(--color-accent-primary);
 }
 
-.toc-toggle ion-icon {
+.toc-toggle ion-icon,
+.toc-toggle .ionicon {
   font-size: 1.1rem;
+  transition: transform 0.2s ease;
+  transform-origin: center;
+}
+
+.toc-header.expanded .toc-toggle .ionicon {
+  transform: rotate(180deg);
 }
 
 .toc-content {

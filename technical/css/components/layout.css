@@ -161,7 +161,8 @@
   z-index: 1001;
 }
 
-.menu-btn ion-icon {
+.menu-btn ion-icon,
+.menu-btn .ionicon {
   color: var(--color-text);
   font-size: 24px;
   align-self: center;
