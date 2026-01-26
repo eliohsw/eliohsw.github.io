@@ -17,6 +17,16 @@ function initCardFilters() {
   const tagPlaceholder = filterInput.dataset.tagPlaceholder || 'Enter tag name';
   const emptyLabel = listEl.classList.contains('blog-list') ? 'posts' : 'projects';
   let isTagSearch = false;
+  let layoutUpdatePending = false;
+
+  function requestCardLayoutUpdate() {
+    if (layoutUpdatePending) return;
+    layoutUpdatePending = true;
+    requestAnimationFrame(() => {
+      layoutUpdatePending = false;
+      window.dispatchEvent(new CustomEvent('cardLayoutUpdate'));
+    });
+  }
 
   function updateSearchModeUI() {
     filterTagBtn.classList.toggle('active', isTagSearch);
@@ -93,6 +103,7 @@ function initCardFilters() {
 
   function updateCardTagsDisplay(highlightTag = '') {
     cards.forEach((card) => renderCardTags(card, highlightTag));
+    requestCardLayoutUpdate();
   }
 
   function filterCards(keyword = '') {
@@ -126,6 +137,7 @@ function initCardFilters() {
 
     showAllBtn.classList.toggle('active', visibleCount < cards.length);
     updateCardTagsDisplay(isTagSearch ? lowerKeyword : '');
+    requestCardLayoutUpdate();
   }
 
   function doSearch() {
@@ -169,6 +181,7 @@ function initCardFilters() {
 
   updateSearchModeUI();
   updateCardTagsDisplay();
+  requestCardLayoutUpdate();
 }
 
 if (document.readyState === 'loading') {

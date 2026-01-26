@@ -103,11 +103,14 @@ additional_scripts:
           </div>
           {% endif %}
         </div>
-        <div class="card-images">
-          {% if project.images and project.images.size > 0 %}
-            {% for image in project.images %}
-            <img class="card-image" src="{{ image }}" alt="{{ project.title }} image {{ forloop.index }}" loading="lazy" />
-            {% endfor %}
+        {% assign image_count = 0 %}
+        {% if project.images %}
+          {% assign image_count = project.images | size %}
+        {% endif %}
+        <div class="card-images" data-image-count="{{ image_count }}">
+          {% if image_count > 0 %}
+            {% assign first_image = project.images | first %}
+            <img class="card-image" src="{{ first_image }}" alt="{{ project.title }} image 1" loading="lazy" />
           {% endif %}
         </div>
       </div>
