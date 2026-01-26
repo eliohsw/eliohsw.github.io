@@ -8,7 +8,7 @@
   justify-content: space-between;
   align-items: end;
 
-  padding-bottom: 12px;
+  padding-bottom: 6px;
   border-bottom: 1.5px solid var(--color-box-border);
   margin-bottom: 10px;
   width: 75%;
@@ -19,7 +19,6 @@
 .subpage-title .last-updated {
   font-size: 18px;
   font-weight: 250;
-  font-stretch: semi-expanded;
   color: var(--color-text-secondary);
 }
 
@@ -99,39 +98,67 @@
 }
 
 /* =================================================================
+   About Page Styles
+   ================================================================= */
+
+.main-container:has(.about-content) {
+  max-width: 800px;
+}
+
+.about-content p {
+  line-height: var(--subpage-line-height-narrow) !important;
+  font-weight: 350;
+}
+
+/* =================================================================
    Projects and Blog Database Styles
    ================================================================= */
 
 /* Filter Controls */
-.projects-filter {
+.cards-filter {
   display: flex;
   align-items: center;
-  gap: 0.75em;
+  gap: 0.5em;
   padding: 0.5em 0;
+
+  --filter-border-width: 1.5px;
 }
 
 .filter-btn {
-  background: var(--color-bg-accent-light);
-  color: var(--color-accent-primary);
+  background: var(--color-surface-secondary);
+  color: var(--color-text-tertiary);
+  border: var(--filter-border-width) solid var(--color-box-border);
   border-radius: 999px;
-  border: 0;
-  padding: 0.4em 0.9em;
-  font-size: 1em;
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition-bg-color), var(--transition-color-fast);
+
+  padding: 0;
+  height: 40px;
+  width: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-bg-color), var(--transition-color), var(--transition-border-color);
+}
+
+.filter-btn ion-icon {
+  font-size: 1.2em;
 }
 
 .filter-btn.active {
-  background: var(--color-surface-secondary);
-  color: var(--color-text-tertiary);
-  cursor: not-allowed;
-  opacity: 0.7;
-  pointer-events: none;
+  color: var(--color-accent-primary);
+  border: var(--filter-border-width) solid var(--color-accent-primary);
 }
 
 .filter-btn:hover {
+  border-color: var(--color-accent-primary);
+}
+
+.filter-btn.active:hover {
   background: var(--color-bg-accent-dark);
+}
+
+.filter-all:not(.active) {
+  display: none;
 }
 
 .filter-input-wrapper {
@@ -142,19 +169,30 @@
 
 .filter-input {
   padding: 0.4em 2.4em 0.4em 1em;
-  background-color: var(--color-bg);
-  border: 1.5px solid var(--color-box-border);
+  background-color: var(--color-surface-secondary);
+  border: var(--filter-border-width) solid var(--color-box-border);
   border-radius: 999px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  box-shadow: none;
   font-size: 1em;
   outline: none;
-  height: 2.4em;
+  height: 40px;
+  width: 350px;
   box-sizing: border-box;
   transition: var(--transition-bg-color), var(--transition-border-color);
 }
 
+@media (max-width: 575px) {
+  .filter-input {
+    width: 250px;
+  }
+}
+
 .filter-input::placeholder {
   color: var(--color-text-tertiary);
-  transition: var(--transition-color-fast);
+  transition: var(--transition-color);
 }
 
 .filter-input:not(:placeholder-shown) {
@@ -162,11 +200,23 @@
 }
 
 .filter-input:focus {
-  border-color: var(--color-accent-primary);
   color: var(--color-text);
+  border: var(--filter-border-width) solid var(--color-accent-primary);
+  box-shadow: none;
+  outline: none;
 }
+
+.filter-input:focus::placeholder {
+  color: var(--color-text-secondary);
+}
+
 .filter-input:focus + .filter-input-icon {
   color: var(--color-accent-primary);
+}
+
+.filter-input:focus-visible {
+  outline: none;
+  outline-offset: 0;
 }
 
 .filter-input:not(:focus) + .filter-input-icon {
@@ -183,34 +233,6 @@
   pointer-events: auto;
   cursor: pointer;
   transition: var(--transition-color-fast);
-}
-
-.filter-search-btn {
-  background: var(--color-accent-primary);
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 2.4em;
-  height: 2.4em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1em;
-  font-weight: 500;
-  cursor: pointer;
-  margin-left: 0.5em;
-  transition: var(--transition-bg-color), var(--transition-color-fast);
-  padding: 0;
-}
-
-.filter-search-btn:hover {
-  background: var(--color-bg-accent-dark);
-}
-
-.filter-search-btn ion-icon {
-  font-size: 1.2em;
-  color: #fff;
-  pointer-events: none;
 }
 
 /* List Layouts */
@@ -235,7 +257,6 @@
 }
 
 .card-box:hover {
-  background: var(--color-surface);
   box-shadow: 0 4px 24px rgba(var(--color-border-rgb), 0.12);
   border-color: var(--color-accent-primary);
 }
@@ -307,9 +328,9 @@
   margin: 0;
   color: var(--color-text);
   text-decoration: none;
-  font-size: 1.2rem;
-  font-weight: 500;
-  font-stretch: expanded;
+  font-family: "Satoshi", sans-serif;
+  font-size: 1.2em;
+  font-weight: 700;
   transition: var(--transition-color-fast);
 }
 

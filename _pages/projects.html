@@ -9,17 +9,24 @@ js_main_path: "technical/js/main.js"
 js_ui_loader_path: "technical/js/ui-loader.js"
 js_ui_effects_path: "technical/js/ui-effects.js"
 favicon_path: "technical/assets/icons/favicon.png"
+additional_scripts:
+  - technical/js/page-filters.js
 ---
 
 {% assign sorted_projects = site.projects | where: 'hidden', false | sort: 'date' | reverse %}
 
 <!-- Projects Filter -->
-<div class="projects-filter">
+<div class="cards-filter">
   <div class="filter-input-wrapper">
-    <input type="text" class="filter-input" placeholder="Enter keyword" />
+    <input type="text" class="filter-input" placeholder="Enter project name" data-tag-placeholder="Enter tag name" />
     <ion-icon class="filter-input-icon" name="search"></ion-icon>
   </div>
-  <button class="filter-btn active" data-tag="__all">Show All</button>
+  <button class="filter-btn filter-tag">
+    <ion-icon name="pricetag"></ion-icon>
+  </button>
+  <button class="filter-btn filter-all" data-tag="__all">
+    <ion-icon name="close"></ion-icon>
+  </button>
 </div>
 
 <p>
@@ -44,7 +51,9 @@ favicon_path: "technical/assets/icons/favicon.png"
       <div class="card-contents">
         <div class="card-info">
           <h2 class="card-title"><a href="{{ project.url }}">{{ project.title }}</a></h2>
+          {% if project.subtitle %}
           <div class="card-subtitle">{{ project.subtitle }}</div>
+          {% endif %}
           <div class="project-tags">
             {% for tag in project.tags %}
             <span class="project-tag" data-tag="{{ tag | downcase }}">{{ tag }}</span>
@@ -65,79 +74,3 @@ favicon_path: "technical/assets/icons/favicon.png"
     <div class="no-projects">Projects coming soon...</div>
   {% endif %}
 </div>
-
-<script>
-// Simplified JavaScript for filtering (client-side)
-document.addEventListener('DOMContentLoaded', function() {
-  const filterInput = document.querySelector('.filter-input');
-  const filterIcon = document.querySelector('.filter-input-icon');
-  const showAllBtn = document.querySelector('.filter-btn[data-tag="__all"]');
-  const projectCards = document.querySelectorAll('.card-box');
-  const projectsList = document.querySelector('.projects-list');
-  
-  function filterProjects(keyword = '') {
-    const lowerKeyword = keyword.toLowerCase().trim();
-    let visibleCount = 0;
-    
-    projectCards.forEach(card => {
-      const tags = card.getAttribute('data-tags');
-      const title = card.querySelector('.card-title').textContent.toLowerCase();
-      const subtitle = card.querySelector('.card-subtitle').textContent.toLowerCase();
-      
-      const matches = lowerKeyword === '' || 
-                     tags.includes(lowerKeyword) || 
-                     title.includes(lowerKeyword) || 
-                     subtitle.includes(lowerKeyword);
-      
-      card.style.display = matches ? '' : 'none';
-      if (matches) {
-        visibleCount++;
-      }
-    });
-    
-    // Show "no projects found" message if no matches
-    const noProjectsMsg = document.querySelector('.no-projects-filter');
-    if (noProjectsMsg) noProjectsMsg.remove();
-    
-    if (visibleCount === 0 && lowerKeyword !== '') {
-      const noProjectsDiv = document.createElement('div');
-      noProjectsDiv.className = 'no-projects no-projects-filter';
-      noProjectsDiv.textContent = 'No projects found for this keyword.';
-      projectsList.appendChild(noProjectsDiv);
-    }
-    
-    // Update filter button state
-    showAllBtn.classList.toggle('active', lowerKeyword === '');
-  }
-  
-  function doSearch() {
-    filterProjects(filterInput.value);
-  }
-  
-  filterInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') doSearch();
-  });
-  
-  filterInput.addEventListener('input', function() {
-    filterProjects(this.value);
-  });
-  
-  filterIcon.addEventListener('click', doSearch);
-  
-  showAllBtn.addEventListener('click', function() {
-    filterInput.value = '';
-    filterProjects();
-  });
-  
-  // Add click events to project tags
-  document.querySelectorAll('.project-tag').forEach(tag => {
-    tag.style.cursor = 'pointer';
-    tag.addEventListener('click', function() {
-      const tagName = this.getAttribute('data-tag');
-      filterInput.value = tagName;
-      filterProjects(tagName);
-    });
-  });
-
-});
-</script>

@@ -10,9 +10,25 @@ js_main_path: "technical/js/main.js"
 js_ui_loader_path: "technical/js/ui-loader.js"
 js_ui_effects_path: "technical/js/ui-effects.js"
 favicon_path: "technical/assets/icons/favicon.png"
+additional_scripts:
+  - technical/js/page-filters.js
 ---
 
 {% assign sorted_blogs = site.blog | where: 'hidden', false | sort: 'date' | reverse %}
+
+<!-- Blog Filter -->
+<div class="cards-filter">
+  <div class="filter-input-wrapper">
+    <input type="text" class="filter-input" placeholder="Enter blog title" data-tag-placeholder="Enter tag name" />
+    <ion-icon class="filter-input-icon" name="search"></ion-icon>
+  </div>
+  <button class="filter-btn filter-tag">
+    <ion-icon name="pricetag"></ion-icon>
+  </button>
+  <button class="filter-btn filter-all" data-tag="__all">
+    <ion-icon name="close"></ion-icon>
+  </button>
+</div>
 
 <p class="subpage-intro">
   I write about all sorts of topics. Feel free to explore my thoughts, experiences, and insights on subjects that interest me. 
@@ -21,7 +37,7 @@ favicon_path: "technical/assets/icons/favicon.png"
 <div class="blog-list">
   {% if sorted_blogs.size > 0 %}
     {% for blog in sorted_blogs %}
-    <div class="card-box">
+    <div class="card-box" data-tags="{{ blog.tags | join: ',' | downcase }}">
       <div class="card-header">
         <div class="card-header-row">
           <div class="card-meta">
@@ -36,7 +52,16 @@ favicon_path: "technical/assets/icons/favicon.png"
       <div class="card-contents">
         <div class="card-info">
           <h2 class="card-title"><a href="{{ blog.url }}">{{ blog.title }}</a></h2>
+          {% if blog.subtitle %}
           <div class="card-subtitle">{{ blog.subtitle }}</div>
+          {% endif %}
+          {% if blog.tags %}
+          <div class="project-tags">
+            {% for tag in blog.tags %}
+            <span class="project-tag" data-tag="{{ tag | downcase }}">{{ tag }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
         </div>
       </div>
     </div>
