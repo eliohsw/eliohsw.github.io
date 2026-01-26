@@ -3,7 +3,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="{{ site.baseurl }}/{{ page.css_path | default: 'technical/css/main.css' }}">
+  <style>
+    .ionicon {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      fill: currentColor;
+      stroke: currentColor;
+      vertical-align: middle;
+    }
+
+    .ionicon-fill-none {
+      fill: none;
+    }
+
+    .ionicon-stroke-width {
+      stroke-width: 32px;
+      stroke-width: var(--ionicon-stroke-width, 32px);
+    }
+  </style>
+  <link rel="stylesheet" href="{{ site.baseurl }}/{{ page.css_path | default: 'technical/css/main.css' }}?v=20260126">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css">
   {% if page.include_tikz %}
   <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
