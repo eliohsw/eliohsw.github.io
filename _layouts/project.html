@@ -33,9 +33,9 @@ layout: default
     {% endif %}
     
     {% if page.tags and page.tags.size > 0 %}
-    <div class="project-tags">
+    <div class="card-tags">
       {% for tag in page.tags %}
-      <span class="project-tag">{{ tag }}</span>
+      <span class="card-tag" data-type="project">{{ tag }}</span>
       {% endfor %}
     </div>
     {% endif %}

@@ -278,6 +278,61 @@ export function initCardImageHeights() {
     if (images) images.classList.remove('is-ready');
   });
   const measures = new WeakMap();
+  const rootFontSize = () => parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+  const getGapValue = (images) => {
+    const styles = getComputedStyle(images);
+    return parseFloat(styles.columnGap || styles.gap) || 0;
+  };
+  const updateImageLayout = (card, info, images) => {
+    const imageEls = Array.from(images.querySelectorAll('.card-image'));
+    if (!imageEls.length) return;
+    const cardWidth = card.getBoundingClientRect().width;
+    const infoWidth = info.getBoundingClientRect().width;
+    if (!cardWidth || !infoWidth) return;
+
+    const spaceLeft = Math.max(0, cardWidth - infoWidth);
+    card.style.setProperty('--card-space-left', `${Math.round(spaceLeft)}px`);
+
+    const buffer = 2 * rootFontSize();
+    const available = Math.max(0, spaceLeft - buffer);
+    const imageSize = parseFloat(getComputedStyle(card).getPropertyValue('--card-info-height')) ||
+      imageEls[0].getBoundingClientRect().width ||
+      0;
+    const gap = getGapValue(images);
+    const unit = imageSize + gap;
+    let maxVisible = 0;
+
+    if (available > 0 && imageSize > 0 && unit > 0) {
+      maxVisible = Math.min(imageEls.length, Math.max(0, Math.floor((available + gap) / unit)));
+    }
+
+    imageEls.forEach((img, index) => {
+      img.style.display = index < maxVisible ? '' : 'none';
+    });
+
+    const remaining = imageEls.length - maxVisible;
+    let counter = images.querySelector('.card-image-count');
+    if (remaining > 0) {
+      if (!counter) {
+        counter = document.createElement('span');
+        counter.className = 'card-image-count';
+        counter.setAttribute('aria-hidden', 'true');
+        images.appendChild(counter);
+      }
+      counter.textContent = `+${remaining}`;
+      counter.style.display = 'inline-flex';
+    } else if (counter) {
+      counter.style.display = 'none';
+    }
+
+    if (remaining > 0 && maxVisible === 0 && imageSize > 0) {
+      images.style.width = `${Math.round(imageSize)}px`;
+      images.style.height = `${Math.round(imageSize)}px`;
+    } else {
+      images.style.width = '';
+      images.style.height = '';
+    }
+  };
   const measure = (card, info) => {
     let m = measures.get(card);
     if (!m) {
@@ -301,12 +356,39 @@ export function initCardImageHeights() {
     if (h > 0) {
       card.style.setProperty('--card-info-height', `${Math.round(h)}px`);
       images.classList.add('is-ready');
+      updateImageLayout(card, info, images);
     }
   };
   const update = () => requestAnimationFrame(() => cards.forEach(setHeight));
-  let t;
-  window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(update, 100); });
-  update();
+  const schedule = (() => {
+    const pending = new Set();
+    let rafId = null;
+    return (card) => {
+      if (card) pending.add(card);
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        if (pending.size) {
+          pending.forEach(setHeight);
+          pending.clear();
+        } else {
+          cards.forEach(setHeight);
+        }
+        rafId = null;
+      });
+    };
+  })();
+  if ('ResizeObserver' in window) {
+    const observer = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        const card = entry.target.closest?.('.card-contents') || entry.target;
+        schedule(card);
+      });
+    });
+    cards.forEach((card) => observer.observe(card));
+  } else {
+    window.addEventListener('resize', () => schedule());
+  }
+  schedule();
   document.fonts?.ready?.then(update).catch(() => {});
   window.addEventListener('load', update);
 }

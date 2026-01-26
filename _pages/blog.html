@@ -56,9 +56,9 @@ additional_scripts:
           <div class="card-subtitle">{{ blog.subtitle }}</div>
           {% endif %}
           {% if blog.tags %}
-          <div class="project-tags">
+          <div class="card-tags">
             {% for tag in blog.tags %}
-            <span class="project-tag" data-tag="{{ tag | downcase }}">{{ tag }}</span>
+            <span class="card-tag" data-tag="{{ tag | downcase }}" data-type="blog">{{ tag }}</span>
             {% endfor %}
           </div>
           {% endif %}

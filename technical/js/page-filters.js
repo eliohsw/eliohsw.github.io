@@ -83,7 +83,7 @@ function initCardFilters() {
     filterCards();
   });
 
-  listEl.querySelectorAll('.project-tag, .blog-tag').forEach((tag) => {
+  listEl.querySelectorAll('.card-tag').forEach((tag) => {
     tag.style.cursor = 'pointer';
     tag.addEventListener('click', function() {
       const tagName = this.textContent.trim();
