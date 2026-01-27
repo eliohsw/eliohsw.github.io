@@ -1,7 +1,8 @@
 /* =================================================================
-   Individual Project and Blog Post Pages
+   Individual Subpages
    ================================================================= */
 
+/* Banner Image */
 .page-banner {
   width: 100vw;
   height: 300px;
@@ -19,10 +20,12 @@
   object-position: center;
 }
 
+/* Individual Subpage Styles */
 .subpage-ind-page {
   margin: 0 auto;
   padding: 2rem 0 0 0;
 
+  /* Individual Subpage Header */
   .subpage-ind-header {
     margin-bottom: 3rem;
   }
@@ -128,7 +131,7 @@
   .subpage-ind-title {
     font-size: 2.5rem;
     font-family: 'Satoshi', sans-serif;
-    font-weight: 850;
+    font-weight: 750;
     margin: 0 0 0.25rem 0;
     line-height: 1.2;
   }
@@ -165,8 +168,9 @@
     background: var(--color-tag-pdf-bg-hover);
   }
 
+  /* Individual Subpage Content */
   .subpage-ind-content {
-    line-height: var(--subpage-line-height-narrow);
+    line-height: var(--line-height-subpage-narrow);
     font-size: 1rem;
 
     h1 {
@@ -259,14 +263,14 @@
     }
 
     ul {
-      --list-bullet-gutter: calc(var(--subpage-line-height) * 1em);
+      --list-bullet-gutter: calc(var(--line-height-subpage) * 1em);
       --list-bullet-size: 0.45rem;
       list-style: none;
       padding-left: var(--list-bullet-gutter);
     }
 
     ol {
-      padding-left: calc(var(--subpage-line-height) * 1em);
+      padding-left: calc(var(--line-height-subpage) * 1em);
     }
 
     ul li {
@@ -278,7 +282,7 @@
       content: "";
       position: absolute;
       left: calc((-1 * var(--list-bullet-gutter) - var(--list-bullet-size)) / 2);
-      top: calc((var(--subpage-line-height) * 1em - var(--list-bullet-size)) / 2);
+      top: calc((var(--line-height-subpage) * 1em - var(--list-bullet-size)) / 2);
       width: var(--list-bullet-size);
       height: var(--list-bullet-size);
       border-radius: 50%;
@@ -332,7 +336,7 @@
       content: "";
       position: absolute;
       left: calc((-1 * var(--list-bullet-gutter) - var(--list-bullet-size)) / 2 - var(--list-bullet-thickness));
-      top: calc((var(--subpage-line-height) * 1em - var(--list-bullet-size)) / 2 - var(--list-bullet-thickness));
+      top: calc((var(--line-height-subpage) * 1em - var(--list-bullet-size)) / 2 - var(--list-bullet-thickness));
       width: var(--list-bullet-size);
       height: var(--list-bullet-size);
       border: var(--list-bullet-thickness) solid var(--color-text);
@@ -420,7 +424,7 @@
       }
     }
 
-    /* inline code */
+    /* Inline Code */
     :not(.highlight) > code { 
       background: var(--color-surface-secondary);
       padding: 0.15rem 0.35rem;
@@ -507,13 +511,14 @@
   }
 
   .subpage-ind-content--latex p {
-    line-height: var(--subpage-line-height);
+    line-height: var(--line-height-subpage);
   }
 
   .subpage-ind-content > :first-child {
     margin-top: 0 !important;
   }
 
+  /* Individual Subpage Navigation */
   .subpage-ind-navigation {
     border-top: 1.5px solid var(--color-text-tertiary);
     margin-top: 1rem;

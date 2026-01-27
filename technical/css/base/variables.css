@@ -43,8 +43,9 @@
 
   --transition-transform: transform 0.32s ease;
 
-  --subpage-line-height: 1.75;
-  --subpage-line-height-narrow: 1.5;
+  --line-height-page: 1.5;
+  --line-height-subpage: 1.75;
+  --line-height-subpage-narrow: 1.5;
 
   --width-main-container: 800px;
 }
