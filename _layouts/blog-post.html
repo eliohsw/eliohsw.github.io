@@ -21,8 +21,26 @@ layout: default
         </svg>
       </button>
     </div>
+    {% assign publish_date = page.date_publish | default: page.date %}
+    {% assign update_date = page.date_update | default: publish_date %}
     <div class="subpage-ind-meta">
-      <span class="subpage-ind-date">{{ page.date | date: "%B %d, %Y" }}</span>
+      <div class="subpage-ind-meta-dates">
+        <span class="subpage-ind-date">{{ page.date | date: "%B %d, %Y" }}</span>
+        <div class="subpage-ind-meta-secondary">
+          <div class="date-badge-item subpage-ind-date-date">
+            <span class="date-badge">D</span>
+            <span class="date-badge-text">{{ page.date | date: "%Y-%m-%d" }}</span>
+          </div>
+          <div class="date-badge-item subpage-ind-date-publish">
+            <span class="date-badge">P</span>
+            <span class="date-badge-text">{{ publish_date | date: "%Y-%m-%d" }}</span>
+          </div>
+          <div class="date-badge-item subpage-ind-date-update">
+            <span class="date-badge">U</span>
+            <span class="date-badge-text">{{ update_date | date: "%Y-%m-%d" }}</span>
+          </div>
+        </div>
+      </div>
     </div>
     <h1 class="subpage-ind-title">{{ page.title }}</h1>
     {% if page.subtitle %}

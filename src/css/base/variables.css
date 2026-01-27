@@ -23,6 +23,9 @@
   --color-bg-accent-dark: #e4edfa;
   --color-bg-accent-light: #f2f6fc;
   
+  --color-green-primary: #34523E;
+  --color-bg-green-primary: #DDE6DE;
+  --color-bg-green-secondary: #DDE6DE;
   --color-tag-pdf-bg: #fde8e8;
   --color-tag-pdf-bg-hover: #f7cfcf;
   --color-tag-pdf-text: #c03d3d;
@@ -71,6 +74,9 @@
     --color-accent-primary: #4281db;
     --color-bg-accent-dark: #1e2734;
     --color-bg-accent-light: #1c2026;
+    --color-green-primary: #EAFEEC;
+    --color-bg-green-primary: #44664E;
+    --color-bg-green-secondary: #243229;
     --color-tag-pdf-bg: #3b1f1f;
     --color-tag-pdf-bg-hover: #4b2323;
     --color-tag-pdf-text: #f07171;
@@ -97,6 +103,9 @@
   --color-accent-primary: #4281db;
   --color-bg-accent-dark: #1e2734;
   --color-bg-accent-light: #1c2026;
+  --color-green-primary: #EAFEEC;
+  --color-bg-green-primary: #44664E;
+  --color-bg-green-secondary: #243229;
   --color-tag-pdf-bg: #3b1f1f;
   --color-tag-pdf-bg-hover: #4b2323;
   --color-tag-pdf-text: #f07171;

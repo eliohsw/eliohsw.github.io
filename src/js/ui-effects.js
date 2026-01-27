@@ -91,7 +91,7 @@ export function initGreeting() {
     }, 100);
   }
   
-  fetch('../technical/data/greeting.json')
+  fetch('../src/data/greeting.json')
     .then(response => {
       if (!response.ok) throw new Error('Network response was not ok');
       return response.json();

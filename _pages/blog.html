@@ -38,7 +38,7 @@ additional_scripts:
 </div>
 
 <p class="subpage-intro">
-  I write about all sorts of topics. Feel free to explore my thoughts, experiences, and insights on subjects that interest me. 
+  A collection of thoughts, experiences, and occasional deep dives on topics that catch my interest.
 </p>
 
 <div id="blog-list" class="subpage-collection-list">
@@ -80,8 +80,22 @@ additional_scripts:
     <div class="card-box" data-tags="{{ card_tags }}" data-tags-json='{{ tags_json | escape }}' data-pdf-url="{{ pdf_link | escape }}" data-tag-type="blog">
       <div class="card-header">
         <div class="card-header-row">
+          {% assign publish_date = blog.date_publish | default: blog.date %}
+          {% assign update_date = blog.date_update | default: publish_date %}
           <div class="card-meta">
-            <span class="card-date">{{ blog.date | date: "%Y-%m-%d" }}</span>
+            <div class="card-date-wrap">
+              <span class="card-date">{{ blog.date | date: "%B %-d, %Y" }}</span>
+              <div class="card-date-badge-list">
+                <div class="date-badge-item">
+                  <span class="date-badge">P</span>
+                  <span class="date-badge-text">{{ publish_date | date: "%Y-%m-%d" }}</span>
+                </div>
+                <div class="date-badge-item">
+                  <span class="date-badge">U</span>
+                  <span class="date-badge-text">{{ update_date | date: "%Y-%m-%d" }}</span>
+                </div>
+              </div>
+            </div>
           </div>
           <a class="card-link" href="{{ blog.url }}" aria-label="Read Blog">
             <span>Read</span>

@@ -8,10 +8,10 @@ baseurl: ""
 collections:
   projects:
     output: true
-    permalink: /projects/:name/
+    permalink: /projects/:year/:month/:day/:name/
   blog:
     output: true
-    permalink: /blog/:name/
+    permalink: /blog/:year/:month/:day/:name/
 
 # Collections paths (using relative paths from site root)
 collections_dir: _content

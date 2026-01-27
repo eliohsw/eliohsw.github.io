@@ -20,11 +20,8 @@
 
 .subpage-title h1 {
   margin: 0;
-  font-weight: 300;
+  font-weight: 575;
   transition: font-weight 0.32s ease, width 0.32s ease;
-}
-.subpage-title h1:hover {
-  font-weight: 600;
 }
 
 .subpage-title .last-updated {
@@ -32,6 +29,7 @@
   font-weight: 300;
   color: var(--color-text-secondary);
   user-select: none;
+  -webkit-user-select: none;
   pointer-events: none;
 }
 
@@ -105,7 +103,7 @@
   margin: 2em 0;
 }
 
-@media (max-width: calc(800px + 280px + 3 * 2rem)) {
+@media (max-width: calc(800px + 290px + 3 * 2rem)) {
   .subpage-top-btn {
     right: 1rem;
     top: calc(48px + 1rem);
@@ -311,6 +309,77 @@
   align-items: center;
   gap: 1rem;
   flex-wrap: wrap;
+}
+
+.card-date-wrap {
+  position: relative;
+  display: inline-block;
+  align-self: flex-start;
+
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.card-date-badge-list {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 1rem);
+  transform: translateX(0) translateY(-50%);
+  opacity: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 100ms ease-in;
+}
+
+.card-date-badge-list.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.card-date-toggle {
+  cursor: pointer;
+}
+
+.card-date-toggle:focus-visible {
+  outline: 2px solid var(--color-accent-primary);
+  outline-offset: 2px;
+}
+
+.date-badge-item {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--color-green-primary);
+  background-color: var(--color-bg-green-secondary);
+  font-size: 0.9em;
+  padding: 0.3em 0.65em;
+  border-radius: 999px;
+  white-space: nowrap;
+
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+
+  transition: var(--transition-bg-color), var(--transition-color);
+}
+
+.date-badge {
+  font-weight: 600;
+}
+
+@media (max-width: 525px) {
+  .card-date-toggle {
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: auto;
+  }
+  .card-date-badge-list {
+    display: none;
+  }
 }
 
 .card-date {
