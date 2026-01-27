@@ -70,7 +70,7 @@
 
   {% assign meta_title = page.og_title | default: page.title | default: site.title | default: "Elio Huang" %}
   {% capture meta_description %}
-    {{ page.description | default: page.subtitle | default: page.excerpt | default: site.description }}
+    {{ page.description | default: page.excerpt | default: page.subtitle | default: site.description }}
   {% endcapture %}
   {% assign meta_description = meta_description | strip_html | strip_newlines | strip %}
   {% assign meta_image = page.og_image | default: page.image | default: site.social_image %}

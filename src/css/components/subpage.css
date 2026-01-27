@@ -1,3 +1,3 @@
-@import url('./subpage-base.css');
-@import url('./subpage-ind.css');
-@import url('./subpage-toc.css');
+@import url('/src/css/components/subpage-base.css');
+@import url('/src/css/components/subpage-ind.css');
+@import url('/src/css/components/subpage-toc.css');

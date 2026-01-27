@@ -341,6 +341,11 @@
 
 .card-date-toggle {
   cursor: pointer;
+  transition: var(--transition-color-fast);
+}
+
+.card-date-toggle:hover {
+  color: var(--color-text);
 }
 
 .card-date-toggle:focus-visible {
