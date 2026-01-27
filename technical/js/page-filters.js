@@ -14,7 +14,7 @@ function initCardFilters() {
   if (!cards.length) return;
 
   const defaultPlaceholder = filterInput.getAttribute('placeholder') || '';
-  const tagPlaceholder = filterInput.dataset.tagPlaceholder || 'Enter tag name';
+  const tagPlaceholder = filterInput.dataset.tagPlaceholder || 'Enter keyword';
   const emptyLabel = listEl.classList.contains('blog-list') ? 'posts' : 'projects';
   let isTagSearch = false;
   let layoutUpdatePending = false;

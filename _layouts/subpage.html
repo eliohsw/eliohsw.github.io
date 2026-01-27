@@ -1,12 +1,14 @@
 ---
 layout: default
 ---
-<h1 class="subpage-title">
-  {{ page.page_title | default: page.title }}
+<div class="subpage-title" id="{{ page.filename | default: 'default-id' }}">
+  <h1>
+    {{ page.page_title | default: page.title }}
+  </h1>
   {% if page.last_updated %}
     <span class="last-updated" title="Last Updated">{{ page.last_updated }}</span>
   {% endif %}
-</h1>
+</div>
 <div class="subpage-content">
   {{ content }}
 </div>

@@ -6,23 +6,33 @@
 .subpage-title {
   display: inline-flex;
   justify-content: space-between;
-  align-items: end;
+  align-items: baseline;
 
   padding-bottom: 6px;
   border-bottom: 1.5px solid var(--color-box-border);
   margin-bottom: 10px;
   width: 75%;
 
-  font-family: 'Satoshi', sans-serif;
-  font-weight: 850;
+  font-family: 'General Sans', sans-serif;
 
   transition: var(--transition-border-color);
+}
+
+.subpage-title h1 {
+  margin: 0;
+  font-weight: 300;
+  transition: font-weight 0.32s ease, width 0.32s ease;
+}
+.subpage-title h1:hover {
+  font-weight: 600;
 }
 
 .subpage-title .last-updated {
   font-size: 18px;
   font-weight: 300;
   color: var(--color-text-secondary);
+  user-select: none;
+  pointer-events: none;
 }
 
 .subpage-content {
@@ -105,12 +115,16 @@
 }
 
 /* =================================================================
-   About Page Styles
+   Specific Subpage Styles
    ================================================================= */
 
 .about-content p {
   line-height: var(--subpage-line-height-narrow) !important;
   font-weight: 350;
+}
+
+.subpage-title#latex {
+  align-items: end;
 }
 
 /* =================================================================
@@ -386,6 +400,10 @@
 .card-image:focus-visible {
   outline: none;
   outline-offset: 0;
+}
+
+.card-contents:not(:has(.card-image)) .card-info {
+  max-width: 100%;
 }
 
 .image-preview-overlay {
