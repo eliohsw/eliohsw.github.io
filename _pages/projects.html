@@ -80,7 +80,23 @@ additional_scripts:
       <div class="card-header">
         <div class="card-header-row">
           <div class="card-meta">
-            <span class="card-date">{{ project.date | date: "%Y-%m-%d" }}</span>
+            <div class="card-date-wrap">
+              <span class="card-date">{{ project.date | date: "%B %-d, %Y" }}</span>
+              <div class="card-date-badge-list">
+                {% if project.date_publish %}
+                <div class="date-badge-item">
+                  <span class="date-badge">P</span>
+                  <span class="date-badge-text">{{ project.date_publish | date: "%Y-%m-%d" }}</span>
+                </div>
+                {% endif %}
+                {% if project.date_update %}
+                <div class="date-badge-item">
+                  <span class="date-badge">U</span>
+                  <span class="date-badge-text">{{ project.date_update | date: "%Y-%m-%d" }}</span>
+                </div>
+                {% endif %}
+              </div>
+            </div>
           </div>
           <a class="card-link" href="{{ project.url }}" aria-label="View Project">
             <span>View</span>

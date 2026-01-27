@@ -32,6 +32,7 @@
   font-weight: 300;
   color: var(--color-text-secondary);
   user-select: none;
+  -webkit-user-select: none;
   pointer-events: none;
 }
 
@@ -313,11 +314,69 @@
   flex-wrap: wrap;
 }
 
+.card-date-wrap {
+  position: relative;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.card-date-badge-list {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 1rem);
+  transform: translateX(0) translateY(-50%);
+  opacity: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 180ms ease-in;
+}
+
+.card-date-badge-list.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.card-date-toggle {
+  cursor: pointer;
+}
+
+.card-date-toggle:focus-visible {
+  outline: 2px solid var(--color-accent-primary);
+  outline-offset: 2px;
+}
+
+.date-badge-item {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--color-green-primary);
+  background-color: var(--color-bg-green-secondary);
+  font-size: 0.9em;
+  padding: 0.3em 0.65em;
+  border-radius: 999px;
+  white-space: nowrap;
+
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+
+  transition: var(--transition-bg-color), var(--transition-color);
+}
+
+.date-badge {
+  font-weight: 600;
+}
+
 .card-date {
   font-size: 0.98em;
   color: var(--color-text-secondary);
   align-self: flex-start;
   white-space: nowrap;
+  cursor: pointer;
 }
 
 .card-link {
