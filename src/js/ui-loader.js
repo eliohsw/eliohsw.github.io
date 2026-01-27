@@ -22,9 +22,9 @@ export function initComponentPlaceholders() {
     document.dispatchEvent(new CustomEvent('componentsLoaded'));
   }, 5000); // 5 second fallback
 
-  loadComponent('navbar-placeholder', '/technical/components/navbar.html', () => {
-    loadComponent('mobile-sidebar-placeholder', '/technical/components/mobile-sidebar.html', () => {
-      loadComponent('footer-placeholder', '/technical/components/footer.html', () => {
+  loadComponent('navbar-placeholder', '/src/components/navbar.html', () => {
+    loadComponent('mobile-sidebar-placeholder', '/src/components/mobile-sidebar.html', () => {
+      loadComponent('footer-placeholder', '/src/components/footer.html', () => {
         // All components are loaded, dispatch a custom event
         clearTimeout(fallbackTimeout);
         document.dispatchEvent(new CustomEvent('componentsLoaded'));
