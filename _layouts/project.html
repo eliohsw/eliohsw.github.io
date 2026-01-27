@@ -54,7 +54,7 @@ layout: default
   </div>
 
   <div class="project-main">
-    <div class="project-content">
+    <div class="project-content{% if page.latex %} project-content--latex{% endif %}">
       {{ content }}
     </div>
     

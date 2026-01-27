@@ -206,10 +206,6 @@
       margin-bottom: 1rem;
     }
 
-    span.katex {
-      font-size: 1.15em;
-    }
-
     img {
       max-width: 100%;
       height: auto;
@@ -509,6 +505,11 @@
         }
       }
     }
+  }
+
+  .project-content--latex p,
+  .blog-post-content--latex p {
+    line-height: var(--subpage-line-height);
   }
 
   .project-content > :first-child, .blog-post-content > :first-child {

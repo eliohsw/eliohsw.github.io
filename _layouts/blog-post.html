@@ -46,7 +46,7 @@ layout: default
   </div>
 
   <div class="blog-post-main">
-    <div class="blog-post-content">
+    <div class="blog-post-content{% if page.latex %} blog-post-content--latex{% endif %}">
       {{ content }}
     </div>
     

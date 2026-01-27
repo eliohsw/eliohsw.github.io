@@ -81,10 +81,9 @@ footer {
   font-weight: 425;
 }
 
-.katex-display {
+mjx-container[display="true"] {
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 0.10em 0;
-  margin: 0.90em 0;
+  margin: 0.80em 0 !important;
   -webkit-overflow-scrolling: touch;
 }
