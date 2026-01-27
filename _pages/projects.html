@@ -40,7 +40,7 @@ additional_scripts:
   I’m gradually moving my projects here. Feel free to explore and share your feedback.
 </p>
 
-<div class="projects-list">
+<div id="projects-list" class="subpage-collection-list">
   {% if sorted_projects.size > 0 %}
     {% for project in sorted_projects %}
     {% assign pdf_link = project.pdf_url | default: project.pdf %}

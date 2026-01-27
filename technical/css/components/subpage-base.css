@@ -1,5 +1,5 @@
 /* =================================================================
-   Subpage Base Styles
+   Subpage Styles (Subpage Base Styles)
    ================================================================= */
 
 /* General Subpage Layout */
@@ -119,7 +119,7 @@
    ================================================================= */
 
 .about-content p {
-  line-height: var(--subpage-line-height-narrow) !important;
+  line-height: var(--line-height-subpage-narrow) !important;
   font-weight: 350;
 }
 
@@ -254,14 +254,17 @@
 }
 
 /* List Layouts */
-.projects-list, .blog-list {
+.subpage-collection-list {
   display: flex;
   flex-direction: column;
   gap: 2rem;
   margin-top: 1rem;
 }
 
-/* Card Components */
+/* =================================================================
+   Card Box Styles
+   ================================================================= */
+
 .card-box {
   background: var(--color-bg);
   box-shadow: 0 2px 12px rgba(var(--color-border-rgb), 0.07);
@@ -283,7 +286,7 @@
   margin-bottom: 1rem;
 }
 
-.card-box-header,
+/* Card Header */
 .card-header {
   display: flex;
   flex-direction: column;
@@ -299,6 +302,31 @@
   width: 100%;
 }
 
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.card-date {
+  font-size: 0.98em;
+  color: var(--color-text-secondary);
+  align-self: flex-start;
+  white-space: nowrap;
+}
+
+.card-link {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+  color: var(--color-accent-primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* Card Contents */
 .card-contents {
   display: flex;
   justify-content: space-between;
@@ -357,6 +385,53 @@
   mask-image: linear-gradient(90deg, #000 0%, #000 85%, transparent 100%);
 }
 
+.card-tags {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: nowrap;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.card-tag {
+  background: var(--color-bg-accent-light);
+  color: var(--color-accent-primary);
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 475;
+  text-decoration: none;
+  transition: var(--transition-bg-color);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.card-tag:hover {
+  background: var(--color-bg-accent-dark);
+}
+
+.card-tag--pdf {
+  background: var(--color-tag-pdf-bg);
+  color: var(--color-tag-pdf-text);
+}
+
+.card-tag--pdf:hover {
+  background: var(--color-tag-pdf-bg-hover);
+}
+
+.card-tag--overflow {
+  background: var(--color-tag-muted-bg);
+  color: var(--color-tag-muted-text);
+  cursor: default;
+  pointer-events: none;
+}
+
+.card-tag--overflow:hover {
+  background: var(--color-tag-muted-bg);
+}
+
+/* Card Images */
 .card-images {
   display: none;
   flex-direction: row;
@@ -506,76 +581,6 @@
     overflow: auto;
     flex-wrap: wrap !important;
   }
-}
-
-.card-meta {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.card-date {
-  font-size: 0.98em;
-  color: var(--color-text-secondary);
-  align-self: flex-start;
-  white-space: nowrap;
-}
-
-.card-link {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.3em;
-  color: var(--color-accent-primary);
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.card-tags {
-  display: flex;
-  gap: 0.3rem;
-  flex-wrap: nowrap;
-  min-width: 0;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.card-tag {
-  background: var(--color-bg-accent-light);
-  color: var(--color-accent-primary);
-  padding: 0.3rem 0.65rem;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  font-weight: 475;
-  text-decoration: none;
-  transition: var(--transition-bg-color);
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.card-tag:hover {
-  background: var(--color-bg-accent-dark);
-}
-
-.card-tag--pdf {
-  background: var(--color-tag-pdf-bg);
-  color: var(--color-tag-pdf-text);
-}
-
-.card-tag--pdf:hover {
-  background: var(--color-tag-pdf-bg-hover);
-}
-
-.card-tag--overflow {
-  background: var(--color-tag-muted-bg);
-  color: var(--color-tag-muted-text);
-  cursor: default;
-  pointer-events: none;
-}
-
-.card-tag--overflow:hover {
-  background: var(--color-tag-muted-bg);
 }
 
 .no-projects {
