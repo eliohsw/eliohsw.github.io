@@ -631,7 +631,7 @@
 
 .subpage-ind-main {
   display: grid;
-  grid-template-columns: 1fr 280px;
+  grid-template-columns: 1fr 290px;
   gap: 2rem;
   margin-bottom: 3rem;
 }
@@ -692,7 +692,7 @@
   }
 }
 
-@media (max-width: calc(800px + 280px + 3 * 2rem)) {
+@media (max-width: calc(800px + 290px + 3 * 2rem)) {
   .subpage-ind-page {
     max-width: var(--width-main-container);
   }

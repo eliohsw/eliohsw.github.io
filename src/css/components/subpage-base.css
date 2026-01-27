@@ -103,7 +103,7 @@
   margin: 2em 0;
 }
 
-@media (max-width: calc(800px + 280px + 3 * 2rem)) {
+@media (max-width: calc(800px + 290px + 3 * 2rem)) {
   .subpage-top-btn {
     right: 1rem;
     top: calc(48px + 1rem);
