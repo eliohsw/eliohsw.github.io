@@ -9,9 +9,13 @@ collections:
   projects:
     output: true
     permalink: /projects/:year/:month/:day/:name/
+    redirect_from:
+      - /projects/:name/
   blog:
     output: true
     permalink: /blog/:year/:month/:day/:name/
+    redirect_from:
+      - /blog/:name/
 
 # Collections paths (using relative paths from site root)
 collections_dir: _content
