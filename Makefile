@@ -4,6 +4,12 @@ SHELL := /bin/zsh
 PORT ?= 4000
 LIVERELOAD_PORT ?= 35729
 FUTURE ?=
+t ?=
+QUIET ?= 0
+
+ifeq ($(QUIET),1)
+JEKYLL_FLAGS := --quiet
+endif
 
 .PHONY: serve future clean
 
@@ -18,8 +24,18 @@ serve:
 	  kill $$(lsof -ti tcp:$(PORT)) 2>/dev/null || true; \
 	fi; \
 	echo "Starting Jekyll at http://$${IP}:$(PORT) \n"; \
-	bundle exec jekyll clean; \
-	bundle exec jekyll serve --config _config.yml --host $${IP} --port $(PORT) --livereload --livereload-port $(LIVERELOAD_PORT) $(FUTURE)
+	bundle exec jekyll clean $(JEKYLL_FLAGS); \
+	if [[ -n "$(t)" ]]; then \
+	  echo "Auto-stopping after $(t)s…"; \
+	  bundle exec jekyll serve --config _config.yml --host $${IP} --port $(PORT) --livereload --livereload-port $(LIVERELOAD_PORT) $(FUTURE) $(JEKYLL_FLAGS) & \
+	  JEKYLL_PID=$$!; \
+	  (sleep $(t); echo "Stopping Jekyll after $(t)s…"; kill -INT $$JEKYLL_PID 2>/dev/null || true) & \
+	  TIMER_PID=$$!; \
+	  wait $$JEKYLL_PID; \
+	  kill $$TIMER_PID 2>/dev/null || true; \
+	else \
+	  bundle exec jekyll serve --config _config.yml --host $${IP} --port $(PORT) --livereload --livereload-port $(LIVERELOAD_PORT) $(FUTURE) $(JEKYLL_FLAGS); \
+	fi
 
 future:
 	@$(MAKE) serve FUTURE=--future
