@@ -13,12 +13,15 @@
   margin-bottom: 10px;
   width: 75%;
 
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 850;
+
   transition: var(--transition-border-color);
 }
 
 .subpage-title .last-updated {
   font-size: 18px;
-  font-weight: 250;
+  font-weight: 300;
   color: var(--color-text-secondary);
 }
 
