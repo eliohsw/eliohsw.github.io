@@ -155,6 +155,11 @@
 
   .subpage-ind-date-toggle {
     cursor: pointer;
+    transition: var(--transition-color-fast);
+  }
+
+  .subpage-ind-date-toggle:hover {
+    color: var(--color-text);
   }
 
   .subpage-ind-date-toggle:focus-visible {

@@ -1,12 +1,12 @@
-@import url('./normalize.css');
+@import url('/src/css/normalize.css');
 
-@import url('./base/variables.css');
-@import url('./base/fontshape.css');
-@import url('./base/base.css');
+@import url('/src/css/base/variables.css');
+@import url('/src/css/base/fontshape.css');
+@import url('/src/css/base/base.css');
 
-@import url('./base/rouge-github.css');
+@import url('/src/css/base/rouge-github.css');
 
-@import url('./components/layout.css');
-@import url('./components/content.css');
-@import url('./components/subpage.css');
-@import url('./components/utilities.css');
+@import url('/src/css/components/layout.css');
+@import url('/src/css/components/content.css');
+@import url('/src/css/components/subpage.css');
+@import url('/src/css/components/utilities.css');
