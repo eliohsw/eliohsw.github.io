@@ -48,6 +48,9 @@ plugins:
   - jekyll-redirect-from
   - jekyll-seo-tag
 
+redirect_from:
+  layout: redirect
+
 # Exclude files from processing
 exclude:
   - Gemfile

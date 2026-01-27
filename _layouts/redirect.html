@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+{% assign redirect_target = page.redirect_to %}
+{% if redirect_target.first %}
+  {% assign redirect_target = redirect_target.first %}
+{% endif %}
+{% if redirect_target == nil or redirect_target == "" %}
+  {% assign redirect_from_path = page.url %}
+  {% assign candidate = site.pages | where_exp: "p", "p.redirect_from contains redirect_from_path" | first %}
+  {% if candidate == nil %}
+    {% assign candidate = site.blog | where_exp: "p", "p.redirect_from contains redirect_from_path" | first %}
+  {% endif %}
+  {% if candidate == nil %}
+    {% assign candidate = site.projects | where_exp: "p", "p.redirect_from contains redirect_from_path" | first %}
+  {% endif %}
+  {% if candidate %}
+    {% assign redirect_target = candidate.url %}
+  {% endif %}
+{% endif %}
+{% include head.html %}
+<body>
+  <p>
+    Redirecting to <a href="{{ redirect_target | absolute_url }}">{{ redirect_target | absolute_url }}</a>
+  </p>
+</body>
+</html>
