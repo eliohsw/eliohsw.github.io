@@ -20,11 +20,8 @@
 
 .subpage-title h1 {
   margin: 0;
-  font-weight: 300;
+  font-weight: 575;
   transition: font-weight 0.32s ease, width 0.32s ease;
-}
-.subpage-title h1:hover {
-  font-weight: 600;
 }
 
 .subpage-title .last-updated {
@@ -318,6 +315,9 @@
   position: relative;
   display: inline-block;
   align-self: flex-start;
+
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .card-date-badge-list {
@@ -331,7 +331,7 @@
   gap: 0.5rem;
   white-space: nowrap;
   pointer-events: none;
-  transition: opacity 180ms ease-in;
+  transition: opacity 100ms ease-in;
 }
 
 .card-date-badge-list.is-visible {
@@ -371,12 +371,22 @@
   font-weight: 600;
 }
 
+@media (max-width: 525px) {
+  .card-date-toggle {
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: auto;
+  }
+  .card-date-badge-list {
+    display: none;
+  }
+}
+
 .card-date {
   font-size: 0.98em;
   color: var(--color-text-secondary);
   align-self: flex-start;
   white-space: nowrap;
-  cursor: pointer;
 }
 
 .card-link {

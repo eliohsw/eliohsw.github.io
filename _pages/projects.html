@@ -79,22 +79,20 @@ additional_scripts:
     <div class="card-box" data-tags="{{ card_tags }}" data-tags-json='{{ tags_json | escape }}' data-pdf-url="{{ pdf_link | escape }}" data-tag-type="project">
       <div class="card-header">
         <div class="card-header-row">
+          {% assign publish_date = project.date_publish | default: project.date %}
+          {% assign update_date = project.date_update | default: publish_date %}
           <div class="card-meta">
             <div class="card-date-wrap">
               <span class="card-date">{{ project.date | date: "%B %-d, %Y" }}</span>
               <div class="card-date-badge-list">
-                {% if project.date_publish %}
                 <div class="date-badge-item">
                   <span class="date-badge">P</span>
-                  <span class="date-badge-text">{{ project.date_publish | date: "%Y-%m-%d" }}</span>
+                  <span class="date-badge-text">{{ publish_date | date: "%Y-%m-%d" }}</span>
                 </div>
-                {% endif %}
-                {% if project.date_update %}
                 <div class="date-badge-item">
                   <span class="date-badge">U</span>
-                  <span class="date-badge-text">{{ project.date_update | date: "%Y-%m-%d" }}</span>
+                  <span class="date-badge-text">{{ update_date | date: "%Y-%m-%d" }}</span>
                 </div>
-                {% endif %}
               </div>
             </div>
           </div>
