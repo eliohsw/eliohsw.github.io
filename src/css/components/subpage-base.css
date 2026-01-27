@@ -132,6 +132,10 @@
    ================================================================= */
 
 /* Filter Controls */
+.subpage-content:has(.subpage-collection-list > .no-projects:not(.no-cards-filter)) .cards-filter {
+  display: none;
+}
+
 .cards-filter {
   display: flex;
   align-items: center;

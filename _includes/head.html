@@ -22,7 +22,7 @@
       stroke-width: var(--ionicon-stroke-width, 32px);
     }
   </style>
-  <link rel="stylesheet" href="{{ site.baseurl }}/{{ page.css_path | default: 'technical/css/main.css' }}?v=20260126">
+  <link rel="stylesheet" href="{{ site.baseurl }}/{{ page.css_path | default: 'src/css/main.css' }}?v=20260126">
   {% if page.include_tikz %}
   <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
   {% endif %}
@@ -50,7 +50,7 @@
   {% if page.include_tikz %}
   <script src="https://tikzjax.com/v1/tikzjax.js"></script>
   {% endif %}
-  <script type="module" src="{{ site.baseurl }}/{{ page.js_main_path | default: 'technical/js/main.js' }}"></script>
+  <script type="module" src="{{ site.baseurl }}/{{ page.js_main_path | default: 'src/js/main.js' }}"></script>
 
   <!-- Theme initialization script -->
   <script>
@@ -107,8 +107,8 @@
   {% endif %}
 
   <link rel="apple-touch-icon" sizes="180x180" href="{{ site.baseurl }}/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="{{ site.baseurl }}/technical/assets/icons/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="{{ site.baseurl }}/technical/assets/icons/favicon-16x16.png">
-  <link rel="icon" href="{{ site.baseurl }}/{{ page.favicon_path | default: 'technical/assets/icons/favicon.png' }}">
-  <link rel="mask-icon" href="{{ site.baseurl }}/{{ page.favicon_path | default: 'technical/assets/icons/favicon.png' }}" color="#000000">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ site.baseurl }}/src/assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ site.baseurl }}/src/assets/icons/favicon-16x16.png">
+  <link rel="icon" href="{{ site.baseurl }}/{{ page.favicon_path | default: 'src/assets/icons/favicon.png' }}">
+  <link rel="mask-icon" href="{{ site.baseurl }}/{{ page.favicon_path | default: 'src/assets/icons/favicon.png' }}" color="#000000">
 </head>
