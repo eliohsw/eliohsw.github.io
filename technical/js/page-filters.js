@@ -6,7 +6,7 @@ function initCardFilters() {
   const filterIcon = filterContainer.querySelector('.filter-input-icon');
   const filterTagBtn = filterContainer.querySelector('.filter-tag');
   const showAllBtn = filterContainer.querySelector('.filter-all[data-tag="__all"]');
-  const listEl = document.querySelector('.projects-list') || document.querySelector('.blog-list');
+  const listEl = document.querySelector('.subpage-collection-list');
 
   if (!filterInput || !filterIcon || !filterTagBtn || !showAllBtn || !listEl) return;
 
@@ -15,7 +15,7 @@ function initCardFilters() {
 
   const defaultPlaceholder = filterInput.getAttribute('placeholder') || '';
   const tagPlaceholder = filterInput.dataset.tagPlaceholder || 'Enter keyword';
-  const emptyLabel = listEl.classList.contains('blog-list') ? 'posts' : 'projects';
+  const emptyLabel = listEl.id === 'blog-list' ? 'posts' : 'projects';
   let isTagSearch = false;
   let layoutUpdatePending = false;
 

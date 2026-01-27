@@ -56,7 +56,7 @@ body {
   max-width: var(--width-main-container);
 }
 
-.main-container:has(.blog-post-content, .project-content) {
+.main-container:has(.subpage-ind-content) {
   max-width: calc(var(--width-main-container) + 2rem + 280px);
 }
 

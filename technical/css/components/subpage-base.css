@@ -254,7 +254,7 @@
 }
 
 /* List Layouts */
-.projects-list, .blog-list {
+.subpage-collection-list {
   display: flex;
   flex-direction: column;
   gap: 2rem;

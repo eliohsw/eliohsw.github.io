@@ -41,7 +41,7 @@ additional_scripts:
   I write about all sorts of topics. Feel free to explore my thoughts, experiences, and insights on subjects that interest me. 
 </p>
 
-<div class="blog-list">
+<div id="blog-list" class="subpage-collection-list">
   {% if sorted_blogs.size > 0 %}
     {% for blog in sorted_blogs %}
     {% assign pdf_link = blog.pdf_url | default: blog.pdf %}

@@ -2,15 +2,15 @@
 layout: default
 ---
 
-<div class="project-page">
-  <div class="project-header">
+<div id="project-page" class="subpage-ind-page">
+  <div class="subpage-ind-header">
     <div class="breadcrumb">
       <div class="breadcrumb-item">
         <a href="/">Home</a>
       </div>
       <div class="breadcrumb-separator">/</div>
       <div class="breadcrumb-item">
-        <a href="/projects/">Projects</a>
+        <a id="breadcrumb-projects-link" href="/projects/">Projects</a>
       </div>
       <div class="breadcrumb-separator">/</div>
       <div class="breadcrumb-item breadcrumb-title">{{ page.title }}</div>
@@ -21,10 +21,10 @@ layout: default
         </svg>
       </button>
     </div>
-    <div class="project-meta">
-      <span class="project-date">{{ page.date | date: "%B %d, %Y" }}</span>
+    <div class="subpage-ind-meta">
+      <span class="subpage-ind-date">{{ page.date | date: "%B %d, %Y" }}</span>
       {% if page.external_url %}
-      <a class="project-external-link" href="{{ page.external_url }}" target="_blank" rel="noopener">
+      <a id="project-external-link" class="subpage-ind-external-link" href="{{ page.external_url }}" target="_blank" rel="noopener">
         <span>View Project</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
           <path d="M384 224v184a40 40 0 01-40 40H104a40 40 0 01-40-40V168a40 40 0 0140-40h167.48M336 64h112v112M224 288L440 72" stroke-linecap="round" stroke-linejoin="round" class="ionicon-fill-none ionicon-stroke-width"></path>
@@ -32,9 +32,9 @@ layout: default
       </a>
       {% endif %}
     </div>
-    <h1 class="project-title">{{ page.title }}</h1>
+    <h1 class="subpage-ind-title">{{ page.title }}</h1>
     {% if page.subtitle %}
-    <p class="project-subtitle">{{ page.subtitle }}</p>
+    <p class="subpage-ind-subtitle">{{ page.subtitle }}</p>
     {% endif %}
     
     {% if page.tags and page.tags.size > 0 %}
@@ -53,21 +53,21 @@ layout: default
     {% endif %}
   </div>
 
-  <div class="project-main">
-    <div class="project-content{% if page.latex %} project-content--latex{% endif %}">
+  <div class="subpage-ind-main">
+    <div class="subpage-ind-content{% if page.latex %} subpage-ind-content--latex{% endif %}">
       {{ content }}
     </div>
     
-    <aside class="project-sidebar">
+    <aside class="subpage-ind-sidebar">
       {% include toc.html %}
     </aside>
   </div>
 
-  <div class="project-navigation">
-    {% assign projects = site.projects | where: 'hidden', false | sort: 'date' | reverse %}
+  <div id="project-navigation" class="subpage-ind-navigation">
+    {% assign items = site.projects | where: 'hidden', false | sort: 'date' | reverse %}
     {% assign current_index = nil %}
-    {% for project in projects %}
-      {% if project.url == page.url %}
+    {% for item in items %}
+      {% if item.url == page.url %}
         {% assign current_index = forloop.index0 %}
         {% break %}
       {% endif %}
@@ -78,9 +78,9 @@ layout: default
       {% assign next_index = current_index | minus: 1 %}
       
       <div class="nav-links">
-        {% if prev_index < projects.size %}
-          {% assign prev_project = projects[prev_index] %}
-          <a href="{{ prev_project.url }}" class="nav-link prev" title="{{ prev_project.title }}">
+        {% if prev_index < items.size %}
+          {% assign prev_item = items[prev_index] %}
+          <a href="{{ prev_item.url }}" class="nav-link prev" title="{{ prev_item.title }}">
             <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M328 112L184 256l144 144" class="ionicon-fill-none"></path>
             </svg>
@@ -89,8 +89,8 @@ layout: default
         {% endif %}
         
         {% if next_index >= 0 %}
-          {% assign next_project = projects[next_index] %}
-          <a href="{{ next_project.url }}" class="nav-link next" title="{{ next_project.title }}">
+          {% assign next_item = items[next_index] %}
+          <a href="{{ next_item.url }}" class="nav-link next" title="{{ next_item.title }}">
             <span>NEXT</span>
             <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M184 112l144 144-144 144" class="ionicon-fill-none"></path>

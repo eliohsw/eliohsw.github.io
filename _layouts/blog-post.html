@@ -2,15 +2,15 @@
 layout: default
 ---
 
-<div class="blog-post-page">
-  <div class="blog-post-header">
+<div id="blog-post-page" class="subpage-ind-page">
+  <div class="subpage-ind-header">
     <div class="breadcrumb">
       <div class="breadcrumb-item">
         <a href="/">Home</a>
       </div>
       <div class="breadcrumb-separator">/</div>
       <div class="breadcrumb-item">
-        <a href="/blog/">Blog</a>
+        <a id="breadcrumb-blog-link" href="/blog/">Blog</a>
       </div>
       <div class="breadcrumb-separator">/</div>
       <div class="breadcrumb-item breadcrumb-title">{{ page.title }}</div>
@@ -21,12 +21,12 @@ layout: default
         </svg>
       </button>
     </div>
-    <div class="blog-post-meta">
-      <span class="blog-post-date">{{ page.date | date: "%B %d, %Y" }}</span>
+    <div class="subpage-ind-meta">
+      <span class="subpage-ind-date">{{ page.date | date: "%B %d, %Y" }}</span>
     </div>
-    <h1 class="blog-post-title">{{ page.title }}</h1>
+    <h1 class="subpage-ind-title">{{ page.title }}</h1>
     {% if page.subtitle %}
-    <p class="blog-post-subtitle">{{ page.subtitle }}</p>
+    <p class="subpage-ind-subtitle">{{ page.subtitle }}</p>
     {% endif %}
     
     {% if page.tags and page.tags.size > 0 %}
@@ -45,21 +45,21 @@ layout: default
     {% endif %}
   </div>
 
-  <div class="blog-post-main">
-    <div class="blog-post-content{% if page.latex %} blog-post-content--latex{% endif %}">
+  <div class="subpage-ind-main">
+    <div class="subpage-ind-content{% if page.latex %} subpage-ind-content--latex{% endif %}">
       {{ content }}
     </div>
     
-    <aside class="blog-post-sidebar">
+    <aside class="subpage-ind-sidebar">
       {% include toc.html %}
     </aside>
   </div>
 
-  <div class="blog-post-navigation">
-    {% assign posts = site.blog | where: 'hidden', false | sort: 'date' | reverse %}
+  <div id="blog-navigation" class="subpage-ind-navigation">
+    {% assign items = site.blog | where: 'hidden', false | sort: 'date' | reverse %}
     {% assign current_index = nil %}
-    {% for post in posts %}
-      {% if post.url == page.url %}
+    {% for item in items %}
+      {% if item.url == page.url %}
         {% assign current_index = forloop.index0 %}
         {% break %}
       {% endif %}
@@ -70,9 +70,9 @@ layout: default
       {% assign next_index = current_index | minus: 1 %}
       
       <div class="nav-links">
-        {% if prev_index < posts.size %}
-          {% assign prev_post = posts[prev_index] %}
-          <a href="{{ prev_post.url }}" class="nav-link prev" title="{{ prev_post.title }}">
+        {% if prev_index < items.size %}
+          {% assign prev_item = items[prev_index] %}
+          <a href="{{ prev_item.url }}" class="nav-link prev" title="{{ prev_item.title }}">
             <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M328 112L184 256l144 144" class="ionicon-fill-none"></path>
             </svg>
@@ -81,8 +81,8 @@ layout: default
         {% endif %}
         
         {% if next_index >= 0 %}
-          {% assign next_post = posts[next_index] %}
-          <a href="{{ next_post.url }}" class="nav-link next" title="{{ next_post.title }}">
+          {% assign next_item = items[next_index] %}
+          <a href="{{ next_item.url }}" class="nav-link next" title="{{ next_item.title }}">
             <span>NEXT</span>
             <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M184 112l144 144-144 144" class="ionicon-fill-none"></path>
