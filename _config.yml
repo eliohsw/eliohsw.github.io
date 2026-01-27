@@ -36,6 +36,7 @@ defaults:
 # Build settings
 markdown: kramdown
 highlighter: rouge
+excerpt_separator: "\n\n"
 kramdown:
   syntax-highlighter: rouge
   syntax_highlighter_opts:
