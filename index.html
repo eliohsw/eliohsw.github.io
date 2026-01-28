@@ -119,15 +119,38 @@ show_loader: false
 
   {% assign featured_blogs = site.blog | where: 'hidden', false | where: 'featured', true %}
   {% assign featured_projects = site.projects | where: 'hidden', false | where: 'featured', true %}
-  {% assign featured_items = featured_blogs | concat: featured_projects | sort: 'date' | reverse %}
+  {% assign featured_items = featured_blogs | concat: featured_projects %}
+  {% assign featured_sort = '' | split: '' %}
+  {% for item in featured_items %}
+    {% assign ts = item.date | date: "%s" | plus: 0 %}
+    {% assign inv = 9999999999 | minus: ts %}
+    {% assign inv_str = inv | prepend: "0000000000" | slice: -10, 10 %}
+    {% assign is_project_item = false %}
+    {% if item.collection == 'projects' or item.layout == 'project' or item.url contains '/projects/' %}
+      {% assign is_project_item = true %}
+    {% endif %}
+    {% assign type_rank = 1 %}
+    {% if is_project_item %}
+      {% assign type_rank = 0 %}
+    {% endif %}
+    {% assign title_key = item.title | downcase | replace: "|", " " | replace: "||", " " %}
+    {% assign sort_key = inv_str | append: "|" | append: type_rank | append: "|" | append: title_key | append: "|" | append: forloop.index0 %}
+    {% assign featured_sort = featured_sort | push: sort_key %}
+  {% endfor %}
+  {% assign featured_sort = featured_sort | sort %}
 
   {% if featured_items.size > 0 %}
   <div class="featured-container" data-featured-count="{{ featured_items.size }}">
     <h1>Featured Posts and Projects</h1>
     <div class="featured-stage">
       <div class="featured-track">
-        {% for item in featured_items %}
-        {% assign is_project = item.collection == 'projects' %}
+        {% for key in featured_sort %}
+        {% assign index = key | split: "|" | last | plus: 0 %}
+        {% assign item = featured_items[index] %}
+        {% assign is_project = false %}
+        {% if item.collection == 'projects' or item.layout == 'project' or item.url contains '/projects/' %}
+          {% assign is_project = true %}
+        {% endif %}
         {% assign link_label = 'Read' %}
         {% assign aria_label = 'Read Blog' %}
         {% assign tag_type = 'blog' %}

@@ -130,7 +130,7 @@ export function initFeaturedShowcase() {
   container.dataset.featuredInit = 'true';
 
   const fadeDurationMs = 1500;
-  const retainDurationMs = 5000;
+  const retainDurationMs = 4500;
   const fadeStartDelayMs = 0;
   const slideSpeedPxPerSecond = 50;
 
@@ -181,10 +181,11 @@ export function initFeaturedShowcase() {
     }
 
     if (nextMode !== mode) {
+      const prevMode = mode;
       teardown();
       mode = nextMode;
       container.dataset.featuredMode = nextMode;
-      const next = setupMode(nextMode);
+      const next = setupMode(nextMode, prevMode);
       teardown = next.teardown;
       syncLayout = next.sync;
       freezeLayout = next.freeze;
@@ -194,9 +195,17 @@ export function initFeaturedShowcase() {
     }
   };
 
-  const setupMode = (nextMode) => {
+  const setupMode = (nextMode, prevMode) => {
     const wasResizing = isResizing;
-    container.classList.remove('is-fade', 'is-slideshow', 'is-static', 'is-reduced', 'is-instant', 'is-resizing');
+    container.classList.remove(
+      'is-fade',
+      'is-slideshow',
+      'is-static',
+      'is-reduced',
+      'is-instant',
+      'is-resizing',
+      'is-fade-reset'
+    );
     container.classList.add(`is-${nextMode}`);
     if (wasResizing) {
       container.classList.add('is-resizing');
@@ -221,7 +230,11 @@ export function initFeaturedShowcase() {
     }
 
     if (nextMode === 'slideshow') {
-      return setupSlideshow();
+      return setupSlideshow({ hideUntilSync: prevMode !== 'slideshow' });
+    }
+
+    if (nextMode === 'fade' && (prevMode === 'slideshow' || prevMode === '')) {
+      container.classList.add('is-fade-reset');
     }
 
     const fadeHandlers = setupFade();
@@ -238,6 +251,7 @@ export function initFeaturedShowcase() {
     let isPaused = false;
     let startDelayTimeout = null;
     let resizeObserver = null;
+    let pendingReset = container.classList.contains('is-fade-reset');
 
     const updateStageHeight = () => {
       const heights = cards.map((card) => card.getBoundingClientRect().height).filter((h) => h > 0);
@@ -282,8 +296,7 @@ export function initFeaturedShowcase() {
       retainTimeout = setTimeout(startFadeOut, retainRemaining);
     };
 
-    const startFadeIn = () => {
-      phase = 'fade-in';
+    const activateCard = () => {
       const card = cards[currentIndex];
       if (!card) return;
       card.classList.add('is-active');
@@ -292,6 +305,19 @@ export function initFeaturedShowcase() {
       fadeTimeout = setTimeout(() => {
         startRetain();
       }, fadeDurationMs);
+    };
+
+    const startFadeIn = () => {
+      phase = 'fade-in';
+      if (pendingReset) {
+        pendingReset = false;
+        activateCard();
+        requestAnimationFrame(() => {
+          container.classList.remove('is-fade-reset');
+        });
+        return;
+      }
+      activateCard();
     };
 
     const startFadeOut = () => {
@@ -353,7 +379,8 @@ export function initFeaturedShowcase() {
     return { teardown: teardownFade, sync: updateStageHeight, freeze: null, clear: null };
   };
 
-  const setupSlideshow = () => {
+  const setupSlideshow = (options = {}) => {
+    const { hideUntilSync = false } = options;
     let resizeObserver = null;
     let visibilityObserver = null;
     let rafId = null;
@@ -364,6 +391,11 @@ export function initFeaturedShowcase() {
     let resizeAnchorWithinSet = null;
     let resumeAnchorWithinSet = null;
     let hasSynced = false;
+    let revealAfterFirstSync = Boolean(hideUntilSync);
+
+    if (revealAfterFirstSync) {
+      track.style.visibility = 'hidden';
+    }
 
     const clearClones = () => {
       track.querySelectorAll('.featured-card[data-clone="true"]').forEach((node) => {
@@ -525,6 +557,10 @@ export function initFeaturedShowcase() {
         const anchorX0 = firstOriginalOffset + resolvedAnchorWithinSet;
         applyMarqueeFromAnchor(anchorX0, { animate: !resizingNow });
         hasSynced = true;
+        if (revealAfterFirstSync) {
+          track.style.visibility = '';
+          revealAfterFirstSync = false;
+        }
         if (visibilityObserver) {
           visibilityObserver.disconnect();
           track.querySelectorAll('.featured-card').forEach((card) => {

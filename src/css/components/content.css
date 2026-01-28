@@ -233,7 +233,6 @@
   font-size: 1.6rem;
   font-weight: 600;
   font-family: "Satoshi", sans-serif;
-  transition: transform ease 0.5s;
 }
 
 .featured-stage {
@@ -282,6 +281,10 @@
   pointer-events: none;
 }
 
+.featured-container.is-fade-reset .featured-card {
+  transition: none !important;
+}
+
 .featured-container.is-fade .featured-card.is-active {
   opacity: 1;
   transform: translateY(0);
@@ -319,7 +322,6 @@
   max-width: var(--width-main-container);
   margin-left: auto;
   margin-right: auto;
-  transition: transform ease 0.5s;
 }
 
 .featured-container.is-slideshow .featured-stage {
