@@ -249,6 +249,7 @@
   flex-direction: column;
   gap: 1.5rem;
   visibility: hidden;
+  margin-bottom: 2rem;
 }
 
 .featured-container[data-featured-ready="true"] .featured-track {
