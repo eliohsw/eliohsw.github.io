@@ -404,6 +404,10 @@
   font-weight: 500;
 }
 
+.card-link svg {
+  padding-right: 0.5rem;
+}
+
 /* Card Contents */
 .card-contents {
   display: flex;

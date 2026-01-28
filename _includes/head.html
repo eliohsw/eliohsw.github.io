@@ -22,6 +22,10 @@
       stroke-width: var(--ionicon-stroke-width, 32px);
     }
   </style>
+  <link rel="preload" href="{{ site.baseurl }}/src/assets/fonts/Satoshi-Variable.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="{{ site.baseurl }}/src/assets/fonts/Satoshi-VariableItalic.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="{{ site.baseurl }}/src/assets/fonts/GeneralSans-Variable.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="{{ site.baseurl }}/src/assets/fonts/GeneralSans-VariableItalic.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="stylesheet" href="{{ site.baseurl }}/{{ page.css_path | default: 'src/css/main.css' }}?v=20260126">
   {% if page.include_tikz %}
   <link rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
@@ -68,14 +72,65 @@
     })();
   </script>
 
-  {% assign meta_title = page.og_title | default: page.title | default: site.title | default: "Elio Huang" %}
-  {% capture meta_description %}
-    {{ page.description | default: page.excerpt | default: page.subtitle | default: site.description }}
-  {% endcapture %}
-  {% assign meta_description = meta_description | strip_html | strip_newlines | strip %}
-  {% assign meta_image = page.og_image | default: page.image | default: site.social_image %}
-  {% assign meta_url = page.url | absolute_url %}
-  {% assign meta_type = page.og_type | default: "website" %}
+  {% assign meta_source = page %}
+  {% if redirect_target == nil %}
+    {% if page.redirect_to %}
+      {% assign redirect_target = page.redirect_to %}
+      {% if redirect_target.first %}
+        {% assign redirect_target = redirect_target.first %}
+      {% endif %}
+    {% endif %}
+  {% endif %}
+  {% if redirect_target == nil or redirect_target == "" %}
+    {% assign redirect_from_path = page.url %}
+    {% assign candidate = site.pages | where_exp: "p", "p.redirect_from contains redirect_from_path" | first %}
+    {% if candidate == nil %}
+      {% assign candidate = site.blog | where_exp: "p", "p.redirect_from contains redirect_from_path" | first %}
+    {% endif %}
+    {% if candidate == nil %}
+      {% assign candidate = site.projects | where_exp: "p", "p.redirect_from contains redirect_from_path" | first %}
+    {% endif %}
+    {% if candidate %}
+      {% assign meta_source = candidate %}
+      {% assign redirect_target = candidate.url %}
+    {% endif %}
+  {% endif %}
+  {% if redirect_target != nil and redirect_target != "" %}
+    {% assign redirect_path = redirect_target | replace: site.url, "" | replace: site.baseurl, "" %}
+    {% assign redirect_path = redirect_path | split: "?" | first | split: "#" | first %}
+    {% assign candidate = site.pages | where: "url", redirect_path | first %}
+    {% if candidate == nil %}
+      {% assign candidate = site.blog | where: "url", redirect_path | first %}
+    {% endif %}
+    {% if candidate == nil %}
+      {% assign candidate = site.projects | where: "url", redirect_path | first %}
+    {% endif %}
+    {% if candidate %}
+      {% assign meta_source = candidate %}
+    {% endif %}
+  {% endif %}
+
+  {% assign meta_title = meta_source.og_title | default: meta_source.title | default: site.title | default: "Elio Huang" %}
+  {% assign meta_description = meta_source.description | strip_html | strip_newlines | strip %}
+  {% if meta_description == "" %}
+    {% assign content_parts = meta_source.content | split: '<p>' %}
+    {% if content_parts.size > 1 %}
+      {% assign first_paragraph = content_parts[1] | split: '</p>' | first %}
+      {% assign first_paragraph = first_paragraph | strip_html | strip_newlines | strip %}
+      {% if first_paragraph != "" %}
+        {% assign meta_description = first_paragraph %}
+      {% endif %}
+    {% endif %}
+  {% endif %}
+  {% if meta_description == "" %}
+    {% capture meta_description %}
+      {{ meta_source.excerpt | default: meta_source.subtitle | default: site.description }}
+    {% endcapture %}
+    {% assign meta_description = meta_description | strip_html | strip_newlines | strip %}
+  {% endif %}
+  {% assign meta_image = meta_source.og_image | default: meta_source.image | default: site.social_image %}
+  {% assign meta_url = meta_source.url | absolute_url %}
+  {% assign meta_type = meta_source.og_type | default: "website" %}
 
   <title>{{ meta_title }}</title>
   {% if meta_description != "" %}
@@ -104,6 +159,14 @@
   <meta name="twitter:title" content="{{ meta_title }}">
   {% if meta_description != "" %}
   <meta name="twitter:description" content="{{ meta_description }}">
+  {% endif %}
+
+  {% if redirect_target != nil and redirect_target != "" %}
+  <meta http-equiv="refresh" content="0; url={{ redirect_target | absolute_url }}">
+  <link rel="canonical" href="{{ redirect_target | absolute_url }}">
+  <script>
+    window.location.replace("{{ redirect_target | absolute_url }}");
+  </script>
   {% endif %}
 
   <link rel="apple-touch-icon" sizes="180x180" href="{{ site.baseurl }}/apple-touch-icon.png">

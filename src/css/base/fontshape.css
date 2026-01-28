@@ -14,6 +14,7 @@
   font-family: "Satoshi";
   src: url('../../assets/fonts/Satoshi-Variable.ttf') format('truetype');
   font-weight: 300 900;
+  font-display: swap;
 }
 
 @font-face {
@@ -21,12 +22,14 @@
   src: url('../../assets/fonts/Satoshi-VariableItalic.ttf') format('truetype');
   font-weight: 300 900;
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
   font-family: "General Sans";
   src: url('../../assets/fonts/GeneralSans-Variable.ttf') format('truetype');
   font-weight: 200 700;
+  font-display: swap;
 }
 
 @font-face {
@@ -34,29 +37,34 @@
   src: url('../../assets/fonts/GeneralSans-VariableItalic.ttf') format('truetype');
   font-weight: 200 700;
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
   font-family: "CMU Serif";
   src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunrm.otf');
+  font-display: swap;
 }
 
 @font-face {
   font-family: "CMU Serif";
   src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunbx.otf');
   font-weight: bold; /* Use Bold Extended for Bold */
+  font-display: swap;
 }
 
 @font-face {
   font-family: "CMU Serif";
   src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunti.otf');
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
   font-family: "CMU Serif";
   src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunsl.otf');
   font-style: oblique;
+  font-display: swap;
 }
 
 @font-face {
@@ -64,6 +72,7 @@
   src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunbi.otf');
   font-weight: bold;
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
@@ -71,4 +80,5 @@
   src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunbl.otf');
   font-weight: bold;
   font-style: oblique;
+  font-display: swap;
 }
