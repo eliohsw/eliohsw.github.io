@@ -158,6 +158,10 @@ export function initFeaturedShowcase() {
   let rafId = null;
   let resizePauseTimeout = null;
   let isResizing = false;
+  const markFeaturedReady = () => {
+    if (container.dataset.featuredReady === 'true') return;
+    container.dataset.featuredReady = 'true';
+  };
 
   const scheduleUpdate = () => {
     if (rafId) return;
@@ -206,6 +210,7 @@ export function initFeaturedShowcase() {
       'is-resizing',
       'is-fade-reset'
     );
+    container.dataset.featuredReady = 'false';
     container.classList.add(`is-${nextMode}`);
     if (wasResizing) {
       container.classList.add('is-resizing');
@@ -220,11 +225,13 @@ export function initFeaturedShowcase() {
     });
 
     if (nextMode === 'static') {
+      markFeaturedReady();
       cards.forEach((card) => card.setAttribute('aria-hidden', 'false'));
       return { teardown: () => {}, sync: null, freeze: null, clear: null };
     }
 
     if (nextMode === 'reduced') {
+      markFeaturedReady();
       cards.forEach((card) => card.setAttribute('aria-hidden', 'false'));
       return { teardown: () => {}, sync: null, freeze: null, clear: null };
     }
@@ -301,6 +308,7 @@ export function initFeaturedShowcase() {
       if (!card) return;
       card.classList.add('is-active');
       card.setAttribute('aria-hidden', 'false');
+      markFeaturedReady();
       updateStageHeight();
       fadeTimeout = setTimeout(() => {
         startRetain();
@@ -561,6 +569,7 @@ export function initFeaturedShowcase() {
           track.style.visibility = '';
           revealAfterFirstSync = false;
         }
+        markFeaturedReady();
         if (visibilityObserver) {
           visibilityObserver.disconnect();
           track.querySelectorAll('.featured-card').forEach((card) => {
