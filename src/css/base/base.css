@@ -81,13 +81,20 @@ footer {
   font-weight: 425;
 }
 
-.main-container:has(.featured-container.is-slideshow) + footer {
+.main-container:has(.featured-container) + footer {
   margin-top: 0;
+
+  p { margin-top: 0; }
 }
 
 footer.footer--fade-in {
   opacity: 0;
   animation: footer-fade-in 1.5s ease 1s forwards;
+}
+
+.main-container:not(:has(.featured-container)) + footer {
+  opacity: 1;
+  animation: none;
 }
 
 @keyframes footer-fade-in {
