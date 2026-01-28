@@ -117,8 +117,32 @@ show_loader: false
   </p>
   <p>See the <a href="/about">About</a> page to learn more.</p>
 
-  {% assign featured_blogs = site.blog | where: 'hidden', false | where: 'featured', true %}
-  {% assign featured_projects = site.projects | where: 'hidden', false | where: 'featured', true %}
+  {% assign visible_blogs = '' | split: '' %}
+  {% assign show_future = site.future | default: false %}
+  {% assign now_ts = site.time | date: "%s" | plus: 0 %}
+  {% for blog in site.blog %}
+    {% assign publish_date = blog.date_publish | default: blog.date %}
+    {% assign publish_ts = publish_date | date: "%s" | plus: 0 %}
+    {% if blog.hidden != true %}
+      {% if show_future or publish_ts <= now_ts %}
+        {% assign visible_blogs = visible_blogs | push: blog %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+  {% assign featured_blogs = visible_blogs | where: 'featured', true %}
+  {% assign visible_projects = '' | split: '' %}
+  {% assign show_future = site.future | default: false %}
+  {% assign now_ts = site.time | date: "%s" | plus: 0 %}
+  {% for project in site.projects %}
+    {% assign publish_date = project.date_publish | default: project.date %}
+    {% assign publish_ts = publish_date | date: "%s" | plus: 0 %}
+    {% if project.hidden != true %}
+      {% if show_future or publish_ts <= now_ts %}
+        {% assign visible_projects = visible_projects | push: project %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+  {% assign featured_projects = visible_projects | where: 'featured', true %}
   {% assign featured_items = featured_blogs | concat: featured_projects %}
   {% assign featured_sort = '' | split: '' %}
   {% for item in featured_items %}

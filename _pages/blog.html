@@ -15,7 +15,19 @@ additional_scripts:
   - src/js/page-filters.js
 ---
 
-{% assign sorted_blogs = site.blog | where: 'hidden', false | sort: 'date' | reverse %}
+{% assign visible_blogs = '' | split: '' %}
+{% assign show_future = site.future | default: false %}
+{% assign now_ts = site.time | date: "%s" | plus: 0 %}
+{% for blog in site.blog %}
+  {% assign publish_date = blog.date_publish | default: blog.date %}
+  {% assign publish_ts = publish_date | date: "%s" | plus: 0 %}
+  {% if blog.hidden != true %}
+    {% if show_future or publish_ts <= now_ts %}
+      {% assign visible_blogs = visible_blogs | push: blog %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+{% assign sorted_blogs = visible_blogs | sort: 'date' | reverse %}
 
 <!-- Blog Filter -->
 <div class="cards-filter">
