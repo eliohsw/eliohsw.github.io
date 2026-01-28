@@ -118,6 +118,526 @@ export function initGreeting() {
     });
 }
 
+export function initFeaturedShowcase() {
+  const container = document.querySelector('.featured-container');
+  if (!container) return;
+  if (container.dataset.featuredInit === 'true') return;
+
+  const stage = container.querySelector('.featured-stage');
+  const track = container.querySelector('.featured-track');
+  const cards = Array.from(container.querySelectorAll('.featured-card'));
+  if (!stage || !track || !cards.length) return;
+  container.dataset.featuredInit = 'true';
+
+  const fadeDurationMs = 1500;
+  const retainDurationMs = 5000;
+  const fadeStartDelayMs = 0;
+  const slideSpeedPxPerSecond = 50;
+
+  container.style.setProperty('--featured-fade-duration', `${fadeDurationMs}ms`);
+  container.style.removeProperty('--featured-slide-duration');
+
+  const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const slideshowQuery = window.matchMedia('(min-width: 1200px)');
+
+  const resetCardDateToggles = (card) => {
+    if (!card) return;
+    card.querySelectorAll('.card-date-badge-list.is-visible').forEach((list) => {
+      list.classList.remove('is-visible');
+    });
+    card.querySelectorAll('.card-date-toggle[aria-expanded="true"]').forEach((toggle) => {
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  };
+
+  let mode = '';
+  let teardown = () => {};
+  let syncLayout = null;
+  let freezeLayout = null;
+  let clearFreezeLayout = null;
+  let rafId = null;
+  let resizePauseTimeout = null;
+  let isResizing = false;
+
+  const scheduleUpdate = () => {
+    if (rafId) return;
+    rafId = requestAnimationFrame(() => {
+      rafId = null;
+      updateMode();
+    });
+  };
+
+  const updateMode = () => {
+    const prefersReduced = reduceMotionQuery.matches;
+    const canSlide = slideshowQuery.matches && cards.length >= 4;
+    let nextMode = 'fade';
+
+    if (prefersReduced) {
+      nextMode = 'reduced';
+    } else if (cards.length <= 1) {
+      nextMode = 'static';
+    } else if (canSlide) {
+      nextMode = 'slideshow';
+    }
+
+    if (nextMode !== mode) {
+      teardown();
+      mode = nextMode;
+      container.dataset.featuredMode = nextMode;
+      const next = setupMode(nextMode);
+      teardown = next.teardown;
+      syncLayout = next.sync;
+      freezeLayout = next.freeze;
+      clearFreezeLayout = next.clear;
+    } else if (syncLayout) {
+      syncLayout();
+    }
+  };
+
+  const setupMode = (nextMode) => {
+    const wasResizing = isResizing;
+    container.classList.remove('is-fade', 'is-slideshow', 'is-static', 'is-reduced', 'is-instant', 'is-resizing');
+    container.classList.add(`is-${nextMode}`);
+    if (wasResizing) {
+      container.classList.add('is-resizing');
+    }
+    track.style.transform = '';
+    track.style.animation = '';
+    stage.style.height = '';
+
+    cards.forEach((card) => {
+      card.classList.remove('is-active');
+      card.setAttribute('aria-hidden', 'true');
+    });
+
+    if (nextMode === 'static') {
+      cards.forEach((card) => card.setAttribute('aria-hidden', 'false'));
+      return { teardown: () => {}, sync: null, freeze: null, clear: null };
+    }
+
+    if (nextMode === 'reduced') {
+      cards.forEach((card) => card.setAttribute('aria-hidden', 'false'));
+      return { teardown: () => {}, sync: null, freeze: null, clear: null };
+    }
+
+    if (nextMode === 'slideshow') {
+      return setupSlideshow();
+    }
+
+    const fadeHandlers = setupFade();
+    return { ...fadeHandlers, freeze: null, clear: null };
+  };
+
+  const setupFade = () => {
+    let currentIndex = 0;
+    let phase = 'idle';
+    let fadeTimeout = null;
+    let retainTimeout = null;
+    let retainStart = 0;
+    let retainRemaining = retainDurationMs;
+    let isPaused = false;
+    let startDelayTimeout = null;
+    let resizeObserver = null;
+
+    const updateStageHeight = () => {
+      const heights = cards.map((card) => card.getBoundingClientRect().height).filter((h) => h > 0);
+      if (!heights.length) return;
+      const maxHeight = Math.max(...heights);
+      stage.style.height = `${Math.ceil(maxHeight)}px`;
+    };
+
+    const clearTimers = () => {
+      clearTimeout(fadeTimeout);
+      clearTimeout(retainTimeout);
+      clearTimeout(startDelayTimeout);
+    };
+
+    const pause = () => {
+      if (phase !== 'retain' || isPaused) return;
+      isPaused = true;
+      clearTimeout(retainTimeout);
+      const elapsed = performance.now() - retainStart;
+      retainRemaining = Math.max(0, retainRemaining - elapsed);
+    };
+
+    const resume = () => {
+      if (!isPaused || phase !== 'retain') return;
+      isPaused = false;
+      if (retainRemaining <= 0) {
+        startFadeOut();
+        return;
+      }
+      retainStart = performance.now();
+      retainTimeout = setTimeout(startFadeOut, retainRemaining);
+    };
+
+    const startRetain = () => {
+      phase = 'retain';
+      retainStart = performance.now();
+      retainRemaining = retainDurationMs;
+      if (cards[currentIndex]?.matches(':hover')) {
+        pause();
+        return;
+      }
+      retainTimeout = setTimeout(startFadeOut, retainRemaining);
+    };
+
+    const startFadeIn = () => {
+      phase = 'fade-in';
+      const card = cards[currentIndex];
+      if (!card) return;
+      card.classList.add('is-active');
+      card.setAttribute('aria-hidden', 'false');
+      updateStageHeight();
+      fadeTimeout = setTimeout(() => {
+        startRetain();
+      }, fadeDurationMs);
+    };
+
+    const startFadeOut = () => {
+      phase = 'fade-out';
+      const card = cards[currentIndex];
+      if (card) {
+        card.classList.remove('is-active');
+        card.setAttribute('aria-hidden', 'true');
+        setTimeout(() => resetCardDateToggles(card), fadeDurationMs);
+      }
+      fadeTimeout = setTimeout(() => {
+        currentIndex = (currentIndex + 1) % cards.length;
+        startFadeIn();
+      }, fadeDurationMs);
+    };
+
+    const handleEnter = (event) => {
+      const card = event.currentTarget;
+      if (card !== cards[currentIndex]) return;
+      pause();
+    };
+
+    const handleLeave = (event) => {
+      const card = event.currentTarget;
+      if (card !== cards[currentIndex]) return;
+      resume();
+    };
+
+    cards.forEach((card) => {
+      card.addEventListener('pointerenter', handleEnter);
+      card.addEventListener('pointerleave', handleLeave);
+    });
+
+    if ('ResizeObserver' in window) {
+      resizeObserver = new ResizeObserver(() => updateStageHeight());
+      cards.forEach((card) => resizeObserver.observe(card));
+    } else {
+      window.addEventListener('resize', updateStageHeight);
+    }
+
+    document.fonts?.ready?.then(updateStageHeight).catch(() => {});
+    window.addEventListener('load', updateStageHeight, { once: true });
+    updateStageHeight();
+
+    startDelayTimeout = setTimeout(() => {
+      requestAnimationFrame(startFadeIn);
+    }, fadeStartDelayMs);
+
+    const teardownFade = () => {
+      clearTimers();
+      cards.forEach((card) => {
+        card.removeEventListener('pointerenter', handleEnter);
+        card.removeEventListener('pointerleave', handleLeave);
+      });
+      if (resizeObserver) resizeObserver.disconnect();
+      window.removeEventListener('resize', updateStageHeight);
+    };
+
+    return { teardown: teardownFade, sync: updateStageHeight, freeze: null, clear: null };
+  };
+
+  const setupSlideshow = () => {
+    let resizeObserver = null;
+    let visibilityObserver = null;
+    let rafId = null;
+    let setSpan = 0;
+    let firstOriginalOffset = 0;
+    let firstOriginalWidth = 0;
+    let anchorWithinSet = null;
+    let resizeAnchorWithinSet = null;
+    let resumeAnchorWithinSet = null;
+    let hasSynced = false;
+
+    const clearClones = () => {
+      track.querySelectorAll('.featured-card[data-clone="true"]').forEach((node) => {
+        node.remove();
+      });
+    };
+
+    const scrubCloneIds = (clone) => {
+      clone.querySelectorAll('[id]').forEach((el) => el.removeAttribute('id'));
+      clone.querySelectorAll('[aria-controls]').forEach((el) => el.removeAttribute('aria-controls'));
+    };
+
+    const copyCardMeasurements = (source, clone) => {
+      const sourceContents = source.querySelector('.card-contents');
+      const cloneContents = clone.querySelector('.card-contents');
+      if (!sourceContents || !cloneContents) return;
+      const heightVar = getComputedStyle(sourceContents).getPropertyValue('--card-info-height').trim();
+      if (heightVar) {
+        cloneContents.style.setProperty('--card-info-height', heightVar);
+      }
+    };
+
+    const resetAnimation = () => {
+      if (container.classList.contains('is-resizing')) return;
+      track.style.animation = 'none';
+      track.offsetHeight;
+      track.style.animation = '';
+    };
+
+    const getTransformInfo = () => {
+      const trackStyle = window.getComputedStyle(track);
+      const matrix = new DOMMatrixReadOnly(trackStyle.transform);
+      const currentTranslate = Number.isFinite(matrix.m41) ? matrix.m41 : 0;
+      const trackRect = track.getBoundingClientRect();
+      const baseLeft = trackRect.left - currentTranslate;
+      return { trackStyle, trackRect, currentTranslate, baseLeft };
+    };
+
+    const normalizeWithinSet = (value) => {
+      if (value === null || !setSpan) return value;
+      const mod = value % setSpan;
+      return mod < 0 ? mod + setSpan : mod;
+    };
+
+    const computeAnchorWithinSetFromCurrent = () => {
+      if (!setSpan) return null;
+      const stageRect = stage.getBoundingClientRect();
+      if (!stageRect.width) return null;
+      const stageCenter = stageRect.left + stageRect.width / 2;
+      const { currentTranslate, baseLeft } = getTransformInfo();
+      const anchorX0 = stageCenter - baseLeft - currentTranslate;
+      const raw = anchorX0 - firstOriginalOffset;
+      return normalizeWithinSet(raw);
+    };
+
+    const applyMarqueeFromAnchor = (anchorX0, { animate = true } = {}) => {
+      if (!setSpan) return;
+      const stageRect = stage.getBoundingClientRect();
+      if (!stageRect.width) return;
+      const stageCenter = stageRect.left + stageRect.width / 2;
+      const { baseLeft } = getTransformInfo();
+      const startTranslate = stageCenter - baseLeft - anchorX0;
+      track.style.setProperty('--featured-marquee-start', `${startTranslate}px`);
+      track.style.setProperty('--featured-marquee-end', `${startTranslate - setSpan}px`);
+      if (animate) {
+        track.style.transform = '';
+        resetAnimation();
+      } else {
+        track.style.animation = 'none';
+        track.style.transform = `translateX(${startTranslate}px)`;
+      }
+    };
+
+    const syncMarquee = () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        const resizingNow = isResizing || container.classList.contains('is-resizing');
+        if (resizingNow && resizeAnchorWithinSet === null) {
+          resizeAnchorWithinSet = computeAnchorWithinSetFromCurrent();
+        }
+        let preferredAnchorWithinSet = null;
+        if (resizingNow) {
+          preferredAnchorWithinSet = resizeAnchorWithinSet;
+        } else if (resumeAnchorWithinSet !== null) {
+          preferredAnchorWithinSet = resumeAnchorWithinSet;
+        } else if (hasSynced) {
+          preferredAnchorWithinSet = computeAnchorWithinSetFromCurrent();
+        }
+        clearClones();
+        const originals = Array.from(track.querySelectorAll('.featured-card')).filter(
+          (card) => card.dataset.clone !== 'true'
+        );
+        if (!originals.length) return;
+        originals.forEach((card) => card.setAttribute('aria-hidden', 'false'));
+        const { trackStyle: trackStyles } = getTransformInfo();
+        const gapValue = trackStyles.columnGap || trackStyles.gap || '0px';
+        const gap = Number.parseFloat(gapValue) || 0;
+        const setWidth = originals.reduce((total, card, index) => {
+          const width = card.getBoundingClientRect().width;
+          const next = total + width;
+          return index < originals.length - 1 ? next + gap : next;
+        }, 0);
+        const setSpanRaw = setWidth + (originals.length > 0 ? gap : 0);
+        if (!setWidth) {
+          requestAnimationFrame(syncMarquee);
+          return;
+        }
+        setSpan = Math.round(setSpanRaw);
+        const duration = Math.max(12, setSpan / slideSpeedPxPerSecond);
+        track.style.setProperty('--featured-marquee-distance', `${setSpan}px`);
+        track.style.setProperty('--featured-marquee-duration', `${duration}s`);
+        const stageRect = stage.getBoundingClientRect();
+        const repeatSets = Math.max(1, Math.ceil(stageRect.width / setSpan) + 1);
+        const fragmentBefore = document.createDocumentFragment();
+        const fragmentAfter = document.createDocumentFragment();
+        for (let i = 0; i < repeatSets; i += 1) {
+          originals.forEach((card) => {
+            const clone = card.cloneNode(true);
+            clone.dataset.clone = 'true';
+            clone.setAttribute('aria-hidden', 'true');
+            scrubCloneIds(clone);
+            copyCardMeasurements(card, clone);
+            resetCardDateToggles(clone);
+            fragmentAfter.appendChild(clone);
+          });
+        }
+        for (let i = 0; i < repeatSets; i += 1) {
+          originals.forEach((card) => {
+            const clone = card.cloneNode(true);
+            clone.dataset.clone = 'true';
+            clone.setAttribute('aria-hidden', 'true');
+            scrubCloneIds(clone);
+            copyCardMeasurements(card, clone);
+            resetCardDateToggles(clone);
+            fragmentBefore.appendChild(clone);
+          });
+        }
+        track.prepend(fragmentBefore);
+        track.appendChild(fragmentAfter);
+
+        const firstOriginal = originals[0];
+        firstOriginalOffset = firstOriginal.offsetLeft;
+        firstOriginalWidth = firstOriginal.getBoundingClientRect().width;
+
+        let resolvedAnchorWithinSet = preferredAnchorWithinSet;
+        if (resolvedAnchorWithinSet === null) {
+          resolvedAnchorWithinSet = firstOriginalWidth / 2;
+        }
+        resolvedAnchorWithinSet = normalizeWithinSet(resolvedAnchorWithinSet);
+        anchorWithinSet = resolvedAnchorWithinSet;
+        if (resizingNow && resizeAnchorWithinSet === null) {
+          resizeAnchorWithinSet = resolvedAnchorWithinSet;
+        }
+        if (!resizingNow) {
+          resumeAnchorWithinSet = null;
+          resizeAnchorWithinSet = null;
+        }
+        const anchorX0 = firstOriginalOffset + resolvedAnchorWithinSet;
+        applyMarqueeFromAnchor(anchorX0, { animate: !resizingNow });
+        hasSynced = true;
+        if (visibilityObserver) {
+          visibilityObserver.disconnect();
+          track.querySelectorAll('.featured-card').forEach((card) => {
+            visibilityObserver.observe(card);
+          });
+        }
+      });
+    };
+
+    if ('IntersectionObserver' in window) {
+      visibilityObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) {
+              resetCardDateToggles(entry.target);
+            }
+          });
+        },
+        { root: null, threshold: 0 }
+      );
+    }
+
+    if ('ResizeObserver' in window) {
+      resizeObserver = new ResizeObserver(() => syncMarquee());
+      resizeObserver.observe(stage);
+      cards.forEach((card) => resizeObserver.observe(card));
+    } else {
+      window.addEventListener('resize', syncMarquee);
+    }
+
+    document.fonts?.ready?.then(syncMarquee).catch(() => {});
+    window.addEventListener('load', syncMarquee, { once: true });
+    syncMarquee();
+
+    const teardownSlideshow = () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      clearClones();
+      track.style.removeProperty('--featured-marquee-distance');
+      track.style.removeProperty('--featured-marquee-start');
+      track.style.removeProperty('--featured-marquee-end');
+      track.style.removeProperty('--featured-marquee-duration');
+      track.style.animation = '';
+      if (visibilityObserver) {
+        visibilityObserver.disconnect();
+      }
+      if (resizeObserver) resizeObserver.disconnect();
+      window.removeEventListener('resize', syncMarquee);
+    };
+
+    const freezeMarquee = () => {
+      const { currentTranslate, baseLeft } = getTransformInfo();
+      if (resizeAnchorWithinSet === null) {
+        resizeAnchorWithinSet = computeAnchorWithinSetFromCurrent() ?? anchorWithinSet;
+      }
+      if (!setSpan || resizeAnchorWithinSet === null) {
+        track.style.animation = 'none';
+        track.style.transform = `translateX(${currentTranslate}px)`;
+        return;
+      }
+      const stageRect = stage.getBoundingClientRect();
+      if (!stageRect.width) return;
+      const stageCenter = stageRect.left + stageRect.width / 2;
+      const anchorX0 = firstOriginalOffset + resizeAnchorWithinSet;
+      const desiredTranslate = stageCenter - baseLeft - anchorX0;
+      track.style.animation = 'none';
+      track.style.transform = `translateX(${desiredTranslate}px)`;
+    };
+
+    const clearFreeze = () => {
+      resumeAnchorWithinSet = resizeAnchorWithinSet;
+      resizeAnchorWithinSet = null;
+    };
+
+    return { teardown: teardownSlideshow, sync: syncMarquee, freeze: freezeMarquee, clear: clearFreeze };
+  };
+
+  if (reduceMotionQuery.addEventListener) {
+    reduceMotionQuery.addEventListener('change', scheduleUpdate);
+  } else {
+    reduceMotionQuery.addListener(scheduleUpdate);
+  }
+
+  if (slideshowQuery.addEventListener) {
+    slideshowQuery.addEventListener('change', scheduleUpdate);
+  } else {
+    slideshowQuery.addListener(scheduleUpdate);
+  }
+
+  const handleResize = () => {
+    isResizing = true;
+    container.classList.add('is-resizing');
+    if (typeof freezeLayout === 'function') {
+      freezeLayout();
+    }
+
+    clearTimeout(resizePauseTimeout);
+    resizePauseTimeout = setTimeout(() => {
+      isResizing = false;
+      container.classList.remove('is-resizing');
+      if (typeof clearFreezeLayout === 'function') {
+        clearFreezeLayout();
+      } else {
+        track.style.transform = '';
+        track.style.animation = '';
+      }
+      scheduleUpdate();
+    }, 250);
+  };
+
+  window.addEventListener('resize', handleResize);
+  updateMode();
+}
+
 export function initRipple() {
   let clickCount = 0;
   let lastClickTime = 0;

@@ -116,5 +116,126 @@ show_loader: false
     I’m an Electrical Engineering undergraduate at National Taiwan University, interested in coding theory, communications, cryptography, and AI/ML. I also enjoy topics in combinatorics, stochastic programming, and number theory. I’ve worked on both academic and practical projects across a range of areas, including open-source template development, graphic design, data analysis, event organization and coordination. Beyond academics, I’m passionate about language learning, linguistics, and reading across a variety of genres, and I enjoy international cultural exchange through traveling and volunteering.
   </p>
   <p>See the <a href="/about">About</a> page to learn more.</p>
-  
+
+  {% assign featured_blogs = site.blog | where: 'hidden', false | where: 'featured', true %}
+  {% assign featured_projects = site.projects | where: 'hidden', false | where: 'featured', true %}
+  {% assign featured_items = featured_blogs | concat: featured_projects | sort: 'date' | reverse %}
+
+  {% if featured_items.size > 0 %}
+  <div class="featured-container" data-featured-count="{{ featured_items.size }}">
+    <h1>Featured Posts and Projects</h1>
+    <div class="featured-stage">
+      <div class="featured-track">
+        {% for item in featured_items %}
+        {% assign is_project = item.collection == 'projects' %}
+        {% assign link_label = 'Read' %}
+        {% assign aria_label = 'Read Blog' %}
+        {% assign tag_type = 'blog' %}
+        {% if is_project %}
+          {% assign link_label = 'View' %}
+          {% assign aria_label = 'View Project' %}
+          {% assign tag_type = 'project' %}
+        {% endif %}
+        {% assign pdf_link = item.pdf_url | default: item.pdf %}
+        {% assign has_pdf = false %}
+        {% if pdf_link %}
+          {% assign has_pdf = true %}
+        {% endif %}
+        {% assign tags_json = '[]' %}
+        {% if item.tags %}
+          {% assign tags_json = item.tags | jsonify %}
+        {% endif %}
+        {% assign tag_count = item.tags | size %}
+        {% assign total_tags = tag_count %}
+        {% if has_pdf %}
+          {% assign total_tags = total_tags | plus: 1 %}
+        {% endif %}
+        {% assign overflow_count = 0 %}
+        {% if total_tags > 4 %}
+          {% assign overflow_count = total_tags | minus: 4 %}
+        {% endif %}
+        {% assign display_limit = 4 %}
+        {% if has_pdf %}
+          {% assign display_limit = display_limit | minus: 1 %}
+        {% endif %}
+        {% assign card_tags = '' %}
+        {% if item.tags %}
+          {% assign card_tags = item.tags | join: ',' | downcase %}
+        {% endif %}
+        {% if has_pdf %}
+          {% if card_tags != '' %}
+            {% assign card_tags = card_tags | append: ',pdf' %}
+          {% else %}
+            {% assign card_tags = 'pdf' %}
+          {% endif %}
+        {% endif %}
+        <div class="card-box featured-card" data-tags="{{ card_tags }}" data-tags-json='{{ tags_json | escape }}' data-pdf-url="{{ pdf_link | escape }}" data-tag-type="{{ tag_type }}">
+          <div class="card-header">
+            <div class="card-header-row">
+              {% assign publish_date = item.date_publish | default: item.date %}
+              {% assign update_date = item.date_update | default: publish_date %}
+              <div class="card-meta">
+                <div class="card-date-wrap">
+                  <span class="card-date">{{ item.date | date: "%B %-d, %Y" }}</span>
+                  <div class="card-date-badge-list">
+                    <div class="date-badge-item">
+                      <span class="date-badge">P</span>
+                      <span class="date-badge-text">{{ publish_date | date: "%Y-%m-%d" }}</span>
+                    </div>
+                    <div class="date-badge-item">
+                      <span class="date-badge">U</span>
+                      <span class="date-badge-text">{{ update_date | date: "%Y-%m-%d" }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <a class="card-link" href="{{ item.url }}" aria-label="{{ aria_label }}">
+                <span>{{ link_label }}</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M268 112l144 144-144 144M392 256H100" class="ionicon-fill-none"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="card-contents">
+            <div class="card-info">
+              <div class="card-title"><a href="{{ item.url }}">{{ item.title }}</a></div>
+              {% if item.subtitle %}
+              <div class="card-subtitle">{{ item.subtitle }}</div>
+              {% else %}
+              <div class="card-subtitle card-subtitle--placeholder" aria-hidden="true">&nbsp;</div>
+              {% endif %}
+              {% if has_pdf or tag_count > 0 %}
+              <div class="card-tags">
+                {% if has_pdf %}
+                <a class="card-tag card-tag--pdf" href="{{ pdf_link }}" target="_blank" rel="noopener">PDF</a>
+                {% endif %}
+                {% if tag_count > 0 and display_limit > 0 %}
+                  {% for tag in item.tags limit: display_limit %}
+                  <span class="card-tag" data-tag="{{ tag | downcase }}" data-type="{{ tag_type }}">{{ tag }}</span>
+                  {% endfor %}
+                {% endif %}
+                {% if overflow_count > 0 %}
+                <span class="card-tag card-tag--overflow" aria-hidden="true">+{{ overflow_count }}</span>
+                {% endif %}
+              </div>
+              {% endif %}
+            </div>
+            {% assign image_count = 0 %}
+            {% if item.images %}
+              {% assign image_count = item.images | size %}
+            {% endif %}
+            <div class="card-images" data-image-count="{{ image_count }}">
+              {% if image_count > 0 %}
+                {% assign first_image = item.images | first %}
+                <img class="card-image" src="{{ first_image }}" alt="{{ item.title }} image 1" loading="lazy" />
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
 </div>

@@ -15,7 +15,7 @@
 </script>
 
 <script type="module">
-  import { initTheme, initSidebar, initScrollEffects, initCardImageHeights, initCardImagePreview{% if page.include_greeting %}, initGreeting{% endif %}{% if page.include_ripple %}, initRipple{% endif %} } from '{{ site.baseurl }}/{{ page.js_ui_effects_path | default: "src/js/ui-effects.js" }}';
+  import { initTheme, initSidebar, initScrollEffects, initCardImageHeights, initCardImagePreview, initFeaturedShowcase{% if page.include_greeting %}, initGreeting{% endif %}{% if page.include_ripple %}, initRipple{% endif %} } from '{{ site.baseurl }}/{{ page.js_ui_effects_path | default: "src/js/ui-effects.js" }}';
 
   // Function to initialize UI effects
   function initializeUIEffects() {
@@ -24,6 +24,7 @@
     if (document.getElementById('theme-toggle')) initTheme();
     if (document.querySelector('.card-contents')) initCardImageHeights();
     if (document.querySelector('.card-image')) initCardImagePreview();
+    if (document.querySelector('.featured-container')) initFeaturedShowcase();
     {% if page.include_greeting %}
     if (document.getElementById('greeting')) initGreeting();
     {% endif %}

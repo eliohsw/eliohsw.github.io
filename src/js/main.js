@@ -1,3 +1,5 @@
+import { initFeaturedShowcase } from './ui-effects.js';
+
 function initSubpageTopButton() {
   const topBtn = document.getElementById('subpage-top-btn');
   if (!topBtn) return;
@@ -135,6 +137,7 @@ function initSubpageMetaToggle() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
+  if (document.querySelector('.featured-container')) initFeaturedShowcase();
   initSubpageTopButton();
   initTaskListToggle();
   initCardDateBadgeToggle();
