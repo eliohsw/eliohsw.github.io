@@ -226,6 +226,9 @@
   max-width: var(--featured-card-max);
   margin-left: auto;
   margin-right: auto;
+
+  opacity: 0;
+  transition: opacity 1.5s ease 1s;
 }
 
 .featured-container h1 {
@@ -250,6 +253,10 @@
 
 .featured-container[data-featured-ready="true"] .featured-track {
   visibility: visible;
+}
+
+.featured-container[data-featured-ready="true"] {
+  opacity: 1;
 }
 
 .featured-card {
@@ -291,11 +298,17 @@
   transition: none !important;
 }
 
+.featured-container.is-fade-prime .featured-card {
+  transition: none !important;
+  opacity: 0 !important;
+}
+
 .featured-container.is-fade .featured-card.is-active {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
-  transition: var(--transition-border-color), box-shadow 0.32s ease;
+  transition: opacity var(--featured-fade-duration, 900ms) ease, var(--transition-border-color),
+    box-shadow 0.32s ease;
 }
 
 .featured-container .card-subtitle--placeholder {
@@ -386,7 +399,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .featured-container.is-fade .featured-card,
-  .featured-container.is-slideshow .featured-track {
+  .featured-container.is-slideshow .featured-track,
+  .featured-container .featured-stage {
     transition: none;
     animation: none;
   }

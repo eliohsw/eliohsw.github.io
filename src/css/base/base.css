@@ -81,6 +81,25 @@ footer {
   font-weight: 425;
 }
 
+footer.footer--fade-in {
+  opacity: 0;
+  animation: footer-fade-in 1.5s ease 1s forwards;
+}
+
+@keyframes footer-fade-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  footer.footer--fade-in {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
 mjx-container[display="true"] {
   overflow-x: auto;
   overflow-y: hidden;

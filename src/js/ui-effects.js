@@ -201,6 +201,11 @@ export function initFeaturedShowcase() {
 
   const setupMode = (nextMode, prevMode) => {
     const wasResizing = isResizing;
+    const primeFadeStage = () => {
+      const heights = cards.map((card) => card.getBoundingClientRect().height).filter((h) => h > 0);
+      if (!heights.length) return;
+      stage.style.height = `${Math.ceil(Math.max(...heights))}px`;
+    };
     container.classList.remove(
       'is-fade',
       'is-slideshow',
@@ -208,16 +213,20 @@ export function initFeaturedShowcase() {
       'is-reduced',
       'is-instant',
       'is-resizing',
-      'is-fade-reset'
+      'is-fade-reset',
+      'is-fade-prime'
     );
     container.dataset.featuredReady = 'false';
+    track.style.transform = '';
+    track.style.animation = '';
+    stage.style.height = '';
+    if (nextMode === 'fade') {
+      primeFadeStage();
+    }
     container.classList.add(`is-${nextMode}`);
     if (wasResizing) {
       container.classList.add('is-resizing');
     }
-    track.style.transform = '';
-    track.style.animation = '';
-    stage.style.height = '';
 
     cards.forEach((card) => {
       card.classList.remove('is-active');
@@ -240,15 +249,20 @@ export function initFeaturedShowcase() {
       return setupSlideshow({ hideUntilSync: prevMode !== 'slideshow' });
     }
 
-    if (nextMode === 'fade' && (prevMode === 'slideshow' || prevMode === '')) {
+    if (nextMode === 'fade' && prevMode === 'slideshow') {
       container.classList.add('is-fade-reset');
     }
 
-    const fadeHandlers = setupFade();
+    if (nextMode === 'fade' && prevMode === '') {
+      container.classList.add('is-fade-prime');
+    }
+
+    const fadeHandlers = setupFade({ initialLoad: prevMode === '' });
     return { ...fadeHandlers, freeze: null, clear: null };
   };
 
-  const setupFade = () => {
+  const setupFade = (options = {}) => {
+    const { initialLoad = false } = options;
     let currentIndex = 0;
     let phase = 'idle';
     let fadeTimeout = null;
@@ -259,6 +273,8 @@ export function initFeaturedShowcase() {
     let startDelayTimeout = null;
     let resizeObserver = null;
     let pendingReset = container.classList.contains('is-fade-reset');
+    let pendingPrime = container.classList.contains('is-fade-prime');
+    let pendingInitial = initialLoad;
 
     const updateStageHeight = () => {
       const heights = cards.map((card) => card.getBoundingClientRect().height).filter((h) => h > 0);
@@ -323,6 +339,27 @@ export function initFeaturedShowcase() {
         requestAnimationFrame(() => {
           container.classList.remove('is-fade-reset');
         });
+        return;
+      }
+      if (pendingInitial) {
+        pendingInitial = false;
+        updateStageHeight();
+        markFeaturedReady();
+        if (pendingPrime) {
+          pendingPrime = false;
+          requestAnimationFrame(() => {
+            container.classList.remove('is-fade-prime');
+            requestAnimationFrame(() => {
+              if (phase !== 'fade-in') return;
+              activateCard();
+            });
+          });
+        } else {
+          requestAnimationFrame(() => {
+            if (phase !== 'fade-in') return;
+            activateCard();
+          });
+        }
         return;
       }
       activateCard();
