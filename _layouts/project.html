@@ -82,19 +82,7 @@ layout: default
   </div>
 
   <div id="project-navigation" class="subpage-ind-navigation">
-    {% assign visible_projects = '' | split: '' %}
-    {% assign show_future = site.future | default: false %}
-    {% assign now_ts = site.time | date: "%s" | plus: 0 %}
-    {% for project in site.projects %}
-      {% assign publish_date = project.date_publish | default: project.date %}
-      {% assign publish_ts = publish_date | date: "%s" | plus: 0 %}
-      {% if project.hidden != true %}
-        {% if show_future or publish_ts <= now_ts %}
-          {% assign visible_projects = visible_projects | push: project %}
-        {% endif %}
-      {% endif %}
-    {% endfor %}
-    {% assign items = visible_projects | sort: 'date' | reverse %}
+    {% assign items = site.projects | where_exp: "p", "p.hidden != true and p.published != false" | sort: 'date' | reverse %}
     {% assign current_index = nil %}
     {% for item in items %}
       {% if item.url == page.url %}

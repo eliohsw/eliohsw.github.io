@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import datetime
 import os
 import re
 import shutil
@@ -84,12 +85,7 @@ def parse_redirect_block(fm_lines):
     return {"index": idx, "style": "block", "items": items, "range": (list_start, list_end)}
 
 
-def ensure_redirect(lines, collection, slug):
-    fm_bounds = find_front_matter(lines)
-    if not fm_bounds:
-        return False, lines
-    start, end = fm_bounds
-    fm_lines = lines[start + 1 : end]
+def ensure_redirect(fm_lines, collection, slug):
     short = f"/{collection}/{slug}/"
 
     redirect = parse_redirect_block(fm_lines)
@@ -97,11 +93,10 @@ def ensure_redirect(lines, collection, slug):
         if fm_lines and fm_lines[-1].strip() != "":
             fm_lines.append("\n")
         fm_lines.extend(["redirect_from:\n", f"  - {short}\n"])
-        new_lines = lines[: start + 1] + fm_lines + lines[end:]
-        return True, new_lines
+        return True, fm_lines
 
     if short in redirect["items"]:
-        return False, lines
+        return False, fm_lines
 
     if redirect["style"] == "inline":
         new_block = ["redirect_from:\n"]
@@ -121,8 +116,7 @@ def ensure_redirect(lines, collection, slug):
             fm_lines[:list_end] + [f"{indent}- {short}\n"] + fm_lines[list_end:]
         )
 
-    new_lines = lines[: start + 1] + fm_lines + lines[end:]
-    return True, new_lines
+    return True, fm_lines
 
 
 def iter_content_files(root_dir):
@@ -140,7 +134,64 @@ def collection_paths(content_dir):
     return {name: os.path.join(content_dir, f"_{name}") for name in COLLECTIONS}
 
 
-def process_collection(label, path):
+def get_front_matter_value(fm_lines, key):
+    pattern = re.compile(rf"^{re.escape(key)}\s*:\s*(.*)$")
+    for line in fm_lines:
+        if line.lstrip() != line:
+            continue
+        match = pattern.match(line)
+        if not match:
+            continue
+        value = match.group(1).split("#", 1)[0].strip()
+        return normalize_value(value)
+    return None
+
+
+def parse_date_value(raw_value):
+    if not raw_value:
+        return None
+    match = re.match(r"^\s*(\d{4}-\d{2}-\d{2})", raw_value)
+    if match:
+        try:
+            return datetime.date.fromisoformat(match.group(1))
+        except ValueError:
+            return None
+    return None
+
+
+def ensure_published_flag(fm_lines, value):
+    for i, line in enumerate(fm_lines):
+        if line.lstrip() != line:
+            continue
+        if re.match(r"^published\s*:", line):
+            fm_lines[i] = f"published: {'true' if value else 'false'}\n"
+            return True, fm_lines
+    if value:
+        return False, fm_lines
+    insert_at = len(fm_lines)
+    for i, line in enumerate(fm_lines):
+        if line.lstrip() != line:
+            continue
+        if re.match(r"^(date_update|date_publish|date)\s*:", line):
+            insert_at = i + 1
+    fm_lines.insert(insert_at, "published: false\n")
+    return True, fm_lines
+
+
+def remove_redirect_block(fm_lines):
+    redirect = parse_redirect_block(fm_lines)
+    if redirect is None:
+        return False, fm_lines
+    idx = redirect["index"]
+    if redirect["style"] == "inline":
+        del fm_lines[idx]
+        return True, fm_lines
+    list_start, list_end = redirect["range"]
+    del fm_lines[idx:list_end]
+    return True, fm_lines
+
+
+def process_collection(label, path, today):
     updated = 0
     for filepath in iter_content_files(path):
         with open(filepath, "r", encoding="utf-8", newline="") as handle:
@@ -151,8 +202,24 @@ def process_collection(label, path):
         start, end = fm_bounds
         fm_lines = lines[start + 1 : end]
         slug = get_slug(fm_lines, filepath)
-        changed, new_lines = ensure_redirect(lines, label, slug)
+        publish_value = get_front_matter_value(fm_lines, "date_publish")
+        if publish_value is None:
+            publish_value = get_front_matter_value(fm_lines, "date")
+        publish_date = parse_date_value(publish_value)
+        is_future = publish_date is not None and publish_date > today
+
+        changed = False
+        if is_future:
+            flag_changed, fm_lines = ensure_published_flag(fm_lines, False)
+            changed = changed or flag_changed
+            removed_redirects, fm_lines = remove_redirect_block(fm_lines)
+            changed = changed or removed_redirects
+        else:
+            redirect_changed, fm_lines = ensure_redirect(fm_lines, label, slug)
+            changed = changed or redirect_changed
+
         if changed:
+            new_lines = lines[: start + 1] + fm_lines + lines[end:]
             with open(filepath, "w", encoding="utf-8", newline="") as handle:
                 handle.writelines(new_lines)
             updated += 1
@@ -229,10 +296,11 @@ def main():
         return 0
 
     total = 0
+    today = datetime.datetime.utcnow().date()
     for label, path in collection_paths(dest_dir).items():
         if not os.path.isdir(path):
             continue
-        total += process_collection(label, path)
+        total += process_collection(label, path, today)
 
     rel_dest = os.path.relpath(dest_dir, ROOT)
     if total == 0:

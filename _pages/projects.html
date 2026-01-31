@@ -20,7 +20,7 @@ additional_scripts:
 {% for project in site.projects %}
   {% assign publish_date = project.date_publish | default: project.date %}
   {% assign publish_ts = publish_date | date: "%s" | plus: 0 %}
-  {% if project.hidden != true %}
+  {% if project.hidden != true and project.published != false %}
     {% if show_future or publish_ts <= now_ts %}
       {% assign visible_projects = visible_projects | push: project %}
     {% endif %}

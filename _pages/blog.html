@@ -21,7 +21,7 @@ additional_scripts:
 {% for blog in site.blog %}
   {% assign publish_date = blog.date_publish | default: blog.date %}
   {% assign publish_ts = publish_date | date: "%s" | plus: 0 %}
-  {% if blog.hidden != true %}
+  {% if blog.hidden != true and blog.published != false %}
     {% if show_future or publish_ts <= now_ts %}
       {% assign visible_blogs = visible_blogs | push: blog %}
     {% endif %}

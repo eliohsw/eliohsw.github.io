@@ -4,36 +4,14 @@
 {% if redirect_target.first %}
   {% assign redirect_target = redirect_target.first %}
 {% endif %}
-{% assign visible_blogs = '' | split: '' %}
-{% assign show_future = site.future | default: false %}
-{% assign now_ts = site.time | date: "%s" | plus: 0 %}
-{% for blog in site.blog %}
-  {% assign publish_date = blog.date_publish | default: blog.date %}
-  {% assign publish_ts = publish_date | date: "%s" | plus: 0 %}
-  {% if blog.hidden != true %}
-    {% if show_future or publish_ts <= now_ts %}
-      {% assign visible_blogs = visible_blogs | push: blog %}
-    {% endif %}
-  {% endif %}
-{% endfor %}
-{% assign visible_projects = '' | split: '' %}
-{% for project in site.projects %}
-  {% assign publish_date = project.date_publish | default: project.date %}
-  {% assign publish_ts = publish_date | date: "%s" | plus: 0 %}
-  {% if project.hidden != true %}
-    {% if show_future or publish_ts <= now_ts %}
-      {% assign visible_projects = visible_projects | push: project %}
-    {% endif %}
-  {% endif %}
-{% endfor %}
 {% if redirect_target == nil or redirect_target == "" %}
   {% assign redirect_from_path = page.url %}
   {% assign candidate = site.pages | where_exp: "p", "p.redirect_from contains redirect_from_path" | first %}
   {% if candidate == nil %}
-    {% assign candidate = visible_blogs | where_exp: "p", "p.redirect_from contains redirect_from_path" | first %}
+    {% assign candidate = site.blog | where_exp: "p", "p.hidden != true and p.published != false and p.redirect_from contains redirect_from_path" | first %}
   {% endif %}
   {% if candidate == nil %}
-    {% assign candidate = visible_projects | where_exp: "p", "p.redirect_from contains redirect_from_path" | first %}
+    {% assign candidate = site.projects | where_exp: "p", "p.hidden != true and p.published != false and p.redirect_from contains redirect_from_path" | first %}
   {% endif %}
   {% if candidate %}
     {% assign redirect_target = candidate.url %}

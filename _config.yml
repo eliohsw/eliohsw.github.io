@@ -3,6 +3,7 @@ title: "Elio Huang"
 description: "Hi, I'm Elio."
 url: "https://eliohsw.github.io"
 baseurl: ""
+future: false
 
 # Collections configuration
 collections:
