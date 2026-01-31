@@ -8,7 +8,7 @@
   height: 300px;
   position: relative;
   left: 50%;
-  top: 48px;
+  padding-top: 48px;
   transform: translateX(-50%); /* no translateY(48px) */
   overflow: hidden;
 }
@@ -20,10 +20,21 @@
   object-position: center;
 }
 
+@media (max-width: calc(800px + 4rem)) {
+  .page-banner {
+    height: 34.72222222vw;
+  }
+}
+
+@media (max-width: 575px) {
+  .page-banner {
+    height: 200px;
+  }
+}
+
 /* Individual Subpage Styles */
 .subpage-ind-page {
   margin: 0 auto;
-  padding: 2rem 0 0 0;
 
   /* Individual Subpage Header */
   .subpage-ind-header {
@@ -656,7 +667,6 @@
 
 @media (max-width: 768px) {
   .subpage-ind-page {
-    padding: 2rem 0rem;
 
     .subpage-ind-header {
       margin-bottom: 1.5rem;

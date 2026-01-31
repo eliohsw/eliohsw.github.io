@@ -71,7 +71,19 @@ body {
 }
 
 .main-content:has(.subpage-ind-page) {
-  padding-top: 60px;
+  padding-top: 44px;
+}
+
+@media (max-width: 768px) {
+  .main-content:has(.subpage-ind-page) {
+    padding-top: calc(6.25vw - 4px);
+  }
+}
+
+@media (max-width: 575px) {
+  .main-content:has(.subpage-ind-page) {
+    padding-top: 32px;
+  }
 }
 
 p {
