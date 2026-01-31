@@ -203,7 +203,7 @@ def process_collection(label, path, today):
         fm_lines = lines[start + 1 : end]
         slug = get_slug(fm_lines, filepath)
         publish_value = get_front_matter_value(fm_lines, "date_publish")
-        if publish_value is None:
+        if not publish_value:
             publish_value = get_front_matter_value(fm_lines, "date")
         publish_date = parse_date_value(publish_value)
         is_future = publish_date is not None and publish_date > today
@@ -215,6 +215,8 @@ def process_collection(label, path, today):
             removed_redirects, fm_lines = remove_redirect_block(fm_lines)
             changed = changed or removed_redirects
         else:
+            flag_changed, fm_lines = ensure_published_flag(fm_lines, True)
+            changed = changed or flag_changed
             redirect_changed, fm_lines = ensure_redirect(fm_lines, label, slug)
             changed = changed or redirect_changed
 
@@ -296,12 +298,9 @@ def main():
         return 0
 
     total = 0
-    # Use timezone-aware UTC datetime (compatible with older Python).
-    try:
-        utc = datetime.UTC
-    except AttributeError:
-        utc = datetime.timezone.utc
-    today = datetime.datetime.now(utc).date()
+    # Use timezone-aware UTC+8 datetime for publish gating.
+    tz = datetime.timezone(datetime.timedelta(hours=8))
+    today = datetime.datetime.now(tz).date()
     for label, path in collection_paths(dest_dir).items():
         if not os.path.isdir(path):
             continue
