@@ -15,11 +15,14 @@
 </script>
 
 <script type="module">
-  import { initTheme, initSidebar, initScrollEffects, initCardImageHeights, initCardImagePreview, initFeaturedShowcase{% if page.include_greeting %}, initGreeting{% endif %}{% if page.include_ripple %}, initRipple{% endif %} } from '{{ site.baseurl }}/{{ page.js_ui_effects_path | default: "src/js/ui-effects.js" }}';
+  import { initTheme, initSidebar, initNavViewportOffset, initScrollEffects, initCardImageHeights, initCardImagePreview, initFeaturedShowcase{% if page.include_greeting %}, initGreeting{% endif %}{% if page.include_ripple %}, initRipple{% endif %} } from '{{ site.baseurl }}/{{ page.js_ui_effects_path | default: "src/js/ui-effects.js" }}';
 
   // Function to initialize UI effects
   function initializeUIEffects() {
-    if (document.querySelector('.nav-bar')) initScrollEffects();
+    if (document.querySelector('.nav-bar')) {
+      initNavViewportOffset();
+      initScrollEffects();
+    }
     if (document.querySelector('.menu-btn') && document.querySelector('.mobile-sidebar')) initSidebar();
     if (document.getElementById('theme-toggle')) initTheme();
     if (document.querySelector('.card-contents')) initCardImageHeights();

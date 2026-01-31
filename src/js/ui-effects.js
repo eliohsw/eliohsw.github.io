@@ -778,6 +778,40 @@ export function initRipple() {
   }
 }
 
+export function initNavViewportOffset() {
+  const navBar = document.querySelector('.nav-bar');
+  if (!navBar || !window.visualViewport) return;
+
+  const root = document.documentElement;
+  let rafId = null;
+  let lastOffset = null;
+
+  const updateOffset = () => {
+    rafId = null;
+    const viewport = window.visualViewport;
+    const rawOffset = viewport.offsetTop || 0;
+    const pageTop = typeof viewport.pageTop === 'number' ? viewport.pageTop : window.scrollY + rawOffset;
+    const docHeight = Math.max(document.documentElement.scrollHeight, document.body?.scrollHeight || 0);
+    const visualBottom = pageTop + viewport.height;
+    const overscrolledBottom = visualBottom > docHeight + 1;
+    const offset = overscrolledBottom ? 0 : Math.max(0, Math.round(rawOffset * 100) / 100);
+    if (offset === lastOffset) return;
+    lastOffset = offset;
+    root.style.setProperty('--visual-viewport-offset-top', `${offset}px`);
+  };
+
+  const scheduleUpdate = () => {
+    if (rafId) return;
+    rafId = window.requestAnimationFrame(updateOffset);
+  };
+
+  updateOffset();
+  window.visualViewport.addEventListener('resize', scheduleUpdate);
+  window.visualViewport.addEventListener('scroll', scheduleUpdate);
+  window.addEventListener('orientationchange', scheduleUpdate);
+  window.addEventListener('scroll', scheduleUpdate, { passive: true });
+}
+
 export function initScrollEffects() {
   const navBar = document.querySelector('.nav-bar');
   const pageBanner = document.querySelector('.page-banner');
