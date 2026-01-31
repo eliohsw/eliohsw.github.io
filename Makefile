@@ -6,14 +6,17 @@ LIVERELOAD_PORT ?= 35729
 FUTURE ?=
 t ?=
 QUIET ?= 0
+PYTHON ?= python3
+REDIRECTS_CONTENT ?= _content_redirects
+JEKYLL_CONFIG ?= _config.yml,_config.redirects.yml
 
 ifeq ($(QUIET),1)
 JEKYLL_FLAGS := --quiet
 endif
 
-.PHONY: serve future clean
+.PHONY: serve future clean redir
 
-serve:
+serve: redir
 	@export RBENV_VERSION=3.4.5; \
 	export PATH="$$HOME/.rbenv/shims:$$HOME/.rbenv/bin:$$PATH"; \
 	IP="$$(ipconfig getifaddr en0 2>/dev/null || true)"; \
@@ -24,17 +27,17 @@ serve:
 	  kill $$(lsof -ti tcp:$(PORT)) 2>/dev/null || true; \
 	fi; \
 	echo "Starting Jekyll at http://$${IP}:$(PORT) \n"; \
-	bundle exec jekyll clean $(JEKYLL_FLAGS); \
+	bundle exec jekyll clean --config $(JEKYLL_CONFIG) $(JEKYLL_FLAGS); \
 	if [[ -n "$(t)" ]]; then \
 	  echo "Auto-stopping after $(t)s…"; \
-	  bundle exec jekyll serve --config _config.yml --host $${IP} --port $(PORT) --livereload --livereload-port $(LIVERELOAD_PORT) $(FUTURE) $(JEKYLL_FLAGS) & \
+	  bundle exec jekyll serve --config $(JEKYLL_CONFIG) --host $${IP} --port $(PORT) --livereload --livereload-port $(LIVERELOAD_PORT) $(FUTURE) $(JEKYLL_FLAGS) & \
 	  JEKYLL_PID=$$!; \
 	  (sleep $(t); echo "Stopping Jekyll after $(t)s…"; kill -INT $$JEKYLL_PID 2>/dev/null || true) & \
 	  TIMER_PID=$$!; \
 	  wait $$JEKYLL_PID; \
 	  kill $$TIMER_PID 2>/dev/null || true; \
 	else \
-	  bundle exec jekyll serve --config _config.yml --host $${IP} --port $(PORT) --livereload --livereload-port $(LIVERELOAD_PORT) $(FUTURE) $(JEKYLL_FLAGS); \
+	  bundle exec jekyll serve --config $(JEKYLL_CONFIG) --host $${IP} --port $(PORT) --livereload --livereload-port $(LIVERELOAD_PORT) $(FUTURE) $(JEKYLL_FLAGS); \
 	fi
 
 future:
@@ -43,4 +46,7 @@ future:
 clean:
 	@export RBENV_VERSION=3.4.5; \
 	export PATH="$$HOME/.rbenv/shims:$$HOME/.rbenv/bin:$$PATH"; \
-	bundle exec jekyll clean
+	bundle exec jekyll clean --config $(JEKYLL_CONFIG)
+
+redir:
+	@$(PYTHON) scripts/redirect.py --source _content --dest $(REDIRECTS_CONTENT)
