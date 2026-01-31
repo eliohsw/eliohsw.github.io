@@ -5,6 +5,7 @@ function initCardFilters() {
   const filterInput = filterContainer.querySelector('.filter-input');
   const filterIcon = filterContainer.querySelector('.filter-input-icon');
   const filterTagBtn = filterContainer.querySelector('.filter-tag');
+  const filterFeaturedBtn = filterContainer.querySelector('.filter-featured');
   const showAllBtn = filterContainer.querySelector('.filter-all[data-tag="__all"]');
   const listEl = document.querySelector('.subpage-collection-list');
 
@@ -17,6 +18,7 @@ function initCardFilters() {
   const tagPlaceholder = filterInput.dataset.tagPlaceholder || 'Enter keyword';
   const emptyLabel = listEl.id === 'blog-list' ? 'posts' : 'projects';
   let isTagSearch = false;
+  let isFeaturedOnly = false;
   let layoutUpdatePending = false;
 
   function requestCardLayoutUpdate() {
@@ -30,6 +32,10 @@ function initCardFilters() {
 
   function updateSearchModeUI() {
     filterTagBtn.classList.toggle('active', isTagSearch);
+    if (filterFeaturedBtn) {
+      filterFeaturedBtn.classList.toggle('active', isFeaturedOnly);
+    }
+    showAllBtn.classList.toggle('active', isTagSearch || isFeaturedOnly);
     filterInput.placeholder = isTagSearch ? tagPlaceholder : defaultPlaceholder;
   }
 
@@ -114,10 +120,12 @@ function initCardFilters() {
       const tags = (card.getAttribute('data-tags') || '').toLowerCase();
       const titleEl = card.querySelector('.card-title');
       const title = titleEl ? titleEl.textContent.toLowerCase() : '';
-      const matches = lowerKeyword === '' ||
+      const isFeatured = card.dataset.featured === 'true';
+      const matchesKeyword = lowerKeyword === '' ||
         (isTagSearch
           ? tags.includes(lowerKeyword)
           : title.includes(lowerKeyword));
+      const matches = matchesKeyword && (!isFeaturedOnly || isFeatured);
 
       card.style.display = matches ? '' : 'none';
       if (matches) visibleCount += 1;
@@ -126,16 +134,23 @@ function initCardFilters() {
     const noCardsMsg = listEl.querySelector('.no-cards-filter');
     if (noCardsMsg) noCardsMsg.remove();
 
-    if (visibleCount === 0 && lowerKeyword !== '') {
+    if (visibleCount === 0 && (lowerKeyword !== '' || isFeaturedOnly)) {
       const noCardsDiv = document.createElement('div');
       noCardsDiv.className = 'no-projects no-cards-filter';
-      noCardsDiv.textContent = isTagSearch
-        ? `No ${emptyLabel} found for this tag.`
-        : `No ${emptyLabel} found for this keyword.`;
+      if (isFeaturedOnly) {
+        noCardsDiv.textContent = lowerKeyword !== ''
+          ? (isTagSearch
+            ? `No featured ${emptyLabel} found for this tag.`
+            : `No featured ${emptyLabel} found for this keyword.`)
+          : `No featured ${emptyLabel} found.`;
+      } else {
+        noCardsDiv.textContent = isTagSearch
+          ? `No ${emptyLabel} found for this tag.`
+          : `No ${emptyLabel} found for this keyword.`;
+      }
       listEl.appendChild(noCardsDiv);
     }
 
-    showAllBtn.classList.toggle('active', visibleCount < cards.length);
     updateCardTagsDisplay(isTagSearch ? lowerKeyword : '');
     requestCardLayoutUpdate();
   }
@@ -161,8 +176,18 @@ function initCardFilters() {
     filterCards();
   });
 
+  if (filterFeaturedBtn) {
+    filterFeaturedBtn.addEventListener('click', () => {
+      isFeaturedOnly = !isFeaturedOnly;
+      updateSearchModeUI();
+      filterInput.value = '';
+      filterCards();
+    });
+  }
+
   showAllBtn.addEventListener('click', () => {
     isTagSearch = false;
+    isFeaturedOnly = false;
     updateSearchModeUI();
     filterInput.value = '';
     filterCards();

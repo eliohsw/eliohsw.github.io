@@ -14,18 +14,7 @@ additional_scripts:
   - src/js/page-filters.js
 ---
 
-{% assign visible_projects = '' | split: '' %}
-{% assign show_future = site.future | default: false %}
-{% assign now_ts = site.time | date: "%s" | plus: 0 %}
-{% for project in site.projects %}
-  {% assign publish_date = project.date_publish | default: project.date %}
-  {% assign publish_ts = publish_date | date: "%s" | plus: 0 %}
-  {% if project.hidden != true and project.published != false %}
-    {% if show_future or publish_ts <= now_ts %}
-      {% assign visible_projects = visible_projects | push: project %}
-    {% endif %}
-  {% endif %}
-{% endfor %}
+{% assign visible_projects = site.projects | where_exp: "p", "p.hidden != true and p.published != false" %}
 {% assign sorted_projects = visible_projects | sort: 'date' | reverse %}
 
 <!-- Projects Filter -->
@@ -39,6 +28,11 @@ additional_scripts:
   <button class="filter-btn filter-tag">
     <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
       <path d="M467 45.2A44.45 44.45 0 00435.29 32H312.36a30.63 30.63 0 00-21.52 8.89L45.09 286.59a44.82 44.82 0 000 63.32l117 117a44.83 44.83 0 0063.34 0l245.65-245.6A30.6 30.6 0 00480 199.8v-123a44.24 44.24 0 00-13-31.6zM384 160a32 32 0 1132-32 32 32 0 01-32 32z"></path>
+    </svg>
+  </button>
+  <button class="filter-btn filter-featured" aria-label="Show featured">
+    <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512" aria-hidden="true" focusable="false">
+      <path d="M394 480a16 16 0 01-9.39-3L256 383.76 127.39 477a16 16 0 01-24.55-18.08L153 310.35 23 221.2a16 16 0 019-29.2h160.38l48.4-148.95a16 16 0 0130.44 0l48.4 149H480a16 16 0 019.05 29.2L359 310.35l50.13 148.53A16 16 0 01394 480z"/>
     </svg>
   </button>
   <button class="filter-btn filter-all" data-tag="__all">
@@ -88,7 +82,7 @@ additional_scripts:
         {% assign card_tags = 'pdf' %}
       {% endif %}
     {% endif %}
-    <div class="card-box" data-tags="{{ card_tags }}" data-tags-json='{{ tags_json | escape }}' data-pdf-url="{{ pdf_link | escape }}" data-tag-type="project">
+    <div class="card-box" data-tags="{{ card_tags }}" data-tags-json='{{ tags_json | escape }}' data-pdf-url="{{ pdf_link | escape }}" data-tag-type="project" data-featured="{{ project.featured | default: false }}">
       <div class="card-header">
         <div class="card-header-row">
           {% assign publish_date = project.date_publish | default: project.date %}
