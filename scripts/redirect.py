@@ -165,11 +165,28 @@ def resolve_path(path):
     return os.path.join(ROOT, path)
 
 
+def ensure_empty_dest(dest_dir):
+    if os.path.exists(dest_dir):
+        marker = os.path.join(dest_dir, MARKER_FILENAME)
+        if not os.path.isfile(marker):
+            print(
+                f"redirect: skipped because {dest_dir} exists without {MARKER_FILENAME}"
+            )
+            return False
+        shutil.rmtree(dest_dir)
+    os.makedirs(dest_dir, exist_ok=True)
+    with open(os.path.join(dest_dir, MARKER_FILENAME), "w", encoding="utf-8") as handle:
+        handle.write("generated\n")
+    for name in COLLECTIONS:
+        os.makedirs(os.path.join(dest_dir, f"_{name}"), exist_ok=True)
+    return True
+
+
 def prepare_destination(source_dir, dest_dir):
     if os.path.abspath(source_dir) == os.path.abspath(dest_dir):
         raise ValueError("Destination directory must be different from source.")
     if not os.path.isdir(source_dir):
-        raise FileNotFoundError(f"Source directory not found: {source_dir}")
+        return False
     if os.path.exists(dest_dir):
         marker = os.path.join(dest_dir, MARKER_FILENAME)
         if not os.path.isfile(marker):
@@ -180,6 +197,7 @@ def prepare_destination(source_dir, dest_dir):
     shutil.copytree(source_dir, dest_dir)
     with open(os.path.join(dest_dir, MARKER_FILENAME), "w", encoding="utf-8") as handle:
         handle.write("generated\n")
+    return True
 
 
 def main():
@@ -201,7 +219,14 @@ def main():
     source_dir = resolve_path(args.source)
     dest_dir = resolve_path(args.dest)
 
-    prepare_destination(source_dir, dest_dir)
+    has_source = prepare_destination(source_dir, dest_dir)
+    if not has_source:
+        rel_source = os.path.relpath(source_dir, ROOT)
+        rel_dest = os.path.relpath(dest_dir, ROOT)
+        created = ensure_empty_dest(dest_dir)
+        if created:
+            print(f"redirect: {rel_source} missing; created empty {rel_dest}")
+        return 0
 
     total = 0
     for label, path in collection_paths(dest_dir).items():
