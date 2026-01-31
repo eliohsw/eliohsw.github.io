@@ -299,7 +299,8 @@
   right: 0;
   top: 0;
   opacity: 0;
-  transition: opacity var(--featured-fade-duration, 900ms) ease;
+  transition: opacity var(--featured-fade-duration, 900ms) ease, var(--transition-bg-color),
+    var(--transition-border-color);
   pointer-events: none;
 }
 
@@ -316,8 +317,8 @@
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
-  transition: opacity var(--featured-fade-duration, 900ms) ease, var(--transition-border-color),
-    box-shadow 0.32s ease;
+  transition: opacity var(--featured-fade-duration, 900ms) ease, box-shadow 0.32s ease,
+    var(--transition-bg-color), var(--transition-border-color);
 }
 
 .featured-container .card-subtitle--placeholder {
