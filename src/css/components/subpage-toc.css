@@ -218,7 +218,6 @@
     display: block;
     width: auto;
     background: var(--color-surface);
-    border: 1.5px solid var(--color-box-border);
     border-radius: 0.8rem;
     padding: 1rem;
     max-height: calc(100vh - 48px - 4rem);
