@@ -2,6 +2,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <script>
+    (function() {
+      try {
+        document.documentElement.classList.add('fonts-loading');
+      } catch (e) {}
+    })();
+  </script>
+
   <!-- Font preloads -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,6 +20,27 @@
   <link rel="preload" href="{{ site.baseurl }}/src/assets/icons/favicon-144x144.png" as="image" type="image/png" fetchpriority="high">
   <link rel="preload" href="{{ site.baseurl }}/src/assets/icons/favicon-32x32.png" as="image" type="image/png">
   <link rel="preload" href="{{ site.baseurl }}/src/assets/icons/favicon-16x16.png" as="image" type="image/png">
+
+  <script>
+    (function() {
+      try {
+        var root = document.documentElement;
+        var reveal = function() {
+          root.classList.remove('fonts-loading');
+          root.classList.add('fonts-ready');
+        };
+        if (document.fonts && document.fonts.load && window.Promise) {
+          Promise.all([
+            document.fonts.load('1em "Inter"'),
+            document.fonts.load('600 1em "Inter"')
+          ]).then(reveal, reveal);
+          setTimeout(reveal, 2000);
+        } else {
+          reveal();
+        }
+      } catch (e) {}
+    })();
+  </script>
 
   <!-- Stylesheets -->
   <style>
@@ -31,6 +60,14 @@
     .ionicon-stroke-width {
       stroke-width: 32px;
       stroke-width: var(--ionicon-stroke-width, 32px);
+    }
+
+    .fonts-loading #greeting {
+      visibility: hidden;
+    }
+
+    .fonts-ready #greeting {
+      visibility: visible;
     }
   </style>
   <link rel="preload" href="{{ site.baseurl }}/src/assets/fonts/Satoshi-Variable.ttf" as="font" type="font/ttf" crossorigin>
