@@ -249,6 +249,14 @@
   flex-direction: column;
   gap: 1.5rem;
   visibility: hidden;
+}
+
+.featured-container.is-fade .featured-stage,
+.featured-container.is-reduced .featured-stage,
+.featured-container.is-static .featured-stage {
+  margin-bottom: 2rem;
+}
+.featured-container.is-slideshow .featured-track {
   margin-bottom: 2rem;
 }
 
