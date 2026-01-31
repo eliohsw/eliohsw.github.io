@@ -9,15 +9,24 @@ QUIET ?= 0
 PYTHON ?= python3
 REDIRECTS_CONTENT ?= _content_redirects
 JEKYLL_CONFIG ?= _config.yml,_config.redirects.yml
+RUBY_VERSION ?= 3.4.5
+BASEURL ?=
 
 ifeq ($(QUIET),1)
 JEKYLL_FLAGS := --quiet
 endif
 
-.PHONY: serve future clean redir
+.PHONY: serve future clean redir build ci
+
+ci: build
+
+build: redir
+	@export RBENV_VERSION=$(RUBY_VERSION); \
+	export PATH="$$HOME/.rbenv/shims:$$HOME/.rbenv/bin:$$PATH"; \
+	JEKYLL_ENV=production bundle exec jekyll build --config $(JEKYLL_CONFIG) --baseurl "$(BASEURL)" $(JEKYLL_FLAGS)
 
 serve: redir
-	@export RBENV_VERSION=3.4.5; \
+	@export RBENV_VERSION=$(RUBY_VERSION); \
 	export PATH="$$HOME/.rbenv/shims:$$HOME/.rbenv/bin:$$PATH"; \
 	IP="$$(ipconfig getifaddr en0 2>/dev/null || true)"; \
 	[[ -z $$IP ]] && IP="$$(ipconfig getifaddr en1 2>/dev/null || true)"; \
@@ -44,9 +53,15 @@ future:
 	@$(MAKE) serve FUTURE=--future
 
 clean:
-	@export RBENV_VERSION=3.4.5; \
+	@export RBENV_VERSION=$(RUBY_VERSION); \
 	export PATH="$$HOME/.rbenv/shims:$$HOME/.rbenv/bin:$$PATH"; \
-	bundle exec jekyll clean --config $(JEKYLL_CONFIG)
+	if command -v bundle >/dev/null 2>&1; then \
+	  bundle exec jekyll clean --config $(JEKYLL_CONFIG) $(JEKYLL_FLAGS); \
+	fi; \
+	rm -rf _site .jekyll-cache .jekyll-metadata .sass-cache; \
+	if [[ -f "$(REDIRECTS_CONTENT)/.redirects-generated" ]]; then \
+	  rm -rf "$(REDIRECTS_CONTENT)"; \
+	fi
 
 redir:
 	@$(PYTHON) scripts/redirect.py --source _content --dest $(REDIRECTS_CONTENT)

@@ -296,7 +296,12 @@ def main():
         return 0
 
     total = 0
-    today = datetime.datetime.utcnow().date()
+    # Use timezone-aware UTC datetime (compatible with older Python).
+    try:
+        utc = datetime.UTC
+    except AttributeError:
+        utc = datetime.timezone.utc
+    today = datetime.datetime.now(utc).date()
     for label, path in collection_paths(dest_dir).items():
         if not os.path.isdir(path):
             continue
