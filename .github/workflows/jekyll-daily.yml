@@ -1,10 +1,9 @@
-name: jekyll-pages-build-deployment
-run-name: jekyll pages build and deployment
+name: daily-pages-build-deployment
+run-name: daily pages build and deployment
 
 on:
-  push:
-    branches: ["main"]
-  workflow_dispatch:
+  schedule:
+    - cron: "0 16 * * *"
 
 permissions:
   contents: read
