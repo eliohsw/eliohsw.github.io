@@ -250,11 +250,16 @@
   .card-tag--pdf {
     background: var(--color-tag-pdf-bg);
     color: var(--color-tag-pdf-text) !important;
-    transition: var(--transition-bg-color), var(--transition-color);
   }
 
   .card-tag--pdf:hover {
     background: var(--color-tag-pdf-bg-hover);
+  }
+
+  .card-tag--pdf,
+  .card-tag--ai,
+  .card-tag--featured {
+    transition: var(--transition-bg-color), var(--transition-color);
   }
 
   /* Individual Subpage Content */

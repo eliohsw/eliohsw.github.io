@@ -495,10 +495,6 @@
   white-space: nowrap;
 }
 
-.card-tags--featured {
-  margin-bottom: 0.35rem;
-}
-
 .card-tag {
   background: var(--color-bg-accent-light);
   color: var(--color-accent-primary);
@@ -507,7 +503,7 @@
   font-size: 0.85rem;
   font-weight: 475;
   text-decoration: none;
-  transition: var(--transition-bg-color);
+  transition: var(--transition-bg-color), var(--transition-color);
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -518,10 +514,6 @@
 
 .card-tag--pdf {
   background: var(--color-tag-pdf-bg);
-  color: var(--color-tag-pdf-text);
-}
-
-.card-tags .card-tag--pdf {
   color: var(--color-tag-pdf-text);
 }
 
