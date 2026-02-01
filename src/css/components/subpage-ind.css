@@ -124,7 +124,7 @@
   }
 
   .breadcrumb-copy-btn.is-copied {
-    color: #4caf50;
+    color: var(--color-green-icon);
   }
 
   .subpage-ind-meta {
@@ -722,7 +722,7 @@
 
     .subpage-ind-title {
       font-size: 1.75rem;
-      margin: 0 0 0.125rem 0;
+      margin: 0 0 0.25rem 0;
     }
 
     .subpage-ind-subtitle {
