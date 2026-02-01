@@ -720,6 +720,174 @@ export function initFeaturedShowcase() {
   updateMode();
 }
 
+export function initConfetti() {
+  if (document.querySelector('.confetti-canvas')) return;
+  const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (reduceMotionQuery.matches) return;
+
+  const canvas = document.createElement('canvas');
+  canvas.className = 'confetti-canvas';
+  canvas.setAttribute('aria-hidden', 'true');
+
+  const context = canvas.getContext('2d', { alpha: true, desynchronized: true });
+  if (!context) return;
+  document.body.appendChild(canvas);
+
+  const palette = ['#655d8d', '#f2d9e6', '#ec4c4c', '#772c93'];
+  const TAU = Math.PI * 2;
+  const baseRadius = 4.0;
+  let width = 0;
+  let height = 0;
+  let dpr = 1;
+  let confetti = [];
+  let lastTime = 0;
+  let rafId = null;
+  let wind = 0;
+  let windTarget = 0;
+  let windTimer = 0;
+  let windStrength = 4.5;
+
+  const spawnParticle = (particle, spawnAnywhere = true) => {
+    const speedScale = Math.max(0.7, Math.min(5.0, height / 600));
+    const sizeScale = 0.82 + Math.random() * 0.36;
+    particle.radius = baseRadius * sizeScale;
+    particle.x = Math.random() * width;
+    particle.y = spawnAnywhere ? Math.random() * height : -Math.random() * height * 0.6 - 30;
+    particle.vy = (0.95 + Math.random() * 3.35) * speedScale;
+    particle.vx = (Math.random() - 0.5) * 1.2;
+    particle.swayAmp = 0.4 + Math.random() * 1.1;
+    particle.swaySpeed = 0.7 + Math.random() * 1.5;
+    particle.swayPhase = Math.random() * TAU;
+    particle.rotation = Math.random() * TAU;
+    particle.spin = (Math.random() - 0.5) * 0.12;
+    particle.tiltX = Math.random() * TAU;
+    particle.tiltY = Math.random() * TAU;
+    particle.tiltSpeedX = (Math.random() - 0.5) * 0.08;
+    particle.tiltSpeedY = (Math.random() - 0.5) * 0.08;
+    particle.liftAmp = 0.06 + Math.random() * 0.14;
+    particle.liftSpeed = 0.6 + Math.random() * 1.2;
+    particle.liftPhase = Math.random() * TAU;
+    particle.alpha = 0.62 + Math.random() * 0.34;
+    particle.color = palette[Math.floor(Math.random() * palette.length)];
+  };
+
+  const resizeCanvas = () => {
+    width = Math.max(1, window.innerWidth || document.documentElement.clientWidth || 1);
+    height = Math.max(1, window.innerHeight || document.documentElement.clientHeight || 1);
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    context.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    windStrength = Math.max(0.35, Math.min(4.5, width / 1050));
+    const targetCount = Math.min(200, Math.max(100, Math.round((width * height) / 9000)));
+
+    if (confetti.length < targetCount) {
+      for (let i = confetti.length; i < targetCount; i += 1) {
+        const particle = {};
+        spawnParticle(particle, false);
+        confetti.push(particle);
+      }
+    } else if (confetti.length > targetCount) {
+      confetti.length = targetCount;
+    }
+
+    const minY = -Math.max(240, height * 0.6);
+    confetti.forEach((particle) => {
+      particle.x = Math.min(width + 20, Math.max(-20, particle.x));
+      particle.y = Math.min(height + 20, Math.max(minY, particle.y));
+    });
+
+  };
+
+  const updateWind = (delta) => {
+    windTimer -= delta;
+    if (windTimer <= 0) {
+      windTimer = 120 + Math.random() * 200;
+      windTarget = (Math.random() - 0.5) * windStrength;
+    }
+    wind += (windTarget - wind) * 0.02 * delta;
+  };
+
+  const step = (timestamp) => {
+    rafId = window.requestAnimationFrame(step);
+    const delta = Math.min(2.4, (timestamp - lastTime) / 16.6667);
+    lastTime = timestamp;
+
+    updateWind(delta);
+    context.clearRect(0, 0, width, height);
+
+    const time = timestamp * 0.001;
+    const buffer = 40;
+    for (let i = 0; i < confetti.length; i += 1) {
+      const particle = confetti[i];
+      const sway = Math.sin(time * particle.swaySpeed + particle.swayPhase) * particle.swayAmp;
+      const lift = Math.sin(time * particle.liftSpeed + particle.liftPhase) * particle.liftAmp;
+
+      particle.x += (particle.vx + wind + sway) * delta;
+      particle.y += (particle.vy + lift) * delta;
+      particle.rotation += particle.spin * delta;
+      particle.tiltX += particle.tiltSpeedX * delta;
+      particle.tiltY += particle.tiltSpeedY * delta;
+
+      if (particle.y - particle.radius > height + buffer) {
+        spawnParticle(particle, false);
+      }
+      if (particle.x + particle.radius < -buffer) {
+        particle.x = width + buffer;
+      } else if (particle.x - particle.radius > width + buffer) {
+        particle.x = -buffer;
+      }
+
+      const sinX = Math.sin(particle.tiltX);
+      const cosX = Math.cos(particle.tiltX);
+      const sinY = Math.sin(particle.tiltY);
+      const cosY = Math.cos(particle.tiltY);
+      const nx = sinY * cosX;
+      const ny = -sinX;
+      const nz = cosY * cosX;
+      const minorScale = Math.max(0.18, Math.abs(nz));
+      const ellipseAngle = Math.atan2(ny, nx) + particle.rotation;
+      const alpha = particle.alpha * (0.65 + 0.35 * Math.abs(nz));
+
+      context.globalAlpha = alpha;
+      context.fillStyle = particle.color;
+      context.save();
+      context.translate(particle.x, particle.y);
+      context.rotate(ellipseAngle);
+      context.scale(1, minorScale);
+      context.beginPath();
+      context.arc(0, 0, particle.radius, 0, TAU);
+      context.fill();
+      context.restore();
+    }
+    context.globalAlpha = 1;
+  };
+
+  const handleVisibility = () => {
+    if (document.hidden) {
+      if (rafId) {
+        window.cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+      return;
+    }
+    if (!rafId) {
+      lastTime = window.performance.now();
+      rafId = window.requestAnimationFrame(step);
+    }
+  };
+
+  resizeCanvas();
+  lastTime = window.performance.now();
+  rafId = window.requestAnimationFrame(step);
+
+  window.addEventListener('resize', resizeCanvas, { passive: true });
+  document.addEventListener('visibilitychange', handleVisibility);
+}
+
 export function initRipple() {
   let clickCount = 0;
   let lastClickTime = 0;

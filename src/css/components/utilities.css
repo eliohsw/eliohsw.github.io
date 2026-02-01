@@ -4,6 +4,10 @@
     animation: none !important;
     transition: none !important;
   }
+
+  .confetti-canvas {
+    display: none;
+  }
 }
 
 @supports selector(:focus-visible) {
@@ -26,6 +30,18 @@
   animation: ripple-expand 1.2s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 1;
   transform: translate(-50%, -50%);
+}
+
+.confetti-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  z-index: 900;
+  display: block;
 }
 
 @keyframes ripple-expand {
