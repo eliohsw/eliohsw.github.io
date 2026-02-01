@@ -733,7 +733,7 @@ export function initConfetti() {
   if (!context) return;
   document.body.appendChild(canvas);
 
-  const palette = ['#655d8d', '#f2d9e6', '#ec4c4c', '#772c93'];
+  const palette = ['#f2d9e6', '#ec4c4c', '#9f71bc', '#ebd38b'];
   const TAU = Math.PI * 2;
   const baseRadius = 4.0;
   let width = 0;
