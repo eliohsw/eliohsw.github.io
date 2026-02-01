@@ -15,6 +15,13 @@
   border: 0 solid var(--color-box-border);
   background: transparent;
   transition: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.toc-container * {
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .toc-header {

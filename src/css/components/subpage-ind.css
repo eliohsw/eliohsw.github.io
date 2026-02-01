@@ -39,26 +39,19 @@
   /* Individual Subpage Header */
   .subpage-ind-header {
     margin-bottom: 3rem;
-    pointer-events: none;
     user-select: none;
     -webkit-user-select: none;
   }
 
   .subpage-ind-header * {
-    pointer-events: none;
     user-select: none;
     -webkit-user-select: none;
   }
 
-  .subpage-ind-header .subpage-ind-date,
-  .subpage-ind-header .subpage-ind-date-toggle,
-  .subpage-ind-header .breadcrumb a {
-    pointer-events: auto;
+  .subpage-ind-header .subpage-ind-title,
+  .subpage-ind-header .subpage-ind-subtitle {
     user-select: auto;
     -webkit-user-select: auto;
-  }
-  .subpage-ind-header .card-tag--pdf {
-    pointer-events: auto;
   }
 
   .breadcrumb {
