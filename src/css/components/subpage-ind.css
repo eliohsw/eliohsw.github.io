@@ -158,7 +158,7 @@
     overflow: hidden;
     margin-top: 0;
     pointer-events: none;
-    transition: max-height 200ms ease, opacity 200ms ease, transform 200ms ease, margin-top 200ms ease;
+    transition: max-height 250ms ease, opacity 350ms ease, transform 350ms ease, margin-top 250ms ease;
   }
 
   @media (max-width: 378px) {
