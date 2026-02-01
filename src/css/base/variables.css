@@ -29,6 +29,12 @@
   --color-tag-pdf-bg: #fde8e8;
   --color-tag-pdf-bg-hover: #f7cfcf;
   --color-tag-pdf-text: #c03d3d;
+  --color-tag-ai-bg: #efe7ff;
+  --color-tag-ai-bg-hover: #e1d3ff;
+  --color-tag-ai-text: #6a3fc5;
+  --color-tag-featured-bg: #f7edcf;
+  --color-tag-featured-bg-hover: #f1e1b3;
+  --color-tag-featured-text: #8a6a10;
   --color-tag-muted-bg: var(--color-surface-secondary);
   --color-tag-muted-text: var(--color-text-secondary);
 
@@ -81,6 +87,12 @@
     --color-tag-pdf-bg: #3b1f1f;
     --color-tag-pdf-bg-hover: #4b2323;
     --color-tag-pdf-text: #f07171;
+    --color-tag-ai-bg: #2c2146;
+    --color-tag-ai-bg-hover: #372856;
+    --color-tag-ai-text: #b7a1ff;
+    --color-tag-featured-bg: #3a2f12;
+    --color-tag-featured-bg-hover: #463815;
+    --color-tag-featured-text: #DCB556;
   }
 }
 
@@ -110,4 +122,10 @@
   --color-tag-pdf-bg: #3b1f1f;
   --color-tag-pdf-bg-hover: #4b2323;
   --color-tag-pdf-text: #f07171;
+  --color-tag-ai-bg: #2c2146;
+  --color-tag-ai-bg-hover: #372856;
+  --color-tag-ai-text: #b7a1ff;
+  --color-tag-featured-bg: #3a2f12;
+  --color-tag-featured-bg-hover: #463815;
+  --color-tag-featured-text: #DCB556;
 }

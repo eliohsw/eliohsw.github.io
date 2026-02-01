@@ -47,18 +47,77 @@ layout: default
     <p class="subpage-ind-subtitle">{{ page.subtitle }}</p>
     {% endif %}
     
+    {% assign pdf_link = page.pdf_url | default: page.pdf %}
+    {% assign pdf_href = '' %}
+    {% if pdf_link %}
+      {% assign pdf_trim = pdf_link | strip %}
+      {% assign pdf_has_scheme = false %}
+      {% if pdf_trim contains '://' %}
+        {% assign pdf_has_scheme = true %}
+      {% endif %}
+      {% assign pdf_protocol_relative = pdf_trim | slice: 0, 2 %}
+      {% if pdf_protocol_relative == '//' %}
+        {% assign pdf_protocol_relative = true %}
+      {% else %}
+        {% assign pdf_protocol_relative = false %}
+      {% endif %}
+      {% assign pdf_first_char = pdf_trim | slice: 0, 1 %}
+      {% assign pdf_first_segment = pdf_trim | split: '/' | first %}
+      {% assign pdf_first_segment_has_dot = false %}
+      {% if pdf_first_segment contains '.' %}
+        {% assign pdf_first_segment_has_dot = true %}
+      {% endif %}
+      {% assign pdf_contains_slash = false %}
+      {% if pdf_trim contains '/' %}
+        {% assign pdf_contains_slash = true %}
+      {% endif %}
+      {% assign pdf_suffix = pdf_trim | slice: -4, 4 %}
+      {% assign pdf_is_file = false %}
+      {% if pdf_suffix == '.pdf' %}
+        {% assign pdf_is_file = true %}
+      {% endif %}
+      {% assign pdf_is_external = false %}
+      {% if pdf_has_scheme or pdf_protocol_relative %}
+        {% assign pdf_is_external = true %}
+      {% elsif pdf_first_char == '/' %}
+        {% assign pdf_is_external = false %}
+      {% elsif pdf_contains_slash == false and pdf_is_file %}
+        {% assign pdf_is_external = false %}
+      {% elsif pdf_first_segment_has_dot %}
+        {% assign pdf_is_external = true %}
+      {% endif %}
+      {% if pdf_is_external %}
+        {% if pdf_has_scheme or pdf_protocol_relative %}
+          {% assign pdf_href = pdf_trim %}
+        {% else %}
+          {% assign pdf_href = 'https://' | append: pdf_trim %}
+        {% endif %}
+      {% else %}
+        {% assign pdf_href = pdf_trim | relative_url %}
+      {% endif %}
+    {% endif %}
+    {% assign has_ai = false %}
+    {% if page.ai %}
+      {% assign has_ai = true %}
+    {% endif %}
+    {% if page.featured or pdf_href != '' or has_ai %}
+    <div class="card-tags card-tags--featured">
+      {% if page.featured %}
+      <span class="card-tag card-tag--featured">Featured</span>
+      {% endif %}
+      {% if pdf_href != '' %}
+      <a class="card-tag card-tag--pdf" href="{{ pdf_href }}" target="_blank" rel="noopener">PDF</a>
+      {% endif %}
+      {% if has_ai %}
+      <span class="card-tag card-tag--ai">AI</span>
+      {% endif %}
+    </div>
+    {% endif %}
     {% if page.tags and page.tags.size > 0 %}
     <div class="card-tags">
       {% for tag in page.tags %}
       <span class="card-tag" data-type="blog">{{ tag }}</span>
       {% endfor %}
-    </div>
-    {% endif %}
-
-    {% assign pdf_link = page.pdf_url | default: page.pdf %}
-    {% if pdf_link %}
-    <div class="card-tags card-tags-pdf">
-      <a class="card-tag card-tag--pdf" href="{{ pdf_link }}" target="_blank" rel="noopener">PDF</a>
     </div>
     {% endif %}
   </div>

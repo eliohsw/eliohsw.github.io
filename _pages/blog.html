@@ -51,17 +51,80 @@ additional_scripts:
   {% if sorted_blogs.size > 0 %}
     {% for blog in sorted_blogs %}
     {% assign pdf_link = blog.pdf_url | default: blog.pdf %}
-    {% assign has_pdf = false %}
+    {% assign pdf_href = '' %}
     {% if pdf_link %}
+      {% assign pdf_trim = pdf_link | strip %}
+      {% assign pdf_has_scheme = false %}
+      {% if pdf_trim contains '://' %}
+        {% assign pdf_has_scheme = true %}
+      {% endif %}
+      {% assign pdf_protocol_relative = pdf_trim | slice: 0, 2 %}
+      {% if pdf_protocol_relative == '//' %}
+        {% assign pdf_protocol_relative = true %}
+      {% else %}
+        {% assign pdf_protocol_relative = false %}
+      {% endif %}
+      {% assign pdf_first_char = pdf_trim | slice: 0, 1 %}
+      {% assign pdf_first_segment = pdf_trim | split: '/' | first %}
+      {% assign pdf_first_segment_has_dot = false %}
+      {% if pdf_first_segment contains '.' %}
+        {% assign pdf_first_segment_has_dot = true %}
+      {% endif %}
+      {% assign pdf_contains_slash = false %}
+      {% if pdf_trim contains '/' %}
+        {% assign pdf_contains_slash = true %}
+      {% endif %}
+      {% assign pdf_suffix = pdf_trim | slice: -4, 4 %}
+      {% assign pdf_is_file = false %}
+      {% if pdf_suffix == '.pdf' %}
+        {% assign pdf_is_file = true %}
+      {% endif %}
+      {% assign pdf_is_external = false %}
+      {% if pdf_has_scheme or pdf_protocol_relative %}
+        {% assign pdf_is_external = true %}
+      {% elsif pdf_first_char == '/' %}
+        {% assign pdf_is_external = false %}
+      {% elsif pdf_contains_slash == false and pdf_is_file %}
+        {% assign pdf_is_external = false %}
+      {% elsif pdf_first_segment_has_dot %}
+        {% assign pdf_is_external = true %}
+      {% endif %}
+      {% if pdf_is_external %}
+        {% if pdf_has_scheme or pdf_protocol_relative %}
+          {% assign pdf_href = pdf_trim %}
+        {% else %}
+          {% assign pdf_href = 'https://' | append: pdf_trim %}
+        {% endif %}
+      {% else %}
+        {% assign pdf_href = pdf_trim | relative_url %}
+      {% endif %}
+    {% endif %}
+    {% assign has_pdf = false %}
+    {% if pdf_href != '' %}
       {% assign has_pdf = true %}
     {% endif %}
-    {% assign tags_json = '[]' %}
+    {% assign tags_list = '' | split: '' %}
     {% if blog.tags %}
-      {% assign tags_json = blog.tags | jsonify %}
+      {% assign tags_list = blog.tags %}
     {% endif %}
-    {% assign tag_count = blog.tags | size %}
+    {% assign has_ai = false %}
+    {% if blog.ai %}
+      {% assign has_ai = true %}
+      {% assign tags_list = tags_list | push: 'AI' %}
+    {% endif %}
+    {% assign tags_json = tags_list | jsonify %}
+    {% assign tag_count = 0 %}
+    {% if blog.tags %}
+      {% assign tag_count = blog.tags | size %}
+    {% endif %}
     {% assign total_tags = tag_count %}
     {% if has_pdf %}
+      {% assign total_tags = total_tags | plus: 1 %}
+    {% endif %}
+    {% if has_ai %}
+      {% assign total_tags = total_tags | plus: 1 %}
+    {% endif %}
+    {% if blog.featured %}
       {% assign total_tags = total_tags | plus: 1 %}
     {% endif %}
     {% assign overflow_count = 0 %}
@@ -72,9 +135,15 @@ additional_scripts:
     {% if has_pdf %}
       {% assign display_limit = display_limit | minus: 1 %}
     {% endif %}
+    {% if has_ai %}
+      {% assign display_limit = display_limit | minus: 1 %}
+    {% endif %}
+    {% if blog.featured %}
+      {% assign display_limit = display_limit | minus: 1 %}
+    {% endif %}
     {% assign card_tags = '' %}
-    {% if blog.tags %}
-      {% assign card_tags = blog.tags | join: ',' | downcase %}
+    {% if tags_list.size > 0 %}
+      {% assign card_tags = tags_list | join: ',' | downcase %}
     {% endif %}
     {% if has_pdf %}
       {% if card_tags != '' %}
@@ -83,7 +152,7 @@ additional_scripts:
         {% assign card_tags = 'pdf' %}
       {% endif %}
     {% endif %}
-    <div class="card-box" data-tags="{{ card_tags }}" data-tags-json='{{ tags_json | escape }}' data-pdf-url="{{ pdf_link | escape }}" data-tag-type="blog" data-featured="{{ blog.featured | default: false }}">
+    <div class="card-box" data-tags="{{ card_tags }}" data-tags-json='{{ tags_json | escape }}' data-pdf-url="{{ pdf_href | escape }}" data-tag-type="blog" data-featured="{{ blog.featured | default: false }}">
       <div class="card-header">
         <div class="card-header-row">
           {% assign publish_date = blog.date_publish | default: blog.date %}
@@ -103,17 +172,21 @@ additional_scripts:
               </div>
             </div>
           </div>
-          <a class="card-link" href="{{ blog.url }}" aria-label="Read Blog">
+          <div class="card-header-actions">
             {% if blog.featured %}
-            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512" aria-hidden="true" focusable="false">
-              <path d="M394 480a16 16 0 01-9.39-3L256 383.76 127.39 477a16 16 0 01-24.55-18.08L153 310.35 23 221.2a16 16 0 019-29.2h160.38l48.4-148.95a16 16 0 0130.44 0l48.4 149H480a16 16 0 019.05 29.2L359 310.35l50.13 148.53A16 16 0 01394 480z"/>
-            </svg>
+            <span class="card-featured-star" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512" aria-hidden="true" focusable="false">
+                <path d="M394 480a16 16 0 01-9.39-3L256 383.76 127.39 477a16 16 0 01-24.55-18.08L153 310.35 23 221.2a16 16 0 019-29.2h160.38l48.4-148.95a16 16 0 0130.44 0l48.4 149H480a16 16 0 019.05 29.2L359 310.35l50.13 148.53A16 16 0 01394 480z"/>
+              </svg>
+            </span>
             {% endif %}
-            <span>Read</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M268 112l144 144-144 144M392 256H100" class="ionicon-fill-none"></path>
-            </svg>
-          </a>
+            <a class="card-link" href="{{ blog.url }}" aria-label="Read Blog">
+              <span>Read</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M268 112l144 144-144 144M392 256H100" class="ionicon-fill-none"></path>
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
       <div class="card-contents">
@@ -122,14 +195,26 @@ additional_scripts:
           {% if blog.subtitle %}
           <div class="card-subtitle">{{ blog.subtitle }}</div>
           {% endif %}
-          {% if has_pdf or tag_count > 0 %}
+          {% if has_pdf or has_ai or tag_count > 0 %}
           <div class="card-tags">
             {% if has_pdf %}
-            <a class="card-tag card-tag--pdf" href="{{ pdf_link }}" target="_blank" rel="noopener">PDF</a>
+            <a class="card-tag card-tag--pdf" href="{{ pdf_href }}" target="_blank" rel="noopener">PDF</a>
+            {% endif %}
+            {% if has_ai %}
+            <span class="card-tag card-tag--ai">AI</span>
             {% endif %}
             {% if tag_count > 0 and display_limit > 0 %}
-              {% for tag in blog.tags limit: display_limit %}
-              <span class="card-tag" data-tag="{{ tag | downcase }}" data-type="blog">{{ tag }}</span>
+              {% assign tag_rendered = 0 %}
+              {% for tag in blog.tags %}
+                {% if tag_rendered >= display_limit %}
+                  {% break %}
+                {% endif %}
+                {% assign tag_value = tag | downcase %}
+                {% if tag_value == 'ai' %}
+                  {% continue %}
+                {% endif %}
+                <span class="card-tag" data-tag="{{ tag_value }}" data-type="blog">{{ tag }}</span>
+                {% assign tag_rendered = tag_rendered | plus: 1 %}
               {% endfor %}
             {% endif %}
             {% if overflow_count > 0 %}

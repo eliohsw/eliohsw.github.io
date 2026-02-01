@@ -58,24 +58,36 @@ function initCardFilters() {
     const tagsLower = tags.map((tag) => tag.toLowerCase());
     const pdfUrl = (card.dataset.pdfUrl || '').trim();
     const hasPdf = pdfUrl !== '';
-    const totalTags = tags.length + (hasPdf ? 1 : 0);
+    const hasAi = tagsLower.includes('ai');
+    const normalTags = tags.filter((tag) => tag.toLowerCase() !== 'ai');
+    const normalTagsLower = normalTags.map((tag) => tag.toLowerCase());
+    const totalTags =
+      normalTags.length +
+      (hasPdf ? 1 : 0) +
+      (hasAi ? 1 : 0);
     const overflowCount = totalTags > 4 ? totalTags - 4 : 0;
-    const displayLimit = Math.max(0, 4 - (hasPdf ? 1 : 0));
+    const displayLimit = Math.max(
+      0,
+      4 - (hasPdf ? 1 : 0) - (hasAi ? 1 : 0),
+    );
     const highlight = highlightTag.trim().toLowerCase();
     const tagType = card.dataset.tagType;
 
-    let orderedTags = tags;
+    let orderedTags = normalTags;
     if (highlight) {
-      let matchIndex = tagsLower.indexOf(highlight);
+      let matchIndex = normalTagsLower.indexOf(highlight);
       if (matchIndex === -1) {
-        matchIndex = tagsLower.findIndex((tag) => tag.includes(highlight));
+        matchIndex = normalTagsLower.findIndex((tag) => tag.includes(highlight));
       }
       if (matchIndex !== -1) {
-        orderedTags = [tags[matchIndex], ...tags.filter((_, index) => index !== matchIndex)];
+        orderedTags = [
+          normalTags[matchIndex],
+          ...normalTags.filter((_, index) => index !== matchIndex),
+        ];
       }
     }
 
-    tagContainer.innerHTML = '';
+    const fragment = document.createDocumentFragment();
 
     if (hasPdf) {
       const pdfTag = document.createElement('a');
@@ -85,7 +97,17 @@ function initCardFilters() {
       pdfTag.target = '_blank';
       pdfTag.rel = 'noopener';
       if (tagType) pdfTag.dataset.type = tagType;
-      tagContainer.appendChild(pdfTag);
+      fragment.appendChild(pdfTag);
+    }
+
+    if (hasAi) {
+      const aiTag = document.createElement('span');
+      aiTag.className = 'card-tag card-tag--ai';
+      aiTag.textContent = 'AI';
+      aiTag.dataset.tag = 'ai';
+      if (tagType) aiTag.dataset.type = tagType;
+      aiTag.style.cursor = 'pointer';
+      fragment.appendChild(aiTag);
     }
 
     orderedTags.slice(0, displayLimit).forEach((tag) => {
@@ -95,7 +117,7 @@ function initCardFilters() {
       tagEl.dataset.tag = tag.toLowerCase();
       if (tagType) tagEl.dataset.type = tagType;
       tagEl.style.cursor = 'pointer';
-      tagContainer.appendChild(tagEl);
+      fragment.appendChild(tagEl);
     });
 
     if (overflowCount > 0) {
@@ -103,8 +125,10 @@ function initCardFilters() {
       overflowTag.className = 'card-tag card-tag--overflow';
       overflowTag.textContent = `+${overflowCount}`;
       overflowTag.setAttribute('aria-hidden', 'true');
-      tagContainer.appendChild(overflowTag);
+      fragment.appendChild(overflowTag);
     }
+
+    tagContainer.replaceChildren(fragment);
   }
 
   function updateCardTagsDisplay(highlightTag = '') {

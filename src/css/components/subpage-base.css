@@ -408,6 +408,25 @@
   padding-right: 0.5rem;
 }
 
+.card-header-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.card-featured-star {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #DCB556;
+}
+
+.card-featured-star .ionicon {
+  width: 1.05em;
+  height: 1.05em;
+}
+
 /* Card Contents */
 .card-contents {
   display: flex;
@@ -476,6 +495,10 @@
   white-space: nowrap;
 }
 
+.card-tags--featured {
+  margin-bottom: 0.35rem;
+}
+
 .card-tag {
   background: var(--color-bg-accent-light);
   color: var(--color-accent-primary);
@@ -498,8 +521,30 @@
   color: var(--color-tag-pdf-text);
 }
 
+.card-tags .card-tag--pdf {
+  color: var(--color-tag-pdf-text);
+}
+
 .card-tag--pdf:hover {
   background: var(--color-tag-pdf-bg-hover);
+}
+
+.card-tag--ai {
+  background: var(--color-tag-ai-bg);
+  color: var(--color-tag-ai-text);
+}
+
+.card-tag--ai:hover {
+  background: var(--color-tag-ai-bg-hover);
+}
+
+.card-tag--featured {
+  background: var(--color-tag-featured-bg);
+  color: var(--color-tag-featured-text);
+}
+
+.card-tag--featured:hover {
+  background: var(--color-tag-featured-bg-hover);
 }
 
 .card-tag--overflow {

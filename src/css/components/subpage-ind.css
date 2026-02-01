@@ -39,6 +39,26 @@
   /* Individual Subpage Header */
   .subpage-ind-header {
     margin-bottom: 3rem;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .subpage-ind-header * {
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .subpage-ind-header .subpage-ind-date,
+  .subpage-ind-header .subpage-ind-date-toggle,
+  .subpage-ind-header .breadcrumb a {
+    pointer-events: auto;
+    user-select: auto;
+    -webkit-user-select: auto;
+  }
+  .subpage-ind-header .card-tag--pdf {
+    pointer-events: auto;
   }
 
   .breadcrumb {
@@ -128,6 +148,7 @@
     display: flex;
     flex-direction: column;
     gap: 0;
+    align-items: flex-start;
 
     user-select: none;
     -webkit-user-select: none;
@@ -161,7 +182,7 @@
     opacity: 1;
     transform: translateY(0);
     margin-top: 0.4rem;
-    pointer-events: auto;
+    pointer-events: none;
   }
 
   .subpage-ind-date-toggle {
@@ -177,6 +198,12 @@
     outline: 2px solid var(--color-accent-primary);
     outline-offset: 2px;
     border-radius: 0.2rem;
+  }
+
+  .subpage-ind-date {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
   }
 
   .subpage-ind-external-link {
@@ -211,8 +238,11 @@
   .card-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
     margin-bottom: 1rem;
+  }
+
+  .card-tags--featured {
+    margin-bottom: 0.35rem;
   }
 
   .subpage-ind-header .card-tags {
