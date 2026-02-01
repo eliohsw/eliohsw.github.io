@@ -199,14 +199,14 @@
   font-size: 1em;
   outline: none;
   height: 40px;
-  width: 350px;
+  width: 320px;
   box-sizing: border-box;
   transition: var(--transition-bg-color), var(--transition-border-color);
 }
 
 @media (max-width: 575px) {
   .filter-input {
-    width: 250px;
+    width: 220px;
   }
 }
 
