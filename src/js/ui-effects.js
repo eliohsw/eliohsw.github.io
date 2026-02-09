@@ -733,9 +733,24 @@ export function initConfetti() {
   if (!context) return;
   document.body.appendChild(canvas);
 
-  const palette = ['#f2d9e6', '#ec4c4c', '#9f71bc', '#ebd38b'];
+  const defaultPalette = ['#f2d9e6', '#ec4c4c', '#9f71bc', '#ebd38b'];
+  const getPaletteFromCSS = () => {
+    const styles = getComputedStyle(document.documentElement);
+    const colors = [
+      styles.getPropertyValue('--confetti-color-1'),
+      styles.getPropertyValue('--confetti-color-2'),
+      styles.getPropertyValue('--confetti-color-3'),
+      styles.getPropertyValue('--confetti-color-4'),
+      styles.getPropertyValue('--confetti-color-5'),
+      styles.getPropertyValue('--confetti-color-6')
+    ]
+      .map((value) => value.trim())
+      .filter(Boolean);
+    return colors.length ? colors : defaultPalette;
+  };
+  let palette = getPaletteFromCSS();
   const TAU = Math.PI * 2;
-  const baseRadius = 4.0;
+  const baseRadius = 3;
   let width = 0;
   let height = 0;
   let dpr = 1;
@@ -745,29 +760,29 @@ export function initConfetti() {
   let wind = 0;
   let windTarget = 0;
   let windTimer = 0;
-  let windStrength = 4.5;
+  let windStrength = 6.2;
 
   const spawnParticle = (particle, spawnAnywhere = true) => {
-    const speedScale = Math.max(0.7, Math.min(5.0, height / 600));
-    const sizeScale = 0.82 + Math.random() * 0.36;
+    const speedScale = Math.max(0.9, Math.min(6.2, height / 520));
+    const sizeScale = 0.7 + Math.random() * 0.7;
     particle.radius = baseRadius * sizeScale;
-    particle.x = Math.random() * width;
+    particle.x = Math.random() * (width + 60) - 30;
     particle.y = spawnAnywhere ? Math.random() * height : -Math.random() * height * 0.6 - 30;
-    particle.vy = (0.95 + Math.random() * 3.35) * speedScale;
-    particle.vx = (Math.random() - 0.5) * 1.2;
-    particle.swayAmp = 0.4 + Math.random() * 1.1;
-    particle.swaySpeed = 0.7 + Math.random() * 1.5;
+    particle.vy = (1.6 + Math.random() * 4.6) * speedScale;
+    particle.vx = (Math.random() - 0.5) * 2.2;
+    particle.swayAmp = 0.7 + Math.random() * 1.8;
+    particle.swaySpeed = 0.9 + Math.random() * 2.4;
     particle.swayPhase = Math.random() * TAU;
     particle.rotation = Math.random() * TAU;
-    particle.spin = (Math.random() - 0.5) * 0.12;
+    particle.spin = (Math.random() - 0.5) * 0.22;
     particle.tiltX = Math.random() * TAU;
     particle.tiltY = Math.random() * TAU;
-    particle.tiltSpeedX = (Math.random() - 0.5) * 0.08;
-    particle.tiltSpeedY = (Math.random() - 0.5) * 0.08;
-    particle.liftAmp = 0.06 + Math.random() * 0.14;
-    particle.liftSpeed = 0.6 + Math.random() * 1.2;
+    particle.tiltSpeedX = (Math.random() - 0.5) * 0.14;
+    particle.tiltSpeedY = (Math.random() - 0.5) * 0.14;
+    particle.liftAmp = 0.08 + Math.random() * 0.22;
+    particle.liftSpeed = 0.7 + Math.random() * 1.5;
     particle.liftPhase = Math.random() * TAU;
-    particle.alpha = 0.62 + Math.random() * 0.34;
+    particle.alpha = 0.7 + Math.random() * 0.25;
     particle.color = palette[Math.floor(Math.random() * palette.length)];
   };
 
@@ -781,8 +796,8 @@ export function initConfetti() {
     canvas.style.height = `${height}px`;
     context.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    windStrength = Math.max(0.35, Math.min(4.5, width / 1050));
-    const targetCount = Math.min(200, Math.max(100, Math.round((width * height) / 9000)));
+    windStrength = Math.max(0.6, Math.min(6.2, width / 900));
+    const targetCount = Math.min(100, Math.max(40, Math.round((width * height) / 18000)));
 
     if (confetti.length < targetCount) {
       for (let i = confetti.length; i < targetCount; i += 1) {
@@ -805,7 +820,7 @@ export function initConfetti() {
   const updateWind = (delta) => {
     windTimer -= delta;
     if (windTimer <= 0) {
-      windTimer = 120 + Math.random() * 200;
+      windTimer = 80 + Math.random() * 180;
       windTarget = (Math.random() - 0.5) * windStrength;
     }
     wind += (windTarget - wind) * 0.02 * delta;
@@ -879,6 +894,11 @@ export function initConfetti() {
       rafId = window.requestAnimationFrame(step);
     }
   };
+
+  const paletteObserver = new MutationObserver(() => {
+    palette = getPaletteFromCSS();
+  });
+  paletteObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
   resizeCanvas();
   lastTime = window.performance.now();

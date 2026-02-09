@@ -22,6 +22,12 @@
   --color-accent-primary-rgb: 66, 129, 219;
   --color-bg-accent-dark: #e4edfa;
   --color-bg-accent-light: #f2f6fc;
+  /* --confetti-color-1: #f2d9e6;
+  --confetti-color-2: #f7b733;
+  --confetti-color-3: #d22c42;
+  --confetti-color-4: #f2888b;
+  --confetti-color-5: #fddde6;
+  --confetti-color-6: #ff8b3d; */
   
   --color-green-primary: #34523E;
   --color-bg-green-primary: #DDE6DE;
@@ -83,6 +89,7 @@
     --color-accent-primary: #4281db;
     --color-bg-accent-dark: #1e2734;
     --color-bg-accent-light: #1c2026;
+
     --color-green-primary: #EAFEEC;
     --color-bg-green-primary: #44664E;
     --color-bg-green-secondary: #243229;
@@ -120,6 +127,7 @@
   --color-accent-primary: #4281db;
   --color-bg-accent-dark: #1e2734;
   --color-bg-accent-light: #1c2026;
+
   --color-green-primary: #EAFEEC;
   --color-bg-green-primary: #44664E;
   --color-bg-green-secondary: #243229;
