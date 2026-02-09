@@ -3,7 +3,7 @@ run-name: daily pages build and deployment
 
 on:
   schedule:
-    - cron: "58 15 * * *"
+    - cron: "45 15 * * *"
 
 permissions:
   contents: read
