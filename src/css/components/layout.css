@@ -184,6 +184,8 @@
   max-width: none;
   height: auto;
   background: rgba(var(--color-bg-rgb), 0.9);
+  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(1px);
   -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 60%, rgba(0, 0, 0, 0.999) 65%, rgba(0, 0, 0, 0.996) 70%, rgba(0, 0, 0, 0.98) 75%, rgba(0, 0, 0, 0.937) 80%, rgba(0, 0, 0, 0.847) 85%, rgba(0, 0, 0, 0.684) 90%, rgba(0, 0, 0, 0.414) 95%, transparent 100%);
   mask-image: linear-gradient(180deg, #000 0%, #000 60%, rgba(0, 0, 0, 0.999) 65%, rgba(0, 0, 0, 0.996) 70%, rgba(0, 0, 0, 0.98) 75%, rgba(0, 0, 0, 0.937) 80%, rgba(0, 0, 0, 0.847) 85%, rgba(0, 0, 0, 0.684) 90%, rgba(0, 0, 0, 0.414) 95%, transparent 100%);
   -webkit-mask-size: 100% 100%;
@@ -193,12 +195,8 @@
   mask-mode: alpha;
   z-index: 999;
   transform: translateY(-100%);
-  transition: transform 0.32s ease;
+  transition: transform 0.32s ease, var(--transition-bg-color);
   padding: calc(20px + env(safe-area-inset-top)) 20px calc(40px + env(safe-area-inset-bottom));
-}
-[data-theme="dark"] .mobile-sidebar {
-  -webkit-backdrop-filter: blur(1px);
-  backdrop-filter: blur(1px);
 }
 
 .mobile-sidebar.active {
@@ -222,7 +220,12 @@
   padding: 8px 0;
   position: relative;
   font-family: "General Sans", 'Inter', sans-serif;
-  transition: font-weight 0.32s ease, width 0.32s ease;
+  opacity: 0;
+  transition: opacity 0.64s ease, font-weight 0.32s ease, width 0.32s ease;
+}
+
+.mobile-sidebar.active .sidebar-links a {
+  opacity: 1;
 }
 
 .sidebar-links a::after {
