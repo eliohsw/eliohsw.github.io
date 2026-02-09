@@ -33,7 +33,7 @@ og_type: "article"
 description: 
 
 # Other
-include_confetti: true
+include_confetti: false
 ---
 
 # The First Post
